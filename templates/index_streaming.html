@@ -1,0 +1,2642 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实时视频音频捕获 (Streaming)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #e8e8e8;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 10px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #00d9ff, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 5px;
+            text-shadow: 0 0 30px rgba(0, 217, 255, 0.3);
+        }
+        
+        .subtitle {
+            color: #8892b0;
+            font-size: 0.85rem;
+            font-weight: 300;
+            display: none;
+        }
+        
+        /* 主视频区域 - 手机竖屏优化 */
+        .video-section {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        
+        .video-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 9/16;
+            max-height: 70vh;
+            background: #0a0a14;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 3px solid rgba(0, 217, 255, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+        
+        #videoPreview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* 视频上方的状态徽章 */
+        .video-overlay {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+        
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .status-badge.live {
+            background: rgba(255, 59, 48, 0.9);
+            animation: pulse 1.5s infinite;
+        }
+        
+        .status-badge.recording {
+            background: rgba(0, 217, 255, 0.9);
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #fff;
+        }
+        
+        /* 浮动响应层 - 聊天对话框样式 */
+        .floating-responses {
+            position: absolute;
+            bottom: 120px;  /* 按钮区域高度(~90px) + 间距 */
+            left: 8px;
+            right: 8px;
+            display: flex;
+            flex-direction: column;  /* 从上到下排列 */
+            align-items: stretch;  /* 允许子元素通过 align-self 控制对齐 */
+            gap: 6px;
+            pointer-events: none;
+            z-index: 20;
+            max-height: calc(100% - 170px);  /* 留出顶部状态栏和底部按钮的空间 */
+            overflow-y: hidden;  /* 隐藏溢出，只显示最新的几条 */
+        }
+        
+        .floating-response {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            border-radius: 10px;
+            padding: 10px 12px;
+            color: #fff;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            animation: floatIn 0.4s ease;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            max-height: 100px;  /* 限制单条响应高度 */
+            overflow-y: auto;
+            pointer-events: auto;
+        }
+        
+        .floating-response.fading {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        
+        @keyframes floatIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* 聊天气泡样式 */
+        .chat-bubble {
+            max-width: 85%;
+            padding: 10px 14px;
+            border-radius: 16px;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            animation: floatIn 0.4s ease;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            margin-bottom: 8px;
+            word-wrap: break-word;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            color: #1a1a1a;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .chat-bubble.fading {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        
+        /* 用户消息 - 左对齐 */
+        .chat-bubble.user {
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+            border-left: 3px solid rgba(0, 150, 200, 0.6);
+        }
+        
+        /* 模型回复 - 右对齐 */
+        .chat-bubble.assistant {
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+            border-right: 3px solid rgba(0, 180, 100, 0.6);
+        }
+        
+        .chat-bubble .bubble-icon {
+            font-size: 0.75rem;
+            margin-right: 6px;
+        }
+        
+        /* 流式输出样式 (新增) */
+        .chat-bubble.streaming {
+            border-color: rgba(0, 217, 255, 0.5);
+            box-shadow: 0 0 10px rgba(0, 217, 255, 0.3);
+        }
+        
+        .streaming-cursor {
+            display: inline-block;
+            animation: blink 0.7s infinite;
+            color: #00d9ff;
+            margin-left: 2px;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        .streaming-content {
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        
+        /* 旧样式保留兼容 */
+        .floating-response .query {
+            color: #00d9ff;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .floating-response .answer {
+            color: #00ff88;
+        }
+        
+        /* TTS 播放指示器 - 浮动在视频上 */
+        .floating-tts-indicator {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(138, 43, 226, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 8px 15px;
+            display: none;
+            align-items: center;
+            gap: 8px;
+            z-index: 15;
+            animation: pulse 1s infinite;
+        }
+        
+        .floating-tts-indicator.visible {
+            display: flex;
+        }
+        
+        .floating-tts-indicator .speaker-icon {
+            font-size: 1.2rem;
+        }
+        
+        .floating-tts-indicator .waves {
+            display: flex;
+            gap: 2px;
+        }
+        
+        .floating-tts-indicator .wave {
+            width: 3px;
+            height: 12px;
+            background: #fff;
+            border-radius: 2px;
+            animation: speakerWave 0.5s ease infinite;
+        }
+        
+        .floating-tts-indicator .wave:nth-child(1) { animation-delay: 0s; height: 8px; }
+        .floating-tts-indicator .wave:nth-child(2) { animation-delay: 0.1s; height: 14px; }
+        .floating-tts-indicator .wave:nth-child(3) { animation-delay: 0.2s; height: 10px; }
+        
+        /* 视频内控制按钮区域 */
+        .video-controls {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            z-index: 25;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            padding: 10px 15px;
+            border-radius: 25px;
+        }
+        
+        .video-ctrl-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        
+        .video-ctrl-btn .btn-icon {
+            font-size: 1.4rem;
+            margin-bottom: 2px;
+        }
+        
+        .video-ctrl-btn .btn-text {
+            font-size: 0.65rem;
+            font-weight: 500;
+        }
+        
+        /* 开启/关闭按钮 */
+        .toggle-btn {
+            background: linear-gradient(135deg, #00d9ff, #00b8d4);
+            color: #000;
+        }
+        
+        .toggle-btn.active {
+            background: linear-gradient(135deg, #ff3b30, #ff6b6b);
+            color: #fff;
+        }
+        
+        .toggle-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 20px rgba(0, 217, 255, 0.4);
+        }
+        
+        .toggle-btn.active:hover {
+            box-shadow: 0 5px 20px rgba(255, 59, 48, 0.4);
+        }
+        
+        /* 录音按钮 */
+        .mic-btn {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border: 2px solid rgba(0, 255, 136, 0.4);
+            color: #fff;
+        }
+        
+        .mic-btn:active,
+        .mic-btn.active {
+            background: linear-gradient(135deg, #00ff88, #00d9ff);
+            border-color: #00ff88;
+            box-shadow: 0 0 25px rgba(0, 255, 136, 0.5);
+            transform: scale(1.1);
+            color: #000;
+        }
+        
+        /* 切换镜头按钮 */
+        .switch-btn {
+            background: linear-gradient(135deg, #ff9f43, #ffcd56);
+            color: #000;
+        }
+        
+        .switch-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 20px rgba(255, 159, 67, 0.4);
+        }
+        
+        /* 释放会话按钮 */
+        .release-btn {
+            background: linear-gradient(135deg, #6c757d, #495057);
+            color: #fff;
+        }
+        
+        .release-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 20px rgba(108, 117, 125, 0.4);
+        }
+        
+        .video-ctrl-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        
+        /* 保留旧的 btn 样式用于隐藏元素 */
+        .btn {
+            padding: 12px 18px;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: inherit;
+        }
+        
+        /* 卡片样式 - 更紧凑 */
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .card-title {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .card-title .icon {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #00d9ff, #00ff88);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+        
+        /* 隐藏元素的样式（保持 JS 兼容性） */
+        .mic-hint {
+            color: #8892b0;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        
+        .mic-hint.recording {
+            color: #00ff88;
+            font-weight: 500;
+        }
+        
+        .waveform {
+            display: none;
+        }
+        
+        /* 日志面板 */
+        .log-panel {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 12px;
+            margin-top: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .log-title {
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: #00d9ff;
+        }
+        
+        .log-content {
+            height: 120px;
+            overflow-y: auto;
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            font-size: 0.75rem;
+            line-height: 1.5;
+            scroll-behavior: smooth;
+        }
+        
+        .log-content::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .log-content::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 3px;
+        }
+        
+        .log-content::-webkit-scrollbar-thumb {
+            background: rgba(0, 217, 255, 0.4);
+            border-radius: 3px;
+        }
+        
+        .log-entry {
+            padding: 4px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+        
+        .log-entry .time {
+            color: #8892b0;
+            margin-right: 10px;
+        }
+        
+        .log-entry.info { color: #00d9ff; }
+        .log-entry.success { color: #00ff88; }
+        .log-entry.error { color: #ff3b30; }
+        .log-entry.warning { color: #ffcc00; }
+        
+        /* 统计信息 */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-top: 10px;
+        }
+        
+        .stat-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 10px 5px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #00d9ff;
+        }
+        
+        .stat-label {
+            font-size: 0.65rem;
+            color: #8892b0;
+            margin-top: 3px;
+        }
+        
+        @media (max-width: 400px) {
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        /* 响应结果显示 */
+        .response-panel {
+            background: rgba(0, 255, 136, 0.05);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+            display: none;
+        }
+        
+        .response-panel.visible {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .loading-spinner {
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(0, 217, 255, 0.2);
+            border-top-color: #00d9ff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .response-title {
+            font-size: 0.9rem;
+            color: #00ff88;
+            margin-bottom: 10px;
+        }
+        
+        .response-content {
+            color: #e8e8e8;
+            font-size: 1rem;
+            line-height: 1.6;
+            max-height: 300px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        .response-content::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .response-content::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 3px;
+        }
+        
+        .response-content::-webkit-scrollbar-thumb {
+            background: rgba(0, 255, 136, 0.4);
+            border-radius: 3px;
+        }
+        
+        /* TTS 音频播放器样式 */
+        .tts-player-container {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(138, 43, 226, 0.1);
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            border-radius: 12px;
+            display: none;
+        }
+        
+        .tts-player-container.visible {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .tts-player-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .tts-player-title {
+            color: #ba68c8;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .tts-status {
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .tts-status.playing {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+            animation: pulse 1s infinite;
+        }
+        
+        .tts-status.ready {
+            background: rgba(0, 217, 255, 0.2);
+            color: #00d9ff;
+        }
+        
+        .tts-audio-player {
+            width: 100%;
+            height: 40px;
+            border-radius: 8px;
+            outline: none;
+        }
+        
+        .tts-audio-player::-webkit-media-controls-panel {
+            background: rgba(0, 0, 0, 0.3);
+        }
+        
+        /* 语音播放指示器动画 */
+        .speaker-animation {
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+            margin-left: 8px;
+        }
+        
+        .speaker-animation .wave {
+            width: 3px;
+            height: 12px;
+            background: #00ff88;
+            border-radius: 2px;
+            animation: speakerWave 0.5s ease infinite;
+        }
+        
+        .speaker-animation .wave:nth-child(1) { animation-delay: 0s; height: 8px; }
+        .speaker-animation .wave:nth-child(2) { animation-delay: 0.1s; height: 14px; }
+        .speaker-animation .wave:nth-child(3) { animation-delay: 0.2s; height: 10px; }
+        
+        @keyframes speakerWave {
+            0%, 100% { transform: scaleY(0.5); }
+            50% { transform: scaleY(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎥 实时视频音频捕获 <small style="font-size: 0.5em; color: #00d9ff;">Streaming</small></h1>
+            <p class="subtitle">视频流式传输 · 音频按键录制 · 实时服务端通信</p>
+        </header>
+        
+        <!-- 主视频区域 - 手机竖屏优化 -->
+        <div class="video-section">
+            <div class="video-container">
+                <video id="videoPreview" autoplay muted playsinline></video>
+                
+                <!-- 状态徽章 -->
+                <div class="video-overlay">
+                    <span id="liveStatus" class="status-badge live" style="display: none;">
+                        <span class="status-dot"></span>
+                        LIVE
+                    </span>
+                    <span id="sendingStatus" class="status-badge recording" style="display: none;">
+                        <span class="status-dot"></span>
+                        发送中
+                    </span>
+                </div>
+                
+                <!-- TTS 播放指示器 -->
+                <div id="floatingTtsIndicator" class="floating-tts-indicator">
+                    <span class="speaker-icon">🔊</span>
+                    <div class="waves">
+                        <span class="wave"></span>
+                        <span class="wave"></span>
+                        <span class="wave"></span>
+                    </div>
+                </div>
+                
+                <!-- 浮动响应层 - 先进先出淡出 -->
+                <div id="floatingResponses" class="floating-responses"></div>
+                
+                <!-- 控制按钮区域 - 在视频内底部 -->
+                <div class="video-controls">
+                    <!-- 开启/关闭切换按钮 -->
+                    <button id="toggleVideoBtn" class="video-ctrl-btn toggle-btn" onclick="toggleVideo()">
+                        <span class="btn-icon">▶️</span>
+                        <span class="btn-text">开启</span>
+                    </button>
+                    <!-- 录音按钮 -->
+                    <button id="micBtn" class="video-ctrl-btn mic-btn">
+                        <span class="btn-icon">🎙️</span>
+                        <span class="btn-text">录音</span>
+                    </button>
+                    <!-- 切换镜头按钮 -->
+                    <button id="switchCameraBtn" class="video-ctrl-btn switch-btn" onclick="switchCamera()">
+                        <span class="btn-icon">🔄</span>
+                        <span class="btn-text">切换</span>
+                    </button>
+                    <!-- 释放会话按钮 -->
+                    <button id="releaseSessionBtn" class="video-ctrl-btn release-btn" onclick="forceReleaseSession()">
+                        <span class="btn-icon">🔓</span>
+                        <span class="btn-text">释放</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 隐藏的原有按钮（保持 JS 兼容性） -->
+        <div style="display: none;">
+            <button id="startVideoBtn"></button>
+            <button id="stopVideoBtn"></button>
+        </div>
+        
+        <!-- 统计信息卡片 -->
+        <div class="card">
+            <div class="card-title">
+                <span class="icon">📊</span>
+                统计信息
+            </div>
+            <div class="stats" style="grid-template-columns: repeat(4, 1fr);">
+                <div class="stat-item">
+                    <div class="stat-value" id="audioDuration">0s</div>
+                    <div class="stat-label">录音时长</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="audioSize">0 KB</div>
+                    <div class="stat-label">音频大小</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="audioCount">0</div>
+                    <div class="stat-label">发送次数</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="frameCount">0</div>
+                    <div class="stat-label">视频帧数</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 隐藏的原有元素（保持 JS 兼容性） -->
+        <div style="display: none;">
+            <div id="dataSize">0 KB</div>
+            <div id="fps">0</div>
+            <div id="micHint" class="mic-hint">按住按钮开始录音</div>
+            <div id="waveform" class="waveform">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+            <div id="responsePanel" class="response-panel">
+                <div class="response-title">📨 服务端响应</div>
+                <div id="responseContent" class="response-content"></div>
+            </div>
+            <div id="ttsPlayerContainer" class="tts-player-container">
+                <div class="tts-player-header">
+                    <div class="tts-player-title">
+                        🔊 语音回复
+                        <span id="speakerAnimation" class="speaker-animation" style="display: none;">
+                            <span class="wave"></span>
+                            <span class="wave"></span>
+                            <span class="wave"></span>
+                        </span>
+                    </div>
+                    <span id="ttsStatus" class="tts-status ready">准备就绪</span>
+                </div>
+                <audio id="ttsAudioPlayer" class="tts-audio-player" controls></audio>
+            </div>
+        </div>
+        
+        <!-- 日志面板 -->
+        <div class="log-panel">
+            <div class="log-title">📋 系统日志</div>
+            <div id="logContent" class="log-content"></div>
+        </div>
+    </div>
+    
+    <script>
+        // 自动播放解锁状态
+        let audioContextUnlocked = false;
+
+        // 解锁音频播放（解决浏览器自动播放限制）
+        function unlockAudioContext() {
+            if (audioContextUnlocked || !ttsAudioPlayer) return;
+            
+            // 尝试播放并立即暂停，以获取播放权限
+            ttsAudioPlayer.play().then(() => {
+                ttsAudioPlayer.pause();
+                ttsAudioPlayer.currentTime = 0;
+                audioContextUnlocked = true;
+                console.log("🔊 Audio context unlocked for autoplay");
+            }).catch(e => {
+                console.log("🔊 Audio autoplay unlock failed (will retry):", e);
+            });
+        }
+
+        // 全局变量
+        const VIDEO_SEND_INTERVAL = {{ interval }};  // 从 Python 注入 (秒)
+        const VIDEO_FPS = 15;  // 录制帧率
+        let videoStream = null;
+        let audioRecorder = null;
+        let audioStream = null;
+        let audioChunks = [];
+        let isVideoStreaming = false;
+        let isAudioRecording = false;
+        let frameCount = 0;
+        let totalDataSize = 0;
+        let audioCount = 0;
+        let audioStartTime = null;
+        let pollInterval = null;
+        let ttsAudioPollInterval = null;  // TTS 音频轮询定时器
+        let errorPollInterval = null;  // 错误轮询定时器
+        let streamingTokenPollInterval = null;  // 流式 token 轮询定时器 (新增)
+        let currentStreamingBubble = null;  // 当前流式显示的气泡 (新增)
+        let currentStreamingResponseId = null;  // 当前流式的 response_id (新增)
+        const streamedResponseIds = new Set();  // 已通过流式显示的 response_id 集合（防止重复）
+        let currentFacingMode = 'environment'; // 默认为后置摄像头
+        let currentSessionId = null;  // 当前会话 ID（用于多用户锁）
+        let isTtsPlaying = false;  // TTS 是否正在播放
+        let ttsAudioQueue = [];  // TTS 音频队列（用于排队播放）
+        let currentDisplayedResponseId = null;  // 当前显示的文本 response_id（用于匹配音频）
+        let currentTtsResponseId = null;  // 当前正在播放的 TTS response_id（句子级流式）
+        const canceledResponseIds = new Set();  // 已取消播放的 response_id 集合
+        let currentSentenceIdx = 0;  // 当前播放的句子序号
+        let totalSentences = 0;  // 当前响应的总句子数
+        let videoMediaRecorder = null;  // 视频录制 MediaRecorder 实例
+        let videoRecordTimeout = null;  // 视频录制超时定时器
+        
+        // ========== Web Audio API for streaming PCM playback (Step 2) ==========
+        let webAudioContext = null;  // Web Audio API AudioContext
+        let webAudioChunkQueue = [];  // PCM chunk 队列
+        let webAudioIsPlaying = false;  // 是否正在播放
+        let webAudioCurrentResponseId = null;  // 当前播放的 response_id
+        let webAudioCurrentSentenceIdx = -1;  // 当前播放的句子索引
+        let webAudioSampleRate = 24000;  // 采样率 (从服务端获取)
+        let ttsChunkPollInterval = null;  // PCM chunk 轮询定时器
+        let webAudioNextPlayTime = 0;  // 下一个 chunk 的播放时间
+        let webAudioActiveSources = [];  // 跟踪当前正在播放的 AudioBufferSourceNode (用于中断播放)
+        // ========== End Web Audio API ==========
+        
+        // DOM 元素
+        const videoPreview = document.getElementById('videoPreview');
+        const startVideoBtn = document.getElementById('startVideoBtn');
+        const stopVideoBtn = document.getElementById('stopVideoBtn');
+        const micBtn = document.getElementById('micBtn');
+        const micHint = document.getElementById('micHint');
+        const waveform = document.getElementById('waveform');
+        const liveStatus = document.getElementById('liveStatus');
+        const sendingStatus = document.getElementById('sendingStatus');
+        const responsePanel = document.getElementById('responsePanel');
+        const responseContent = document.getElementById('responseContent');
+        
+        // TTS 相关 DOM 元素
+        const ttsPlayerContainer = document.getElementById('ttsPlayerContainer');
+        const ttsAudioPlayer = document.getElementById('ttsAudioPlayer');
+        const ttsStatus = document.getElementById('ttsStatus');
+        const speakerAnimation = document.getElementById('speakerAnimation');
+        
+        // 日志函数（限制最大条目数，防止内存泄漏）
+        const MAX_LOG_ENTRIES = 100;  // 最多保留100条日志
+        function log(message, type = 'info') {
+            const logContent = document.getElementById('logContent');
+            if (!logContent) return;
+            
+            const time = new Date().toLocaleTimeString();
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.innerHTML = `<span class="time">[${time}]</span>${message}`;
+            logContent.appendChild(entry);
+            logContent.scrollTop = logContent.scrollHeight;
+            
+            // 限制日志条目数量，防止内存泄漏
+            while (logContent.children.length > MAX_LOG_ENTRIES) {
+                logContent.removeChild(logContent.firstChild);
+            }
+        }
+        
+        // 更新统计
+        function updateStats() {
+            document.getElementById('frameCount').textContent = frameCount;
+            document.getElementById('dataSize').textContent = 
+                totalDataSize > 1024 ? `${(totalDataSize / 1024).toFixed(1)} MB` : `${totalDataSize.toFixed(1)} KB`;
+        }
+        
+        // 切换视频开启/关闭
+        async function toggleVideo() {
+            if (isVideoStreaming) {
+                await stopVideo();
+            } else {
+                await startVideo();
+            }
+        }
+        
+        // 更新切换按钮状态
+        function updateToggleButton() {
+            const toggleBtn = document.getElementById('toggleVideoBtn');
+            if (!toggleBtn) return;
+            
+            const icon = toggleBtn.querySelector('.btn-icon');
+            const text = toggleBtn.querySelector('.btn-text');
+            
+            if (isVideoStreaming) {
+                toggleBtn.classList.add('active');
+                if (icon) icon.textContent = '⏹️';
+                if (text) text.textContent = '停止';
+            } else {
+                toggleBtn.classList.remove('active');
+                if (icon) icon.textContent = '▶️';
+                if (text) text.textContent = '开启';
+            }
+        }
+        
+        // 开启摄像头
+        async function startVideo() {
+            // 尝试解锁音频自动播放
+            unlockAudioContext();
+            // 解锁 Web Audio Context (Step 2)
+            unlockWebAudioContext();
+
+            try {
+                // 先获取会话锁
+                try {
+                    const sessionResponse = await fetch('/api/acquire_session', { method: 'POST' });
+                    const sessionResult = await sessionResponse.json();
+                    
+                    if (!sessionResult.success) {
+                        log(`⚠️ ${sessionResult.error}`, 'error');
+                        
+                        // 询问用户是否要强制释放会话
+                        const shouldRelease = confirm('系统正在被其他用户使用中。\n\n是否强制释放会话？\n（如果上一个用户已经离开，可以安全释放）');
+                        
+                        if (shouldRelease) {
+                            // 强制释放（不显示弹窗）
+                            await forceReleaseSession(false);
+                            // 重新尝试获取会话
+                            const retryResponse = await fetch('/api/acquire_session', { method: 'POST' });
+                            const retryResult = await retryResponse.json();
+                            
+                            if (!retryResult.success) {
+                                log(`⚠️ 重试失败: ${retryResult.error}`, 'error');
+                                alert('获取会话失败，请稍后再试');
+                                return;
+                            }
+                            
+                            currentSessionId = retryResult.session_id;
+                            log(`✅ 会话已获取`, 'success');
+                        } else {
+                            return;
+                        }
+                    } else {
+                        currentSessionId = sessionResult.session_id;
+                        log(`✅ 会话已获取`, 'success');
+                    }
+                } catch (e) {
+                    log(`获取会话锁失败: ${e.message}`, 'error');
+                    return;
+                }
+                
+                log('正在请求摄像头权限...', 'info');
+                
+                // 通知服务端清理文件夹
+                try {
+                    const response = await fetch('/api/start_camera', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ session_id: currentSessionId })
+                    });
+                    const result = await response.json();
+                    if (result.success) {
+                        log('已通知服务端清理文件夹', 'info');
+                    }
+                } catch (e) {
+                    log(`通知服务端失败: ${e.message}`, 'warning');
+                }
+                
+                videoStream = await navigator.mediaDevices.getUserMedia({
+                    video: {
+                        facingMode: currentFacingMode,
+                        width: { ideal: 640 },
+                        height: { ideal: 480 },
+                        frameRate: { ideal: VIDEO_FPS }
+                    },
+                    audio: false
+                });
+                
+                videoPreview.srcObject = videoStream;
+                isVideoStreaming = true;
+                
+                // 更新切换按钮状态
+                updateToggleButton();
+                liveStatus.style.display = 'flex';
+                
+                log('摄像头已开启，开始视频流传输', 'success');
+                
+                // 开始每秒捕获并发送视频帧
+                startFrameCapture();
+                
+            } catch (error) {
+                log(`摄像头开启失败: ${error.message}`, 'error');
+            }
+        }
+        
+        // 停止视频
+        async function stopVideo() {
+            // 立即标记为停止，阻止后续的递归调用
+            isVideoStreaming = false;
+            
+            // 清理视频录制相关资源
+            if (videoRecordTimeout) {
+                clearTimeout(videoRecordTimeout);
+                videoRecordTimeout = null;
+            }
+            
+            if (videoMediaRecorder && videoMediaRecorder.state === 'recording') {
+                try {
+                    videoMediaRecorder.stop();
+                    // 显式清理录制器引用
+                    videoMediaRecorder.ondataavailable = null;
+                    videoMediaRecorder.onstop = null;
+                    videoMediaRecorder.onerror = null;
+                } catch (e) {
+                    console.error("Error stopping recorder:", e);
+                }
+            }
+            videoMediaRecorder = null;
+            
+            if (videoStream) {
+                videoStream.getTracks().forEach(track => track.stop());
+                videoStream = null;
+            }
+            
+            // 清理所有轮询定时器
+            if (pollInterval) {
+                clearTimeout(pollInterval);
+                pollInterval = null;
+            }
+            
+            if (ttsAudioPollInterval) {
+                clearTimeout(ttsAudioPollInterval);
+                ttsAudioPollInterval = null;
+            }
+            
+            if (errorPollInterval) {
+                clearTimeout(errorPollInterval);
+                errorPollInterval = null;
+            }
+            
+            // 停止流式 token 轮询
+            if (streamingTokenPollInterval) {
+                clearTimeout(streamingTokenPollInterval);
+                streamingTokenPollInterval = null;
+            }
+            
+            // 停止 TTS chunk 轮询 (Step 2)
+            stopPollingTtsChunk();
+            
+            // 停止 TTS 音频
+            stopTtsAudio();
+            
+            videoPreview.srcObject = null;
+            
+            // 更新切换按钮状态
+            updateToggleButton();
+            liveStatus.style.display = 'none';
+            sendingStatus.style.display = 'none';
+            
+            // 清理服务器端录制的音视频文件
+            try {
+                const response = await fetch('/api/clear_media', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ session_id: currentSessionId })
+                });
+                const result = await response.json();
+                if (result.success) {
+                    log(`已清理媒体文件`, 'success');
+                }
+            } catch (error) {
+                log(`清理媒体文件失败: ${error.message}`, 'warning');
+            }
+            
+            // 重置统计
+            frameCount = 0;
+            totalDataSize = 0;
+            updateStats();
+            document.getElementById('fps').textContent = '0';
+            
+            // 隐藏响应面板
+            responsePanel.classList.remove('visible');
+            responseCounter = 0;
+            
+            // 清空浮动响应
+            const floatingContainer = document.getElementById('floatingResponses');
+            if (floatingContainer) {
+                floatingContainer.innerHTML = '';
+            }
+            
+            // 重置流式显示状态（防止内存泄漏）
+            currentStreamingBubble = null;
+            currentStreamingResponseId = null;
+            currentDisplayedResponseId = null;
+            
+            // 清理去重集合
+            recentQueries.clear();
+            recentResponseTexts.clear();
+            streamedResponseIds.clear();
+            
+            log('视频流已停止（点击"释放会话"按钮以允许其他用户使用）', 'warning');
+        }
+
+        // 强制释放会话（当会话被卡住时使用）
+        // showAlert: 是否显示弹窗提示（手动点击按钮时显示，自动调用时不显示）
+        async function forceReleaseSession(showAlert = true) {
+            try {
+                log('🔓 正在释放会话...', 'info');
+                
+                // 停止所有正在进行的播放和轮询
+                stopTtsAudio();
+                stopPollingTtsChunk();
+                
+                const response = await fetch('/api/force_release_session', { method: 'POST' });
+                const result = await response.json();
+                
+                if (result.success) {
+                    log(`✅ ${result.message}`, 'success');
+                    currentSessionId = null;  // 清空本地会话 ID
+                    if (showAlert) {
+                        alert('会话已释放，现在可以重新开启摄像头');
+                    }
+                } else {
+                    log(`⚠️ 释放失败: ${result.error}`, 'warning');
+                }
+            } catch (e) {
+                log(`❌ 释放会话出错: ${e.message}`, 'error');
+            }
+        }
+
+        // 切换摄像头
+        async function switchCamera() {
+            // 切换模式
+            currentFacingMode = (currentFacingMode === 'user') ? 'environment' : 'user';
+            const modeName = currentFacingMode === 'user' ? '前置' : '后置';
+            log(`切换至${modeName}摄像头`, 'info');
+            
+            // 如果当前正在直播，则重新启动流
+            if (isVideoStreaming) {
+                // 停止当前流（但不重置UI状态，只为了重启）
+                if (videoStream) {
+                    videoStream.getTracks().forEach(track => track.stop());
+                }
+                
+                try {
+                    // 重新获取流
+                    videoStream = await navigator.mediaDevices.getUserMedia({
+                        video: {
+                            facingMode: currentFacingMode,
+                            width: { ideal: 640 },
+                            height: { ideal: 480 },
+                            frameRate: { ideal: VIDEO_FPS }
+                        },
+                        audio: false
+                    });
+                    
+                    videoPreview.srcObject = videoStream;
+                    log(`已切换到${modeName}摄像头`, 'success');
+                    
+                    // 不需要重新调用 startFrameCapture，因为它是基于 timer 的，
+                    // 只要 videoPreview.srcObject 更新了，drawImage 就会画新的画面
+                    
+                } catch (error) {
+                    log(`切换摄像头失败: ${error.message}`, 'error');
+                    stopVideo(); // 出错则完全停止
+                }
+            } else {
+                log(`下次启动将使用${modeName}摄像头`, 'info');
+            }
+        }
+        
+        // 开始帧捕获 - 使用 MediaRecorder 录制视频
+        function startFrameCapture() {
+            log(`开始视频捕获: ${VIDEO_FPS}fps, 每 ${VIDEO_SEND_INTERVAL} 秒发送一次`, 'info');
+            
+            // NOTE: 完整响应轮询已移除，所有内容通过流式 token 接收
+            // startPollingResponse();  // REMOVED - using streaming tokens only
+            
+            // 启动流式 token 轮询 (包含 query 和 response)
+            startPollingStreamingToken();
+            
+            // 启动 TTS 音频轮询 (Type 5 - WAV)
+            startPollingTtsAudio();
+            
+            // 启动 TTS 音频 chunk 轮询 (Type 9 - PCM) - Step 2
+            startPollingTtsChunk();
+            
+            // 启动错误轮询（检测会话被占用等）
+            startPollingError();
+            
+            // 再次尝试解锁音频（以防之前失败）
+            unlockAudioContext();
+            
+            // 解锁 Web Audio Context (Step 2)
+            unlockWebAudioContext();
+            
+            // 使用 MediaRecorder 录制原始视频流
+            function recordAndSend() {
+                if (!isVideoStreaming || !videoStream) return;
+                
+                try {
+                    let chunks = [];
+                    
+                    // 检测浏览器支持的视频格式（Safari 不支持 WebM）
+                    const videoMimeTypes = [
+                        'video/webm;codecs=vp8',     // Chrome, Firefox
+                        'video/webm;codecs=vp9',     // Chrome
+                        'video/webm',                // 通用 WebM
+                        'video/mp4;codecs=h264',     // Safari (iOS 14.3+)
+                        'video/mp4',                 // Safari 回退
+                    ];
+                    
+                    let selectedMimeType = '';
+                    for (const mimeType of videoMimeTypes) {
+                        if (MediaRecorder.isTypeSupported(mimeType)) {
+                            selectedMimeType = mimeType;
+                            log(`✓ 使用视频格式: ${mimeType}`, 'info');
+                            break;
+                        }
+                    }
+                    
+                    if (!selectedMimeType) {
+                        log('⚠️ 浏览器不支持任何已知的视频格式，尝试默认格式', 'warning');
+                    }
+                    
+                    // 创建新的 recorder 实例
+                    const recorderOptions = selectedMimeType ? {
+                        mimeType: selectedMimeType,
+                        videoBitsPerSecond: 500000  // 500 kbps
+                    } : {
+                        videoBitsPerSecond: 500000  // 500 kbps（不指定 mimeType，让浏览器选择）
+                    };
+                    
+                    videoMediaRecorder = new MediaRecorder(videoStream, recorderOptions);
+                    
+                    // 记录实际使用的 MIME 类型
+                    log(`📹 MediaRecorder 实际格式: ${videoMediaRecorder.mimeType}`, 'info');
+                
+                    videoMediaRecorder.ondataavailable = (event) => {
+                        if (event.data && event.data.size > 0) {
+                            chunks.push(event.data);
+                        }
+                    };
+                    
+                    videoMediaRecorder.onstop = async () => {
+                        // 及时清理 recorder 引用，防止内存泄漏
+                        const recorder = videoMediaRecorder;
+                        if (recorder) {
+                            recorder.ondataavailable = null;
+                            recorder.onstop = null;
+                            recorder.onerror = null;
+                        }
+
+                        // 如果已经停止流传输，不再发送数据
+                        if (!isVideoStreaming) {
+                            chunks = [];
+                            return;
+                        }
+                        
+                        if (chunks.length > 0) {
+                            // 使用实际录制时的 MIME 类型
+                            const actualMimeType = videoMediaRecorder.mimeType || 'video/webm';
+                            const videoBlob = new Blob(chunks, { type: actualMimeType });
+                            chunks = []; // 立即释放 chunks 数组
+                            await sendVideoFrame(videoBlob);
+                        }
+                        
+                        // 继续下一次录制
+                        if (isVideoStreaming) {
+                            // 使用 setTimeout 确保异步执行，避免递归过深
+                            setTimeout(recordAndSend, 0);
+                        }
+                    };
+                    
+                    videoMediaRecorder.onerror = (e) => {
+                        console.error("MediaRecorder error:", e);
+                        log(`❌ 视频录制错误: ${e.error ? e.error.name : '未知错误'}`, 'error');
+                        if (isVideoStreaming) {
+                            setTimeout(recordAndSend, 1000);
+                        }
+                    };
+
+                    // 开始录制
+                    videoMediaRecorder.start();
+                    
+                    // 录制指定时长后停止
+                    videoRecordTimeout = setTimeout(() => {
+                        if (videoMediaRecorder && videoMediaRecorder.state === 'recording') {
+                            videoMediaRecorder.stop();
+                        }
+                    }, VIDEO_SEND_INTERVAL * 1000);
+                    
+                } catch (e) {
+                    console.error("Video recording error:", e);
+                    log(`❌ 视频录制初始化失败: ${e.message}`, 'error');
+                    
+                    // Safari 特殊处理：如果 MediaRecorder 完全不可用
+                    if (e.name === 'NotSupportedError') {
+                        log('⚠️ 您的浏览器版本过旧，不支持视频录制功能。请升级 Safari 到 14.3+ 版本。', 'error');
+                        stopVideo();
+                        alert('您的浏览器不支持视频录制功能。\n\niOS Safari 需要 14.3 或更高版本。\n请升级系统后重试。');
+                        return;
+                    }
+                    
+                    // 出错后尝试恢复
+                    if (isVideoStreaming) {
+                        setTimeout(recordAndSend, 1000);
+                    }
+                }
+            }
+            
+            // 开始第一次录制
+            recordAndSend();
+        }
+        
+        // 发送视频帧
+        async function sendVideoFrame(blob) {
+            try {
+                sendingStatus.style.display = 'flex';
+                
+                const formData = new FormData();
+                formData.append('frame', blob, 'frame.jpg');
+                formData.append('session_id', currentSessionId || '');  // 携带 session_id
+                
+                const response = await fetch('/api/video', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // 更新帧数统计
+                    const framesPerBatch = Math.round(VIDEO_SEND_INTERVAL * VIDEO_FPS);
+                    frameCount += framesPerBatch;
+                    
+                    totalDataSize += blob.size / 1024;
+                    updateStats();
+                    
+                    // 更新 FPS 显示
+                    document.getElementById('fps').textContent = VIDEO_FPS.toString();
+                    
+                    // 更新服务端连接状态指示
+                    if (result.sent) {
+                        // 视频成功发送到服务端
+                        if (!window.serverConnected) {
+                            window.serverConnected = true;
+                            log('✓ 已连接到服务端，视频流正在发送', 'success');
+                        }
+                    }
+                }
+                
+                setTimeout(() => {
+                    sendingStatus.style.display = 'none';
+                }, 200);
+                
+            } catch (error) {
+                log(`发送视频帧失败: ${error.message}`, 'error');
+                sendingStatus.style.display = 'none';
+            }
+        }
+        
+        // 开始音频录制
+        async function startAudioRecording() {
+            // 尝试解锁音频自动播放
+            unlockAudioContext();
+            unlockWebAudioContext();
+
+            if (isAudioRecording) return;
+            
+            // 中断所有正在播放的 TTS 语音
+            log('🔇 录音开始，中断 TTS 播放', 'info');
+            stopAllWebAudioPlayback(true);  // 停止 Web Audio API 播放，并重置 response_id 防止后续 chunk 继续播放
+            stopTtsAudio();                 // 停止 HTML Audio 播放 (Type 5 WAV)
+            
+            // 检查浏览器是否支持必要的 API
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                alert('您的浏览器不支持录音功能。请使用最新版本的浏览器。');
+                return;
+            }
+            
+            if (typeof MediaRecorder === 'undefined') {
+                alert('您的浏览器不支持录音功能。iOS 需要 14.3 或更高版本。');
+                return;
+            }
+            
+            try {
+                // 检查 audioStream 是否存在且仍然活跃
+                const isStreamActive = audioStream && 
+                    audioStream.getTracks().length > 0 && 
+                    audioStream.getTracks().every(track => track.readyState === 'live');
+                
+                if (!isStreamActive) {
+                    if (audioStream) {
+                        audioStream.getTracks().forEach(track => track.stop());
+                    }
+                    audioStream = await navigator.mediaDevices.getUserMedia({
+                        audio: {
+                            echoCancellation: true,
+                            noiseSuppression: true,
+                            sampleRate: 44100
+                        }
+                    });
+                    log('麦克风权限已获取', 'success');
+                }
+                
+                audioChunks = [];
+                
+                // 检测支持的音频格式 (iOS 不支持 webm，需要使用 mp4/aac)
+                const mimeTypes = [
+                    'audio/webm;codecs=opus',
+                    'audio/webm',
+                    'audio/mp4',
+                    'audio/mp4;codecs=aac',
+                    'audio/aac',
+                    'audio/ogg;codecs=opus',
+                    'audio/ogg',
+                ];
+                
+                const supportedTypes = mimeTypes.filter(t => MediaRecorder.isTypeSupported(t));
+                let audioMimeType = supportedTypes.length > 0 ? supportedTypes[0] : '';
+                
+                // 创建 MediaRecorder
+                try {
+                    const recorderOptions = audioMimeType ? { mimeType: audioMimeType } : {};
+                    audioRecorder = new MediaRecorder(audioStream, recorderOptions);
+                } catch (recorderError) {
+                    // 尝试不带选项创建
+                    audioRecorder = new MediaRecorder(audioStream);
+                }
+                
+                window.currentAudioMimeType = audioRecorder.mimeType || audioMimeType || 'audio/webm';
+                
+                audioRecorder.ondataavailable = (event) => {
+                    if (event.data.size > 0) {
+                        audioChunks.push(event.data);
+                    }
+                };
+                
+                audioRecorder.start(100);
+                isAudioRecording = true;
+                audioStartTime = Date.now();
+                
+                // 更新 UI
+                micBtn.classList.add('active');
+                micHint.textContent = '正在录音...';
+                micHint.classList.add('recording');
+                waveform.classList.add('active');
+                
+                // 开始更新录音时长
+                startAudioDurationTimer();
+                
+                log('开始录音', 'info');
+                
+            } catch (error) {
+                isAudioRecording = false;
+                stopAudioDurationTimer();
+                log(`录音失败: ${error.message}`, 'error');
+                
+                if (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError') {
+                    alert('麦克风权限被拒绝。请在浏览器设置中允许麦克风访问。');
+                } else if (error.name === 'NotFoundError') {
+                    alert('未找到麦克风设备。');
+                } else {
+                    alert(`录音出错: ${error.message}`);
+                }
+            }
+        }
+        
+        // 录音时长更新定时器
+        let audioDurationTimer = null;
+        
+        // 开始更新录音时长显示
+        function startAudioDurationTimer() {
+            // 先清除旧的定时器
+            stopAudioDurationTimer();
+            
+            audioDurationTimer = setInterval(() => {
+                if (!isAudioRecording || !audioStartTime) {
+                    stopAudioDurationTimer();
+                    return;
+                }
+                const duration = Math.floor((Date.now() - audioStartTime) / 1000);
+                const durationEl = document.getElementById('audioDuration');
+                if (durationEl) {
+                    durationEl.textContent = `${duration}s`;
+                }
+            }, 200);  // 每200ms更新一次，减少性能开销
+        }
+        
+        // 停止更新录音时长
+        function stopAudioDurationTimer() {
+            if (audioDurationTimer) {
+                clearInterval(audioDurationTimer);
+                audioDurationTimer = null;
+            }
+        }
+        
+        // 停止音频录制并发送
+        async function stopAudioRecording() {
+            stopAudioDurationTimer();
+            
+            if (!isAudioRecording || !audioRecorder) {
+                isAudioRecording = false;
+                return;
+            }
+            
+            isAudioRecording = false;
+            
+            // 更新 UI
+            const micButton = document.getElementById('micBtn');
+            if (micButton) micButton.classList.remove('active');
+            if (micHint) {
+                micHint.textContent = '按住按钮开始录音';
+                micHint.classList.remove('recording');
+            }
+            if (waveform) waveform.classList.remove('active');
+            
+            try {
+                // 等待录制完成（设置超时防止卡死）
+                await Promise.race([
+                    new Promise(resolve => {
+                        audioRecorder.onstop = resolve;
+                        audioRecorder.stop();
+                    }),
+                    new Promise((_, reject) => setTimeout(() => reject(new Error('录音停止超时')), 3000))
+                ]);
+                
+                // 创建音频 Blob (使用实际录制时的 mimeType)
+                const actualMimeType = window.currentAudioMimeType || 'audio/webm';
+                const audioBlob = new Blob(audioChunks, { type: actualMimeType });
+                const duration = Math.floor((Date.now() - audioStartTime) / 1000);
+                
+                log(`录音完成，时长: ${duration}秒，大小: ${(audioBlob.size / 1024).toFixed(1)}KB`, 'success');
+                
+                // 更新统计
+                const audioSizeEl = document.getElementById('audioSize');
+                if (audioSizeEl) audioSizeEl.textContent = `${(audioBlob.size / 1024).toFixed(1)} KB`;
+                
+                // 发送音频
+                await sendAudio(audioBlob, actualMimeType);
+            } catch (error) {
+                log(`录音处理错误: ${error.message}`, 'error');
+            } finally {
+                // 清理 audioChunks 释放内存
+                audioChunks = [];
+            }
+        }
+        
+        // 发送音频
+        async function sendAudio(blob, mimeType = 'audio/webm') {
+            try {
+                log('🎤 正在发送音频到服务端...', 'info');
+                
+                // 显示等待状态
+                showWaitingResponse();
+                
+                // 根据 mimeType 确定文件扩展名
+                let fileExt = 'webm';
+                if (mimeType.includes('mp4') || mimeType.includes('aac') || mimeType.includes('m4a')) {
+                    fileExt = 'm4a';
+                } else if (mimeType.includes('ogg')) {
+                    fileExt = 'ogg';
+                } else if (mimeType.includes('wav')) {
+                    fileExt = 'wav';
+                }
+                
+                const formData = new FormData();
+                formData.append('audio', blob, `audio.${fileExt}`);
+                formData.append('session_id', currentSessionId || '');  // 携带 session_id
+                formData.append('mime_type', mimeType);  // 告诉服务端实际的格式
+                
+                const response = await fetch('/api/audio', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    audioCount++;
+                    document.getElementById('audioCount').textContent = audioCount;
+                    log('✓ 音频发送成功，等待回复...', 'success');
+                    
+                    // 轮询已在 startFrameCapture 中启动
+                    
+                } else {
+                    hideWaitingResponse();
+                    log(`❌ 音频发送失败: ${result.error}`, 'error');
+                }
+                
+            } catch (error) {
+                hideWaitingResponse();
+                log(`❌ 音频发送失败: ${error.message}`, 'error');
+            }
+        }
+        
+        // =============== 完整响应轮询 - 已移除 ===============
+        // NOTE: 完整响应轮询已被移除，所有内容现在通过流式 token 接收
+        // 这简化了架构，避免了重复显示的问题
+        // 保留变量声明以保持兼容性
+        let isPollingResponse = false;
+        // pollResponse() 和 startPollingResponse() 已移除
+        
+        // =============== 流式 Token 功能 ===============
+        
+        // 开始轮询流式 token
+        let isPollingStreamingToken = false;
+        async function pollStreamingToken() {
+            if (!isVideoStreaming) {
+                streamingTokenPollInterval = null;
+                return;
+            }
+            if (isPollingStreamingToken) return;
+
+            isPollingStreamingToken = true;
+            try {
+                const response = await fetch(`/api/poll_streaming_token?session_id=${encodeURIComponent(currentSessionId || '')}`);
+                const data = await response.json();
+                
+                if (data.success && data.tokens && data.tokens.length > 0) {
+                    // 处理所有收到的 token
+                    for (const tokenStr of data.tokens) {
+                        try {
+                            const tokenData = JSON.parse(tokenStr);
+                            handleStreamingToken(tokenData);
+                        } catch (e) {
+                            console.error("解析流式 token 失败:", e, tokenStr);
+                        }
+                    }
+                }
+            } catch (e) {
+                console.error("Streaming token polling error:", e);
+            } finally {
+                isPollingStreamingToken = false;
+                if (isVideoStreaming) {
+                    streamingTokenPollInterval = setTimeout(pollStreamingToken, 100);
+                }
+            }
+        }
+
+        function startPollingStreamingToken() {
+            if (streamingTokenPollInterval) clearTimeout(streamingTokenPollInterval);
+            streamingTokenPollInterval = setTimeout(pollStreamingToken, 100);
+        }
+        
+        // 处理单个流式 token
+        function handleStreamingToken(tokenData) {
+            const { response_id, token, is_final, type, query, is_start, is_silent } = tokenData;
+            
+            if (type !== 'streaming_token') return;
+            
+            // 如果是 silent 响应，不显示任何内容，只重置状态
+            if (is_silent) {
+                // 如果有正在显示的流式气泡，移除它
+                if (currentStreamingBubble && currentStreamingBubble.parentNode) {
+                    currentStreamingBubble.remove();
+                }
+                currentStreamingBubble = null;
+                currentStreamingResponseId = null;
+                return;
+            }
+            
+            const floatingContainer = document.getElementById('floatingResponses');
+            if (!floatingContainer) return;
+            
+            // 辅助函数：创建聊天气泡
+            function createChatBubble(text, bubbleType, icon) {
+                const bubble = document.createElement('div');
+                bubble.className = `chat-bubble ${bubbleType}`;
+                bubble.innerHTML = `<span class="bubble-icon">${icon}</span>${text}`;
+                return bubble;
+            }
+            
+            // 辅助函数：设置气泡自动淡出
+            function setupBubbleFadeout(bubble) {
+                setTimeout(() => {
+                    if (bubble.parentNode) {
+                        bubble.classList.add('fading');
+                        setTimeout(() => {
+                            if (bubble.parentNode) bubble.remove();
+                        }, FLOATING_RESPONSE_FADE_DURATION);
+                    }
+                }, FLOATING_RESPONSE_DURATION);
+            }
+            
+            // 检查是否是新的响应
+            if (currentStreamingResponseId !== response_id) {
+                // 新的响应开始，创建新的流式气泡
+                currentStreamingResponseId = response_id;
+                currentDisplayedResponseId = response_id; // 更新当前显示的响应 ID，用于 TTS 匹配
+                
+                // 如果有 query (ASR 结果)，先显示用户的消息
+                if (is_start && query && query.trim()) {
+                    const formattedQuery = query.replace(/\n/g, '<br>');
+                    // 去重检查
+                    if (!recentQueries.has(formattedQuery)) {
+                        recentQueries.add(formattedQuery);
+                        setTimeout(() => recentQueries.delete(formattedQuery), 5000);
+                        
+                        const userBubble = createChatBubble(formattedQuery, 'user', '🗣️');
+                        floatingContainer.appendChild(userBubble);
+                        setupBubbleFadeout(userBubble);
+                        log(`🗣️ 用户: ${query.substring(0, 30)}...`, 'info');
+                    }
+                }
+                
+                // 创建流式显示气泡
+                currentStreamingBubble = document.createElement('div');
+                currentStreamingBubble.className = 'chat-bubble assistant streaming';
+                currentStreamingBubble.innerHTML = `<span class="bubble-icon">🤖</span><span class="streaming-content"></span><span class="streaming-cursor">▊</span>`;
+                floatingContainer.appendChild(currentStreamingBubble);
+                
+                // 滚动到底部
+                floatingContainer.scrollTop = floatingContainer.scrollHeight;
+                
+                log(`📝 开始流式输出 (id: ${response_id.substring(0, 8)}...)`, 'info');
+            }
+            
+            // 追加 token 到当前气泡
+            if (currentStreamingBubble) {
+                const contentEl = currentStreamingBubble.querySelector('.streaming-content');
+                const cursorEl = currentStreamingBubble.querySelector('.streaming-cursor');
+                
+                if (contentEl && token) {
+                    // 过滤掉 <|silent|> 等特殊标记
+                    if (token.includes('<|silent|>') || token.includes('<|silent|')) {
+                        return;  // 跳过 silent 标记
+                    }
+                    // 替换换行符并追加文本，使用 insertAdjacentHTML 比 innerHTML += 更高效
+                    const formattedToken = token.replace(/\n/g, '<br>');
+                    contentEl.insertAdjacentHTML('beforeend', formattedToken);
+                }
+                
+                // 如果是最后一个 token，移除光标并设置淡出
+                if (is_final) {
+                    if (cursorEl) cursorEl.remove();
+                    currentStreamingBubble.classList.remove('streaming');
+                    
+                    // 获取完整的流式内容（用于基于内容的去重）
+                    const finalContent = contentEl ? contentEl.innerHTML : '';
+                    if (finalContent) {
+                        recentResponseTexts.add(finalContent);
+                        setTimeout(() => recentResponseTexts.delete(finalContent), 10000);
+                    }
+                    
+                    // 设置自动淡出
+                    const bubble = currentStreamingBubble;
+                    setTimeout(() => {
+                        if (bubble.parentNode) {
+                            bubble.classList.add('fading');
+                            setTimeout(() => {
+                                if (bubble.parentNode) bubble.remove();
+                            }, FLOATING_RESPONSE_FADE_DURATION);
+                        }
+                    }, FLOATING_RESPONSE_DURATION);
+                    
+                    log(`✅ 流式输出完成`, 'success');
+                    
+                    // 记录已流式显示的响应 ID（防止 showResponse 重复显示）
+                    streamedResponseIds.add(response_id);
+                    // 10秒后清理，防止集合无限增长（增加到10秒，确保覆盖网络延迟）
+                    setTimeout(() => streamedResponseIds.delete(response_id), 10000);
+                    
+                    // 重置流式状态
+                    currentStreamingBubble = null;
+                    currentStreamingResponseId = null;
+                }
+            }
+            
+            // 限制最大显示数量（更积极的清理，防止内存泄漏）
+            const maxBubbles = FLOATING_RESPONSE_MAX * 2;
+            const children = Array.from(floatingContainer.children);
+            // 只统计非 fading 的气泡
+            const activeBubbles = children.filter(b => !b.classList.contains('fading'));
+            
+            if (activeBubbles.length > maxBubbles) {
+                const toRemove = activeBubbles.length - maxBubbles;
+                let removedCount = 0;
+                for (const bubble of activeBubbles) {
+                    if (bubble !== currentStreamingBubble && removedCount < toRemove) {
+                        bubble.classList.add('fading');
+                        setTimeout(() => {
+                            if (bubble.parentNode) bubble.remove();
+                        }, FLOATING_RESPONSE_FADE_DURATION);
+                        removedCount++;
+                    }
+                }
+            }
+        }
+        
+        // =============== 流式 Token 功能结束 ===============
+        
+        // 开始轮询错误消息（检测会话被占用等情况）
+        let isPollingError = false;
+        async function pollError() {
+            if (!isVideoStreaming) {
+                errorPollInterval = null;
+                return;
+            }
+            if (isPollingError) return;
+
+            isPollingError = true;
+            try {
+                const response = await fetch(`/api/poll_error?session_id=${encodeURIComponent(currentSessionId || '')}`);
+                const data = await response.json();
+                
+                if (data.success && data.has_error) {
+                    // 收到错误消息，显示并停止视频
+                    log(`⚠️ 服务端错误: ${data.error}`, 'error');
+                    alert(`连接被拒绝: ${data.error}`);
+                    stopVideo();
+                }
+            } catch (e) {
+                console.error("Error polling error:", e);
+            } finally {
+                isPollingError = false;
+                if (isVideoStreaming) {
+                    errorPollInterval = setTimeout(pollError, 1000);
+                }
+            }
+        }
+
+        function startPollingError() {
+            if (errorPollInterval) clearTimeout(errorPollInterval);
+            errorPollInterval = setTimeout(pollError, 1000);
+        }
+        
+        // 停止错误轮询
+        function stopPollingError() {
+            if (errorPollInterval) {
+                clearTimeout(errorPollInterval);
+                errorPollInterval = null;
+            }
+        }
+        
+        // 显示等待响应状态
+        function showWaitingResponse() {
+            const time = new Date().toLocaleTimeString();
+            responseContent.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="loading-spinner"></div>
+                    <div>
+                        <div style="color: #00d9ff;">等待 VLLM 响应中...</div>
+                        <div style="color: #8892b0; font-size: 0.8rem;">${time}</div>
+                    </div>
+                </div>
+            `;
+            responsePanel.classList.add('visible');
+        }
+        
+        // 隐藏等待状态
+        function hideWaitingResponse() {
+            // 保持面板可见，但清空内容
+        }
+        
+        // 响应计数器
+        let responseCounter = 0;
+        
+        // 浮动响应配置
+        const FLOATING_RESPONSE_MAX = 3;  // 最多同时显示的响应数量
+        const FLOATING_RESPONSE_DURATION = 8000;  // 响应显示时长（毫秒）
+        const FLOATING_RESPONSE_FADE_DURATION = 500;  // 淡出动画时长（毫秒）
+        const recentQueries = new Set(); // 记录最近显示的查询，防止重复
+        
+        // 已显示的响应内容（用于基于内容的去重）
+        const recentResponseTexts = new Set();
+        
+        // =============== showResponse - 已废弃 ===============
+        // NOTE: 此函数已不再使用，所有响应通过流式 token (handleStreamingToken) 显示
+        // 保留函数签名以防万一有其他地方调用
+        function showResponse(response) {
+            // 已废弃 - 响应现在通过流式 token 显示
+            console.log('[DEPRECATED] showResponse called - response should come via streaming tokens');
+        }
+        /* 
+        function originalShowResponse(response) {
+            if (!response) {
+                console.log('showResponse called with empty response');
+                return;
+            }
+            
+            responseCounter++;
+            console.log(`showResponse called #${responseCounter}:`, response.substring(0, 50));
+            
+            // 尝试解析 JSON 响应
+            let queryText = "";
+            let responseText = response;
+            let responseId = null;
+            
+            try {
+                // 检查是否是 JSON 格式 {"response_id": "...", "query": "...", "response": "..."}
+                if (response.trim().startsWith('{') && response.includes('"response"')) {
+                    const data = JSON.parse(response);
+                    // 使用 !== undefined 检查，允许空字符串
+                    if (data.response !== undefined) {
+                        responseText = data.response;
+                    }
+                    if (data.query) {
+                        queryText = data.query;
+                    }
+                    if (data.response_id) {
+                        responseId = data.response_id;
+                        currentDisplayedResponseId = responseId;
+                        console.log(`记录 response_id: ${currentDisplayedResponseId}`);
+                    }
+                    
+                    // 如果 response 为空（无论有没有 query），跳过显示
+                    // 因为流式输出会单独处理，这里收到的空 response 只是 ASR 占位消息
+                    if (responseText === "") {
+                        console.log("跳过空响应消息 (response为空，query=" + queryText + ")");
+                        return;
+                    }
+                }
+            } catch (e) {
+                console.log("Response is not JSON or parse error:", e);
+            }
+            
+            // 格式化响应文本（保留换行）
+            const formattedResponse = responseText.replace(/\\n/g, '<br>').replace(/\n/g, '<br>');
+            const formattedQuery = queryText ? queryText.replace(/\\n/g, '<br>').replace(/\n/g, '<br>') : "";
+            
+            // 创建聊天气泡
+            const floatingContainer = document.getElementById('floatingResponses');
+            if (floatingContainer) {
+                // 辅助函数：创建聊天气泡
+                function createChatBubble(text, type, icon) {
+                    const bubble = document.createElement('div');
+                    bubble.className = `chat-bubble ${type}`;
+                    bubble.innerHTML = `<span class="bubble-icon">${icon}</span>${text}`;
+                    return bubble;
+                }
+                
+                // 辅助函数：设置气泡自动淡出
+                function setupBubbleFadeout(bubble) {
+                    setTimeout(() => {
+                        if (bubble.parentNode) {
+                            bubble.classList.add('fading');
+                            setTimeout(() => {
+                                if (bubble.parentNode) bubble.remove();
+                            }, FLOATING_RESPONSE_FADE_DURATION);
+                        }
+                    }, FLOATING_RESPONSE_DURATION);
+                }
+                
+                // 1. 先添加用户消息（左对齐）- 如果有
+                // 增加去重逻辑：如果最近显示过相同的查询，则跳过
+                if (formattedQuery && formattedQuery.trim() && !recentQueries.has(formattedQuery)) {
+                    recentQueries.add(formattedQuery);
+                    // 5秒后允许再次显示相同的查询（防止完全屏蔽）
+                    setTimeout(() => recentQueries.delete(formattedQuery), 5000);
+                    
+                    const userBubble = createChatBubble(formattedQuery, 'user', '🗣️');
+                    // 插入到当前流式气泡之前（如果有）
+                    if (currentStreamingBubble && currentStreamingBubble.parentNode === floatingContainer) {
+                        floatingContainer.insertBefore(userBubble, currentStreamingBubble);
+                    } else {
+                        floatingContainer.appendChild(userBubble);
+                    }
+                    setupBubbleFadeout(userBubble);
+                }
+                
+                // 2. 模型回复
+                // 仅使用流式输出，此处不再创建完整气泡，避免重复
+                /*
+                if (!isSameAsStreaming) {
+                    // 不是流式显示的（或者流式没生效），创建新的回复气泡
+                    const assistantBubble = createChatBubble(formattedResponse, 'assistant', '🤖');
+                    floatingContainer.appendChild(assistantBubble);
+                    setupBubbleFadeout(assistantBubble);
+                } else {
+                    console.log('跳过重复的 Assistant 气泡 (已流式显示)');
+                    // 确保流式气泡最终会淡出（双重保险）
+                    if (currentStreamingBubble) {
+                        setupBubbleFadeout(currentStreamingBubble);
+                    }
+                }
+                */
+        
+        // =============== Web Audio API 流式 PCM 播放 (Step 2) ===============
+        
+        // 初始化 Web Audio API
+        function initWebAudioContext() {
+            if (webAudioContext) return;
+            
+            try {
+                webAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+                webAudioNextPlayTime = webAudioContext.currentTime;
+                log('🔊 Web Audio API 已初始化 (流式 PCM 播放)', 'success');
+            } catch (e) {
+                log(`🔊 Web Audio API 初始化失败: ${e.message}`, 'error');
+            }
+        }
+        
+        // 解锁 Web Audio Context (需要用户交互)
+        function unlockWebAudioContext() {
+            if (!webAudioContext) {
+                initWebAudioContext();
+            }
+            if (webAudioContext && webAudioContext.state === 'suspended') {
+                webAudioContext.resume().then(() => {
+                    log('🔊 Web Audio Context 已解锁', 'info');
+                });
+            }
+        }
+        
+        // 停止所有当前播放的音频 (用于新 response 到达时中断旧播放)
+        // resetResponseId: 是否重置 response_id (录音中断时需要重置，新响应切换时不需要)
+        function stopAllWebAudioPlayback(resetResponseId = false) {
+            for (const source of webAudioActiveSources) {
+                try {
+                    source.stop();
+                } catch (e) {
+                    // 忽略已经停止的 source
+                }
+            }
+            webAudioActiveSources = [];
+            webAudioChunkQueue = [];
+            webAudioIsPlaying = false;
+            
+            // 重置 response_id，防止后续 chunk 继续播放
+            if (resetResponseId) {
+                if (webAudioCurrentResponseId) {
+                    canceledResponseIds.add(webAudioCurrentResponseId);
+                    log(`🚫 已取消 WebAudio 响应: ${webAudioCurrentResponseId}`, 'warning');
+                }
+                webAudioCurrentResponseId = null;
+                webAudioNextPlayTime = 0;
+                
+                // 隐藏 TTS 指示器
+                const floatingTts = document.getElementById('floatingTtsIndicator');
+                if (floatingTts) floatingTts.classList.remove('visible');
+            }
+        }
+        
+        // 播放 PCM chunk (int16 -> float32 -> AudioBuffer)
+        function playPcmChunk(pcmBase64, sampleRate, responseId, sentenceIdx, chunkIdx, isFinal) {
+            // 检查是否是被取消的响应
+            if (canceledResponseIds.has(responseId)) {
+                return;
+            }
+            
+            // 录音期间不播放任何 TTS
+            if (isAudioRecording) {
+                return;
+            }
+            
+            if (!webAudioContext) {
+                initWebAudioContext();
+            }
+            if (!webAudioContext) return;
+            
+            // 检查是否是新的响应，如果是则立即中断当前播放
+            if (webAudioCurrentResponseId !== responseId) {
+                // 新响应开始 - 立即停止所有当前播放
+                if (webAudioActiveSources.length > 0) {
+                    log(`⏹ [WebAudio] 中断旧响应播放，切换到新响应`, 'info');
+                    stopAllWebAudioPlayback();
+                }
+                
+                // 再次检查新 responseId 是否在取消列表中（双重保险）
+                if (canceledResponseIds.has(responseId)) {
+                    return;
+                }
+                
+                webAudioCurrentResponseId = responseId;
+                webAudioCurrentSentenceIdx = sentenceIdx;
+                webAudioNextPlayTime = webAudioContext.currentTime;  // 从当前时间开始播放
+                webAudioIsPlaying = true;
+                
+                // 显示 TTS 指示器
+                const floatingTts = document.getElementById('floatingTtsIndicator');
+                if (floatingTts) floatingTts.classList.add('visible');
+                
+                log(`🔊 [WebAudio] 开始播放响应: ${responseId.substring(0, 8)}...`, 'info');
+            }
+            
+            // 如果是空数据 (final marker)，不播放
+            if (!pcmBase64 || pcmBase64.length === 0) {
+                if (isFinal) {
+                    log(`🔊 [WebAudio] 句子 ${sentenceIdx} 完成`, 'success');
+                }
+                return;
+            }
+            
+            try {
+                // Base64 解码
+                const binaryString = atob(pcmBase64);
+                const bytes = new Uint8Array(binaryString.length);
+                for (let i = 0; i < binaryString.length; i++) {
+                    bytes[i] = binaryString.charCodeAt(i);
+                }
+                
+                // Int16 PCM -> Float32
+                const int16Array = new Int16Array(bytes.buffer);
+                const float32Array = new Float32Array(int16Array.length);
+                for (let i = 0; i < int16Array.length; i++) {
+                    float32Array[i] = int16Array[i] / 32768.0;  // Normalize to [-1, 1]
+                }
+                
+                // 创建 AudioBuffer
+                const audioBuffer = webAudioContext.createBuffer(1, float32Array.length, sampleRate);
+                audioBuffer.copyToChannel(float32Array, 0);
+                
+                // 创建 BufferSource 并播放
+                const source = webAudioContext.createBufferSource();
+                source.buffer = audioBuffer;
+                source.connect(webAudioContext.destination);
+                
+                // 调度播放时间
+                const startTime = Math.max(webAudioContext.currentTime, webAudioNextPlayTime);
+                source.start(startTime);
+                
+                // 将 source 添加到活跃列表
+                webAudioActiveSources.push(source);
+                
+                // 更新下一个 chunk 的播放时间
+                webAudioNextPlayTime = startTime + audioBuffer.duration;
+                
+                // 首个 chunk 日志
+                if (chunkIdx === 0) {
+                    log(`🚀 [WebAudio] 首个 chunk 开始播放 (句子 ${sentenceIdx})`, 'info');
+                }
+                
+                // 播放结束时的处理
+                source.onended = () => {
+                    // 从活跃列表中移除
+                    const idx = webAudioActiveSources.indexOf(source);
+                    if (idx > -1) {
+                        webAudioActiveSources.splice(idx, 1);
+                    }
+                    
+                    if (isFinal && webAudioActiveSources.length === 0) {
+                        // 这是最后一个 chunk 且已播放完
+                        webAudioIsPlaying = false;
+                        
+                        // 隐藏 TTS 指示器
+                        const floatingTts = document.getElementById('floatingTtsIndicator');
+                        if (floatingTts) floatingTts.classList.remove('visible');
+                    }
+                };
+                
+            } catch (e) {
+                console.error('PCM 播放错误:', e);
+            }
+        }
+        
+        // 轮询 TTS 音频 chunk
+        let isPollingTtsChunk = false;
+        async function pollTtsAudioChunk() {
+            if (!isVideoStreaming) {
+                ttsChunkPollInterval = null;
+                return;
+            }
+            if (isPollingTtsChunk) return;
+            
+            isPollingTtsChunk = true;
+            try {
+                const response = await fetch(`/api/poll_tts_audio_chunk?session_id=${encodeURIComponent(currentSessionId || '')}`);
+                const data = await response.json();
+                
+                if (data.success && data.chunks && data.chunks.length > 0) {
+                    for (const chunk of data.chunks) {
+                        playPcmChunk(
+                            chunk.pcm_base64,
+                            chunk.sample_rate,
+                            chunk.response_id,
+                            chunk.sentence_idx,
+                            chunk.chunk_idx,
+                            chunk.is_final
+                        );
+                    }
+                }
+            } catch (e) {
+                console.error('TTS chunk polling error:', e);
+            } finally {
+                isPollingTtsChunk = false;
+                if (isVideoStreaming) {
+                    // 更快的轮询间隔以保证流畅播放
+                    ttsChunkPollInterval = setTimeout(pollTtsAudioChunk, 50);
+                }
+            }
+        }
+        
+        function startPollingTtsChunk() {
+            if (ttsChunkPollInterval) clearTimeout(ttsChunkPollInterval);
+            ttsChunkPollInterval = setTimeout(pollTtsAudioChunk, 50);
+        }
+        
+        function stopPollingTtsChunk() {
+            if (ttsChunkPollInterval) {
+                clearTimeout(ttsChunkPollInterval);
+                ttsChunkPollInterval = null;
+            }
+            // 停止所有正在播放的音频
+            stopAllWebAudioPlayback(true);
+            webAudioCurrentResponseId = null;
+        }
+        
+        // =============== Web Audio API 结束 ===============
+        
+        // =============== TTS 音频播放功能 ===============
+        
+        // 初始化 TTS 音频播放器事件
+        function initTtsPlayer() {
+            if (!ttsAudioPlayer) return;
+            
+            // 播放开始
+            ttsAudioPlayer.addEventListener('play', () => {
+                isTtsPlaying = true;
+                // 显示句子进度
+                if (totalSentences > 1) {
+                    ttsStatus.textContent = `播放中 ${currentSentenceIdx + 1}/${totalSentences}`;
+                } else {
+                    ttsStatus.textContent = '正在播放';
+                }
+                ttsStatus.className = 'tts-status playing';
+                speakerAnimation.style.display = 'inline-flex';
+                
+                // 显示浮动 TTS 指示器
+                const floatingTts = document.getElementById('floatingTtsIndicator');
+                if (floatingTts) floatingTts.classList.add('visible');
+                
+                log(`🔊 TTS 句 ${currentSentenceIdx + 1}/${totalSentences} 开始播放`, 'info');
+            });
+            
+            // 播放结束
+            ttsAudioPlayer.addEventListener('ended', () => {
+                isTtsPlaying = false;
+                
+                // 清理当前 Blob URL
+                if (ttsAudioPlayer.src) {
+                    try {
+                        const oldSrc = ttsAudioPlayer.src;
+                        // 使用更加稳健的方式清理，并标记为"故意清理"以避免触发错误日志
+                        ttsAudioPlayer.dataset.clearing = 'true';
+                        ttsAudioPlayer.removeAttribute('src');
+                        ttsAudioPlayer.load(); // 强制触发资源释放
+                        URL.revokeObjectURL(oldSrc);
+                        setTimeout(() => { delete ttsAudioPlayer.dataset.clearing; }, 100);
+                    } catch (e) {
+                        console.error("Revoke URL failed:", e);
+                    }
+                }
+                
+                // 检查是否还有更多句子要播放
+                if (ttsAudioQueue.length > 0) {
+                    ttsStatus.textContent = `句 ${currentSentenceIdx + 1}/${totalSentences} 完成，继续下一句...`;
+                    log(`🔊 句 ${currentSentenceIdx + 1}/${totalSentences} 播放完成，队列剩余: ${ttsAudioQueue.length}`, 'success');
+                } else {
+                    ttsStatus.textContent = '播放完成';
+                    log(`🔊 TTS 全部 ${totalSentences} 句播放完成`, 'success');
+                    
+                    // 隐藏浮动 TTS 指示器（全部播放完成）
+                    const floatingTts = document.getElementById('floatingTtsIndicator');
+                    if (floatingTts) floatingTts.classList.remove('visible');
+                }
+                ttsStatus.className = 'tts-status ready';
+                speakerAnimation.style.display = 'none';
+                
+                // 如果队列中还有音频，继续播放
+                playNextTtsAudio();
+            });
+            
+            // 播放暂停
+            ttsAudioPlayer.addEventListener('pause', () => {
+                if (!ttsAudioPlayer.ended && !ttsAudioPlayer.dataset.clearing) {
+                    if (totalSentences > 1) {
+                        ttsStatus.textContent = `已暂停 ${currentSentenceIdx + 1}/${totalSentences}`;
+                    } else {
+                        ttsStatus.textContent = '已暂停';
+                    }
+                    ttsStatus.className = 'tts-status ready';
+                    speakerAnimation.style.display = 'none';
+                }
+            });
+            
+            // 播放错误
+            ttsAudioPlayer.addEventListener('error', (e) => {
+                // 如果是正在故意清理 src，或者是空 src，则忽略错误
+                if (ttsAudioPlayer.dataset.clearing || !ttsAudioPlayer.src || ttsAudioPlayer.src === window.location.href) {
+                    return;
+                }
+
+                isTtsPlaying = false;
+                ttsStatus.textContent = '播放失败';
+                ttsStatus.className = 'tts-status ready';
+                speakerAnimation.style.display = 'none';
+                log(`🔊 TTS 句 ${currentSentenceIdx + 1}/${totalSentences} 播放错误: ${e.message || '未知错误'}`, 'error');
+                
+                // 尝试播放队列中的下一个
+                playNextTtsAudio();
+            });
+        }
+        
+        // 播放 TTS 音频（句子级流式：同一 response_id 排队播放，新 response_id 清空旧队列）
+        async function playTtsAudio(audioBlob, responseId, sentenceIdx, totalSents) {
+            if (!ttsAudioPlayer) return;
+            
+            // 检查是否是被取消的响应
+            if (canceledResponseIds.has(responseId)) {
+                return;
+            }
+            
+            // 录音期间不播放任何 TTS
+            if (isAudioRecording) {
+                return;
+            }
+            
+            // 检查是否是新的响应（不同的 response_id）
+            if (currentTtsResponseId !== null && responseId !== currentTtsResponseId) {
+                // 新的响应到来，清空旧队列并停止当前播放
+                log(`🔊 新响应到来，清空旧队列 (old=${currentTtsResponseId}, new=${responseId})`, 'info');
+                
+            if (isTtsPlaying) {
+                ttsAudioPlayer.pause();
+                if (ttsAudioPlayer.src) {
+                    const oldSrc = ttsAudioPlayer.src;
+                    ttsAudioPlayer.dataset.clearing = 'true';
+                    ttsAudioPlayer.removeAttribute('src');
+                    ttsAudioPlayer.load();
+                    URL.revokeObjectURL(oldSrc);
+                    setTimeout(() => { delete ttsAudioPlayer.dataset.clearing; }, 100);
+                }
+                isTtsPlaying = false;
+            }
+            
+            // 清空队列中旧的 blob URLs 并释放内存
+            while (ttsAudioQueue.length > 0) {
+                const item = ttsAudioQueue.shift();
+                if (item && item.url) {
+                    URL.revokeObjectURL(item.url);
+                }
+            }
+        }
+        
+        // 更新当前响应信息
+        currentTtsResponseId = responseId;
+        totalSentences = totalSents;
+        
+        // 创建 Blob URL 并加入队列
+        const audioUrl = URL.createObjectURL(audioBlob);
+        const audioItem = {
+            url: audioUrl,
+            responseId: responseId,
+            sentenceIdx: sentenceIdx,
+            totalSents: totalSents
+        };
+        
+        // 如果当前没有播放，直接播放
+        if (!isTtsPlaying) {
+            await playAudioItem(audioItem);
+        } else {
+            // 否则加入队列
+            ttsAudioQueue.push(audioItem);
+            log(`🔊 句 ${sentenceIdx + 1}/${totalSents} 加入队列 (队列长度: ${ttsAudioQueue.length})`, 'info');
+        }
+    }
+        
+        // 播放单个音频项
+        async function playAudioItem(audioItem) {
+            if (!ttsAudioPlayer || !audioItem) return;
+            
+            try {
+                // 设置音频源
+                ttsAudioPlayer.src = audioItem.url;
+                currentSentenceIdx = audioItem.sentenceIdx;
+                
+                // 显示播放器
+                ttsPlayerContainer.classList.add('visible');
+                ttsStatus.textContent = `播放中 ${audioItem.sentenceIdx + 1}/${audioItem.totalSents}`;
+                ttsStatus.className = 'tts-status playing';
+                
+                // 自动播放
+                try {
+                    await ttsAudioPlayer.play();
+                } catch (playError) {
+                    // 自动播放可能被浏览器阻止
+                    log('⚠️ 自动播放被阻止，请点击播放按钮', 'warning');
+                    ttsStatus.textContent = `点击播放 ${audioItem.sentenceIdx + 1}/${audioItem.totalSents}`;
+                }
+                
+            } catch (error) {
+                log(`🔊 TTS 音频加载失败: ${error.message}`, 'error');
+                // 尝试播放下一个
+                playNextTtsAudio();
+            }
+        }
+        
+        // 播放队列中的下一个 TTS 音频
+        function playNextTtsAudio() {
+            if (ttsAudioQueue.length > 0) {
+                const nextAudio = ttsAudioQueue.shift();
+                playAudioItem(nextAudio);
+            } else {
+                // 队列为空，重置状态
+                currentTtsResponseId = null;
+                currentSentenceIdx = 0;
+                totalSentences = 0;
+            }
+        }
+        
+        // 开始轮询 TTS 音频
+        let isPollingTtsAudio = false;
+        async function pollTtsAudio() {
+            if (!isVideoStreaming) {
+                ttsAudioPollInterval = null;
+                return;
+            }
+            if (isPollingTtsAudio) return;
+
+            isPollingTtsAudio = true;
+            try {
+                const response = await fetch(`/api/poll_tts_audio?session_id=${encodeURIComponent(currentSessionId || '')}`);
+                
+                // 检查是否有音频数据
+                const audioAvailable = response.headers.get('X-Audio-Available');
+                
+                if (audioAvailable === 'true') {
+                    // 获取 response_id 和句子信息
+                    const audioResponseId = response.headers.get('X-Response-Id') || '';
+                    const sentenceIdx = parseInt(response.headers.get('X-Sentence-Idx') || '0', 10);
+                    const totalSents = parseInt(response.headers.get('X-Total-Sentences') || '1', 10);
+                    
+                    // 检查是否是被取消的响应
+                    if (canceledResponseIds.has(audioResponseId)) {
+                        log(`⏭ 忽略已取消的 TTS 句 ${sentenceIdx + 1}/${totalSents} (audio_id=${audioResponseId})`, 'warning');
+                        // 消耗掉 blob
+                        await response.blob();
+                        return;
+                    }
+
+                    // 获取音频 Blob
+                    const audioBlob = await response.blob();
+                    
+                    if (audioBlob.size > 0) {
+                        // 智能匹配：只播放与当前显示文本匹配的音频
+                        if (audioResponseId && currentDisplayedResponseId && 
+                            audioResponseId !== currentDisplayedResponseId) {
+                            log(`⏭ 丢弃过时 TTS 句 ${sentenceIdx + 1}/${totalSents} (audio_id=${audioResponseId})`, 'warning');
+                            // 注意：Blob 对象本身会被 GC，但如果响应对象未被正确清理可能有问题
+                        } else {
+                            log(`🔊 收到 TTS 句 ${sentenceIdx + 1}/${totalSents} (${(audioBlob.size / 1024).toFixed(1)} KB)`, 'success');
+                            playTtsAudio(audioBlob, audioResponseId, sentenceIdx, totalSents);
+                        }
+                    }
+                }
+            } catch (e) {
+                console.error("TTS audio polling error:", e);
+            } finally {
+                isPollingTtsAudio = false;
+                if (isVideoStreaming) {
+                    ttsAudioPollInterval = setTimeout(pollTtsAudio, 500);
+                }
+            }
+        }
+
+        function startPollingTtsAudio() {
+            if (ttsAudioPollInterval) clearTimeout(ttsAudioPollInterval);
+            ttsAudioPollInterval = setTimeout(pollTtsAudio, 500);
+        }
+        
+        // 停止 TTS 音频轮询和播放
+        function stopTtsAudio() {
+            if (ttsAudioPollInterval) {
+                clearTimeout(ttsAudioPollInterval);
+                ttsAudioPollInterval = null;
+            }
+            
+            // 停止当前播放
+            if (ttsAudioPlayer) {
+                ttsAudioPlayer.pause();
+                if (ttsAudioPlayer.src) {
+                    const oldSrc = ttsAudioPlayer.src;
+                    ttsAudioPlayer.dataset.clearing = 'true';
+                    ttsAudioPlayer.removeAttribute('src');
+                    ttsAudioPlayer.load();
+                    URL.revokeObjectURL(oldSrc);
+                    setTimeout(() => { delete ttsAudioPlayer.dataset.clearing; }, 100);
+                }
+            }
+            
+            // 清空队列中的 blob URLs 并释放内存
+            while (ttsAudioQueue.length > 0) {
+                const item = ttsAudioQueue.shift();
+                if (item && item.url) {
+                    URL.revokeObjectURL(item.url);
+                }
+            }
+            isTtsPlaying = false;
+            
+            // 重置句子级流式状态
+            if (currentTtsResponseId) {
+                canceledResponseIds.add(currentTtsResponseId);
+                log(`🚫 已取消 TTS 响应: ${currentTtsResponseId}`, 'warning');
+            }
+            currentTtsResponseId = null;
+            currentSentenceIdx = 0;
+            totalSentences = 0;
+            
+            // 隐藏播放器
+            if (ttsPlayerContainer) {
+                ttsPlayerContainer.classList.remove('visible');
+            }
+        }
+        
+        // =============== TTS 功能结束 ===============
+        
+        // 页面加载完成
+        window.onload = function() {
+            log('系统初始化完成 (Streaming 版本)', 'success');
+            log('点击"开启摄像头"开始视频流传输', 'info');
+            log('按住麦克风按钮进行语音录制', 'info');
+            log('📝 流式 Token 输出已启用', 'info');
+            
+            // 初始化 TTS 播放器
+            initTtsPlayer();
+            log('🔊 TTS 语音播放功能已启用', 'info');
+            
+            // 初始化录音按钮事件（避免内联事件导致的问题）
+            initMicButton();
+            
+            // 添加页面点击事件来解锁音频（作为备选方案）
+            document.addEventListener('click', unlockAudioContext, { once: true });
+            document.addEventListener('touchstart', unlockAudioContext, { once: true });
+        };
+        
+        // 初始化录音按钮事件
+        function initMicButton() {
+            const micButton = document.getElementById('micBtn');
+            if (!micButton) return;
+            
+            // 标记是否通过 mousedown/touchstart 开始的录音
+            let recordingStartedByPressEvent = false;
+            
+            // 鼠标事件
+            micButton.addEventListener('mousedown', function(e) {
+                e.preventDefault();
+                recordingStartedByPressEvent = true;
+                startAudioRecording();
+            });
+            
+            micButton.addEventListener('mouseup', function(e) {
+                e.preventDefault();
+                if (recordingStartedByPressEvent) {
+                    stopAudioRecording();
+                    recordingStartedByPressEvent = false;
+                }
+            });
+            
+            micButton.addEventListener('mouseleave', function(e) {
+                if (isAudioRecording && recordingStartedByPressEvent) {
+                    stopAudioRecording();
+                    recordingStartedByPressEvent = false;
+                }
+            });
+            
+            // 触摸事件（移动设备）
+            micButton.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                recordingStartedByPressEvent = true;
+                startAudioRecording();
+            }, { passive: false });
+            
+            micButton.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (recordingStartedByPressEvent) {
+                    stopAudioRecording();
+                    recordingStartedByPressEvent = false;
+                }
+            }, { passive: false });
+            
+            micButton.addEventListener('touchcancel', function(e) {
+                if (isAudioRecording) {
+                    stopAudioRecording();
+                }
+                recordingStartedByPressEvent = false;
+            }, { passive: false });
+            
+            log('🎙️ 录音按钮已初始化', 'info');
+        }
+        
+        // 页面关闭前清理
+        window.onbeforeunload = function() {
+            stopTtsAudio();
+            if (videoStream) {
+                videoStream.getTracks().forEach(track => track.stop());
+            }
+            if (audioStream) {
+                audioStream.getTracks().forEach(track => track.stop());
+            }
+        };
+    </script>
+</body>
+</html>
