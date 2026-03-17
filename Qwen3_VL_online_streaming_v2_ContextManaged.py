@@ -61,8 +61,8 @@ from vllm import SamplingParams
 from vllm.engine.arg_utils import AsyncEngineArgs
 from vllm.v1.engine.async_llm import AsyncLLM, StreamingInput
 
-# Context management (reuse from original)
-import context_manage
+# Context management (reuse remove_markdown for TTS)
+from context_manage import remove_markdown
 
 # Global configuration
 os.environ["VLLM_WORKER_MULTIPROC_METHOD"] = "spawn"
@@ -70,14 +70,6 @@ os.environ["VLLM_WORKER_MULTIPROC_METHOD"] = "spawn"
 # ============================================================================
 # Data Classes
 # ============================================================================
-
-@dataclass
-class VideoFrame:
-    """A single video frame with timestamp."""
-    data: bytes  # JPEG or raw frame data
-    timestamp: float
-    frame_id: int
-
 
 # ============================================================================
 # Session History Management
@@ -119,45 +111,51 @@ def setup_silent_token_id(model_path: str):
 
 class SessionHistory:
     """
-    Manages conversation history for a session to enable KV Cache Reuse (Prefix Caching).
-    Strategy: Sliding window - keep most recent N rounds when limit is reached.
+    Manages conversation history with two-tier context management (per context.md):
+    - Sliding Window: recent rounds with full multimedia (video, images, <|silent|>)
+    - Context History: compressed historical QAs (text-only, no video/silent)
+
+    §3.1: When sliding window rounds > max_rounds, keep last num_rounds_keep in sliding window,
+          move the rest to context history
+    §3.2: Apply rewrite rules A-E when moving
+    §3.3: Context history max max_context_qas QAs
     """
     def __init__(self, max_rounds: int = 20, num_rounds_keep: int = 15,
-                 pruning_enabled: bool = False, debug_context_file: str = None):
-        self.history = []  # List of {"role": str, "content": str/list}
-        # max_rounds determines when to prune history
+                 pruning_enabled: bool = False, debug_context_file: str = None,
+                 max_context_qas: int = 10, max_1qna_rounds: int = 4):
+        self.history = []
         self.max_rounds = max_rounds
-        # num_rounds_keep is used whiling pruning history
         self.num_rounds_keep = num_rounds_keep
         self.pruning_enabled = pruning_enabled
         self.current_rounds = 0
         self.debug_context_file = debug_context_file
+        self.max_context_qas = max_context_qas
+        self.max_1qna_rounds = max_1qna_rounds
 
-        # Initial system message
-        # 注意: Qwen3 Omni 输入是 text + video, 输出仅 text
         self.system_prompt = "You are receiving a live video stream where the final frame is the present moment. Respond only when a response is needed based on the user's message or the visual context. Otherwise, output '<|silent|>' to signify silence. Respond in Chinese."
+        self._system_msg = {"role": "system", "content": self.system_prompt}
+        self._context_history = []   # list of QAs; each QA = list of message dicts (text-only)
+        self._sliding_window = []    # list of message dicts (may contain multimedia)
         self._reset()
 
     def _reset(self):
         """Reset history to initial state (complete reset)."""
-        self.history = [{
-            "role": "system",
-            "content": self.system_prompt
-        }]
-        # self.history = []
+        self._context_history = []
+        self._sliding_window = []
+        self._rebuild_history()
         self.current_rounds = 0
         print(f"🔄 Session history reset")
 
-    def clear_context_debug(self):
-        """清空 debug context JSONL 文件，在会话释放时调用。"""
-        if not self.debug_context_file:
-            return
-        try:
-            with open(self.debug_context_file, "w", encoding="utf-8") as f:
-                pass
-            print(f"🗑 [Debug] Cleared context file: {self.debug_context_file}")
-        except Exception as e:
-            print(f"⚠️ [Debug] Failed to clear context file: {e}")
+    def _rebuild_history(self):
+        """Compose self.history = [system] + context_history msgs + sliding_window msgs."""
+        self.history = [self._system_msg]
+        for qa in self._context_history:
+            self.history.extend(qa)
+        self.history.extend(self._sliding_window)
+
+    def _sw_round_count(self):
+        """Count user messages (rounds) in the sliding window."""
+        return sum(1 for m in self._sliding_window if m["role"] == "user")
 
     def _extract_user_text(self, content) -> str:
         """
@@ -218,8 +216,8 @@ class SessionHistory:
             serialized.append(entry)
         return serialized
 
-    def save_context_debug(self, prompt: str = "", request_id: str = ""):
-        """将当前推理上下文以一条 JSON 追加写入 JSONL 文件。"""
+    def save_context_debug(self, request_id: str = ""):
+        """将序列化前的结构化消息上下文按 JSONL 逐条写入。"""
         if not self.debug_context_file:
             return
 
@@ -237,13 +235,13 @@ class SessionHistory:
                 "request_id": request_id,
                 "current_rounds": self.current_rounds,
                 "num_messages": len(self.history),
-                "user_prompt": prompt,
+                # 序列化前的结构化消息（role/content），媒体使用占位符避免落盘大对象
                 "history": self._serialize_history_for_debug(),
             }
             with open(self.debug_context_file, "a", encoding="utf-8") as f:
                 f.write(json.dumps(record, ensure_ascii=False, default=_json_default) + "\n")
-            print(f"📝 [Debug] Context saved to {self.debug_context_file} "
-                  f"(round {self.current_rounds}, {len(self.history)} messages)")
+            print(f"📝 [Debug] Structured context saved to {self.debug_context_file} "
+                  f"(request_id={request_id}, round={self.current_rounds})")
         except Exception as e:
             print(f"⚠️ [Debug] Failed to save context: {e}")
 
@@ -258,182 +256,223 @@ class SessionHistory:
                     return True
         return False
 
-    def _prune_history(self):
-        """
-        智能裁剪历史记录。
+    # ------------------------------------------------------------------
+    # Context management helpers (per context.md §2-§3)
+    # ------------------------------------------------------------------
 
-        核心策略：先对全部轮次做 QAAA 分组，再按年龄分区处理。
-        这样即使 QAAA 的 head（原始提问）按年龄已经该过期，只要它的
-        continuation 链仍有活跃轮次，head 就会被保留（转纯文本）。
-
-        区域划分（按轮次年龄，最新的 age=1）：
-        1. 原始区 (age ≤ num_rounds_keep)：保持原样，包含视频数据
-        2. 精简区 (num_rounds_keep < age ≤ 2*num_rounds_keep)：转纯文本
-        3. 超出区 (age > 2*num_rounds_keep)：强制删除
-
-        QAAA 裁剪规则（跨所有区域生效）：
-        - Head（Q + 首次应答）：只要 group 有任何 continuation 存活，始终保留
-        - Continuation 中 silent → 删除
-        - Continuation 中非 silent（不在原始区的）→ 只保留最后 2 个
-        - Continuation 在原始区的 → 保持原样
-
-        History 结构 (裁剪后):
-        [system] + [QAAA head: 纯文本] + [精简区: 纯文本] + [原始区: 带视频]
-        """
-        if len(self.history) <= 1:
-            return
-
-        # Step 1: 将消息配对为 (user, assistant) 轮次
-        messages_after_system = self.history[1:]
+    def _parse_sw_rounds(self):
+        """Parse sliding window messages into (user_msg, assistant_msg|None) pairs."""
         rounds = []
         i = 0
-        while i < len(messages_after_system):
-            msg = messages_after_system[i]
+        while i < len(self._sliding_window):
+            msg = self._sliding_window[i]
             if msg["role"] == "user":
                 user_msg = msg
                 assistant_msg = None
-                if i + 1 < len(messages_after_system) and messages_after_system[i + 1]["role"] == "assistant":
-                    assistant_msg = messages_after_system[i + 1]
+                if (i + 1 < len(self._sliding_window) and
+                        self._sliding_window[i + 1]["role"] == "assistant"):
+                    assistant_msg = self._sliding_window[i + 1]
                     i += 2
                 else:
                     i += 1
                 rounds.append((user_msg, assistant_msg))
             else:
                 i += 1
+        return rounds
 
-        num_rounds = len(rounds)
-        max_total = 2 * self.num_rounds_keep
+    def _group_rounds_into_qas(self, rounds):
+        """
+        Group rounds into QA units for context management.
+        A round whose user message contains text starts a new QA;
+        subsequent video-only rounds are continuations of the same QA.
+        """
+        groups = []
+        current_group = []
+        for user_msg, assistant_msg in rounds:
+            if self._has_user_text(user_msg):
+                if current_group:
+                    groups.append(current_group)
+                current_group = [(user_msg, assistant_msg)]
+            else:
+                current_group.append((user_msg, assistant_msg))
+        if current_group:
+            groups.append(current_group)
+        return groups
 
-        if num_rounds < self.max_rounds:
+    def _rewrite_qa_for_history(self, qa_rounds):
+        """
+        Apply rewrite rules A & B to a QA group from the sliding window.
+        Rule A: Remove <video>, keep only text in user messages.
+        Rule B: Remove entire round if assistant is <|silent|>.
+        Returns a list of message dicts (context history format), or None.
+        """
+        rewritten = []
+        for user_msg, assistant_msg in qa_rounds:
+            if assistant_msg and self._is_silent_response(assistant_msg["content"]):
+                continue
+            user_text = self._extract_user_text(user_msg["content"])
+            rewritten.append({"role": "user", "content": user_text})
+            if assistant_msg:
+                rewritten.append({"role": "assistant", "content": assistant_msg["content"]})
+        return rewritten if rewritten else None
+
+    def _qa_to_round_pairs(self, qa_messages):
+        """Convert flat QA message list → [(user_content, assistant_content), ...]."""
+        pairs = []
+        i = 0
+        while i < len(qa_messages):
+            if qa_messages[i]["role"] == "user":
+                u = qa_messages[i]["content"]
+                a = None
+                if i + 1 < len(qa_messages) and qa_messages[i + 1]["role"] == "assistant":
+                    a = qa_messages[i + 1]["content"]
+                    i += 2
+                else:
+                    i += 1
+                pairs.append((u, a))
+            else:
+                i += 1
+        return pairs
+
+    def _count_qa_rounds(self, qa_messages):
+        """Count rounds (user messages) in a QA."""
+        return sum(1 for m in qa_messages if m["role"] == "user")
+
+    def _classify_qa(self, qa_messages):
+        """
+        Classify a context-history QA (§2.2).
+        Returns: "basic" | "1q1a" | "1qna" | "truncated" | None
+        """
+        pairs = self._qa_to_round_pairs(qa_messages)
+        n = len(pairs)
+        if n == 0:
+            return None
+        first_has_text = bool(pairs[0][0] and pairs[0][0].strip())
+        if n == 1:
+            return "basic" if first_has_text else "truncated"
+        if n == 2 and first_has_text:
+            return "1q1a"
+        if n >= 3 and first_has_text:
+            return "1qna"
+        if not first_has_text:
+            return "truncated"
+        return None
+
+    def _enforce_1qna_limit(self, qa_messages):
+        """
+        Rule E: 1QNA total rounds ≤ max_1qna_rounds (default 4).
+        Delete earliest "" + assistant round (skipping the first round).
+        """
+        while self._count_qa_rounds(qa_messages) > self.max_1qna_rounds:
+            found = False
+            i = 2  # never delete the first round (indices 0, 1)
+            while i < len(qa_messages):
+                if (qa_messages[i]["role"] == "user"
+                        and qa_messages[i]["content"] == ""):
+                    del qa_messages[i]
+                    if i < len(qa_messages) and qa_messages[i]["role"] == "assistant":
+                        del qa_messages[i]
+                    found = True
+                    break
+                i += 1
+            if not found:
+                break
+
+    def _merge_truncated_qa(self, truncated_messages):
+        """
+        Rule D: Merge a truncated QA ("" + assistant) with the last QA in
+        context history.  After merge, enforce Rule E if it became 1QNA.
+        """
+        if self._context_history:
+            last_qa = self._context_history[-1]
+            last_qa.extend(truncated_messages)
+            if self._count_qa_rounds(last_qa) > self.max_1qna_rounds:
+                self._enforce_1qna_limit(last_qa)
+        else:
+            self._context_history.append(list(truncated_messages))
+
+    def _prune_history(self):
+        """
+        Context management per context.md §3:
+
+        §3.1 — Trigger & migration:
+            When sliding window rounds > max_rounds, keep the last
+            num_rounds_keep rounds in sliding window; move the earlier
+            (total - num_rounds_keep) rounds to context history (hard cut).
+
+        §3.2 — Rewrite rules applied to moved rounds:
+            A: Remove <video> from user messages
+            B: Remove silent rounds
+            C: Validate each QA matches §2.2 types
+            D: Merge truncated QAs with last context history QA
+            E: 1QNA in context history ≤ max_1qna_rounds rounds
+
+        §3.3 — Context history capacity ≤ max_context_qas QAs.
+        """
+        rounds = self._parse_sw_rounds()
+        if len(rounds) <= self.max_rounds:
             return
 
-        # Step 2: 对全部轮次做 QAAA 分组（在分区之前）
-        # 遇到 user 有文本 → 开新组；后续仅视频轮次归入同组
-        # 每个 group: [(round_idx, user_msg, assistant_msg), ...]
-        all_groups = []
-        current_group = []
-        for idx, (um, am) in enumerate(rounds):
-            if self._has_user_text(um):
-                if current_group:
-                    all_groups.append(current_group)
-                current_group = [(idx, um, am)]
+        num_to_move = len(rounds) - self.num_rounds_keep
+        if num_to_move <= 0:
+            return
+        rounds_to_move = rounds[:num_to_move]
+        rounds_remaining = rounds[num_to_move:]
+
+        qa_groups = self._group_rounds_into_qas(rounds_to_move)
+
+        moved_qas = 0
+        merged_count = 0
+
+        for qa_rounds in qa_groups:
+            head_has_text = self._has_user_text(qa_rounds[0][0])
+            rewritten = self._rewrite_qa_for_history(qa_rounds)
+            if not rewritten:
+                continue
+
+            if head_has_text:
+                qa_type = self._classify_qa(rewritten)
+                if qa_type == "1qna":
+                    self._enforce_1qna_limit(rewritten)
+                self._context_history.append(rewritten)
+                moved_qas += 1
             else:
-                current_group.append((idx, um, am))
-        if current_group:
-            all_groups.append(current_group)
-
-        # Step 3: 逐组处理
-        new_rounds = []     # (user_msg, assistant_msg, should_prune)
-        silent_removed = 0
-        force_removed = 0
-        pruned_count = 0
-        qa_condensed = 0
-
-        def _age(round_idx):
-            return num_rounds - round_idx
-
-        def _zone(round_idx):
-            a = _age(round_idx)
-            if a <= self.num_rounds_keep:
-                return "fresh"
-            elif a <= max_total:
-                return "prune"
-            return "expired"
-
-        for group in all_groups:
-            head_idx, head_um, head_am = group[0]
-            has_text_head = self._has_user_text(head_um)
-            continuations = group[1:]  # [(idx, um, am), ...]
-
-            is_qaaa = has_text_head and len(continuations) > 0
-
-            if is_qaaa:
-                # ========== QAAA 组：跨区域处理 ==========
-                # 检查 group 中是否有任何 continuation 存活（非超出区）
-                has_surviving_cont = any(
-                    _zone(idx) != "expired" for idx, _, _ in continuations
-                )
-
-                # Head: 只要有存活的 continuation，始终保留（转纯文本）
-                if has_surviving_cont:
-                    new_rounds.append((head_um, head_am, True))
-                    pruned_count += 1
-                else:
-                    # 整个 group 全部过期
-                    force_removed += 1 + len(continuations)
-                    continue
-
-                # Continuations: 按区域分别处理
-                prune_non_silent = []  # 精简区+超出区的非 silent continuation
-
-                for cont_idx, cont_um, cont_am in continuations:
-                    zone = _zone(cont_idx)
-
-                    if zone == "fresh":
-                        # 原始区：保持原样（带视频）
-                        new_rounds.append((cont_um, cont_am, False))
-                    elif zone == "expired" or zone == "prune":
-                        # 精简区 & 超出区：silent 删除，非 silent 收集待筛选
-                        if cont_am and self._is_silent_response(cont_am["content"]):
-                            silent_removed += 1
+                # Orphan continuation rounds → split into individual truncated
+                # QAs and merge each via Rule D.
+                i = 0
+                while i < len(rewritten):
+                    if rewritten[i]["role"] == "user":
+                        truncated = [rewritten[i]]
+                        if (i + 1 < len(rewritten)
+                                and rewritten[i + 1]["role"] == "assistant"):
+                            truncated.append(rewritten[i + 1])
+                            i += 2
                         else:
-                            prune_non_silent.append((cont_um, cont_am))
-
-                # 精简区+超出区的非 silent：只保留最后 2 个
-                if len(prune_non_silent) > 2:
-                    qa_condensed += len(prune_non_silent) - 2
-                    kept = prune_non_silent[-2:]
-                else:
-                    kept = prune_non_silent
-
-                for um, am in kept:
-                    new_rounds.append((um, am, True))
-                    pruned_count += 1
-
-            else:
-                # ========== 非 QAAA：逐轮按区域处理 ==========
-                for round_idx, um, am in group:
-                    zone = _zone(round_idx)
-
-                    if zone == "fresh":
-                        new_rounds.append((um, am, False))
-                    elif zone == "prune":
-                        if am and self._is_silent_response(am["content"]):
-                            silent_removed += 1
-                        else:
-                            new_rounds.append((um, am, True))
-                            pruned_count += 1
+                            i += 1
+                        self._merge_truncated_qa(truncated)
+                        merged_count += 1
                     else:
-                        force_removed += 1
+                        i += 1
 
-        # Step 4: 按原始顺序排列（QAAA head 可能比精简区更早，需要排在前面）
-        # new_rounds 中 should_prune=True 的是精简/rescued 轮，False 是原始区
-        # 精简区轮次在前（旧），原始区在后（新）
-        pruned_rounds = [(um, am, sp) for um, am, sp in new_rounds if sp]
-        fresh_rounds = [(um, am, sp) for um, am, sp in new_rounds if not sp]
-        new_rounds = pruned_rounds + fresh_rounds
+        # §3.3: enforce capacity limit
+        while len(self._context_history) > self.max_context_qas:
+            self._context_history.pop(0)
 
-        # Step 5: 重建 history
-        new_history = [self.history[0]]  # system message
+        # Rebuild sliding window from remaining rounds
+        self._sliding_window = []
+        for user_msg, assistant_msg in rounds_remaining:
+            self._sliding_window.append(user_msg)
+            if assistant_msg is not None:
+                self._sliding_window.append(assistant_msg)
 
-        for user_msg, assistant_msg, should_prune in new_rounds:
-            if should_prune:
-                user_text = self._extract_user_text(user_msg["content"])
-                new_history.append({"role": "user", "content": user_text})
-            else:
-                new_history.append(user_msg)
+        self.current_rounds = self._sw_round_count()
+        self._rebuild_history()
 
-            if assistant_msg:
-                new_history.append(assistant_msg)
-
-        old_count = len(self.history)
-        self.history = new_history
-        self.current_rounds = sum(1 for msg in self.history if msg["role"] == "user")
-
-        print(f"✂️ History pruned: {old_count} → {len(self.history)} messages | "
-              f"silent_removed={silent_removed}, force_removed={force_removed}, "
-              f"pruned_to_text={pruned_count}, qa_condensed={qa_condensed}, "
-              f"keeping {self.current_rounds} rounds")
+        print(f"✂️ History pruned: moved {moved_qas} QAs, "
+              f"merged {merged_count} truncated rounds | "
+              f"context_history={len(self._context_history)} QAs, "
+              f"sliding_window={self.current_rounds} rounds, "
+              f"total_messages={len(self.history)}")
 
     def add_user_message(self, text: str, images: list = None, video_tuple: tuple = None):
         """
@@ -446,34 +485,34 @@ class SessionHistory:
                         numpy_array shape: (num_frames, height, width, 3)
                         metadata_dict: {"fps": float, "duration": float, "total_num_frames": int, ...}
         """
-        # Check limit and prune old context when exceeding max_rounds
-        if self.pruning_enabled and self.current_rounds >= self.max_rounds:
-            print(f"⚠️ Max rounds ({self.max_rounds}) reached, pruning old context...")
-            self._prune_history()  # 智能裁剪：原始区 + 精简区，上限 2*max_rounds
-
         content = []
 
-        # Add video if provided (mutually exclusive with images)
-        # Qwen3-VL expects video as (numpy_array, metadata_dict) tuple
         if video_tuple:
             content.append({"type": "video", "video": video_tuple})
-        # Add images if provided
         elif images:
             content.extend([{"type": "image", "image": img} for img in images])
 
-        # Add text
         if text:
             content.append({"type": "text", "text": text})
         elif not images and not video_tuple:
-            # If no text AND no media, skip adding empty turn
             return
 
-        self.history.append({"role": "user", "content": content})
+        msg = {"role": "user", "content": content}
+        self._sliding_window.append(msg)
+        self.history.append(msg)
         self.current_rounds += 1
+
+        # §3.1: Trigger pruning when sliding window rounds exceed max_rounds
+        if self.pruning_enabled and self._sw_round_count() > self.max_rounds:
+            print(f"⚠️ Sliding window rounds ({self._sw_round_count()}) "
+                  f"> max_rounds ({self.max_rounds}), pruning...")
+            self._prune_history()
 
     def add_assistant_message(self, text: str):
         """Add assistant response."""
-        self.history.append({"role": "assistant", "content": text})
+        msg = {"role": "assistant", "content": text}
+        self._sliding_window.append(msg)
+        self.history.append(msg)
 
     def get_vllm_inputs(self):
         """
@@ -960,7 +999,7 @@ def enqueue_tts_sentence(sentence: str, response_id: str, sentence_idx: int, arg
     if not sentence or not sentence.strip():
         return
 
-    clean_text = context_manage.remove_markdown(sentence)
+    clean_text = remove_markdown(sentence)
     if not clean_text.strip():
         return
 
@@ -1495,33 +1534,6 @@ async def init_async_engine(args) -> AsyncLLM:
     return async_engine
 
 
-def summarize_vllm_inputs(inputs: dict) -> dict:
-    """
-    Summarize vLLM inputs for logging, replacing video arrays and images with metadata.
-    This avoids printing huge pixel arrays in logs.
-    """
-    summary = {"prompt": inputs.get("prompt", "")}
-    mm_data = inputs.get("multi_modal_data", {})
-    if mm_data:
-        summary["multi_modal_data"] = {}
-        for key, value in mm_data.items():
-            if key == "video" and isinstance(value, list):
-                # Replace video tuples with just metadata
-                summary["multi_modal_data"]["video"] = [
-                    {"shape": v[0].shape, "dtype": str(v[0].dtype), "metadata": v[1]}
-                    if isinstance(v, tuple) else f"<video {type(v)}>"
-                    for v in value
-                ]
-            elif key == "image" and isinstance(value, list):
-                summary["multi_modal_data"]["image"] = [
-                    f"<{type(v).__name__} {v.size if hasattr(v, 'size') else ''}>"
-                    for v in value
-                ]
-            else:
-                summary["multi_modal_data"][key] = value
-    return summary
-
-
 async def generate_response_with_video(
     session: StreamingSession,
     video_tuple: tuple,
@@ -1571,16 +1583,10 @@ async def generate_response_with_video(
         # t_get_inputs_end = time.time()
         # print(f"⏱️ [TIMING] get_vllm_inputs() took {(t_get_inputs_end - t_get_inputs_start)*1000:.1f}ms")
 
-        # summarized_vllm_inputs = summarize_vllm_inputs(vllm_inputs)
-        # print(f"summarized_vllm_inputs.keys(): {summarized_vllm_inputs.keys()}")
-        # print(f"len(summarized_vllm_inputs['multi_modal_data']['video']): {len(summarized_vllm_inputs['multi_modal_data']['video'])}")
-
-        # print(f"🎬 [Session {session.session_id}] vLLM inputs: {summarize_vllm_inputs(vllm_inputs)}, ================== ")
-
         # Generate unique request ID for this turn
         request_id = generate_response_id()
 
-        session.history.save_context_debug(prompt=prompt, request_id=request_id)
+        session.history.save_context_debug(request_id=request_id)
 
         video_array, video_metadata = video_tuple
         print(f"🎬 [Session {session.session_id}] Starting generation (request_id={request_id})")
@@ -1887,6 +1893,7 @@ async def handle_client_connection_async(conn, addr, args):
             num_rounds_keep=args.num_rounds_keep,
             pruning_enabled=args.enable_pruning,
             debug_context_file=args.debug_context_file if args.debug_context else None,
+            max_context_qas=args.max_context_qas,
         ),
         input_queue=asyncio.Queue(),
         output_queue=asyncio.Queue(),
@@ -2111,8 +2118,7 @@ async def handle_client_connection_async(conn, addr, args):
                     session.current_task.cancel()
                     session.is_generating = False
                     session.is_auto_generating = False
-                context_manage.clear_global_history()
-                session.history._reset() # Reset session history
+                session.history._reset()
                 accumulated_video_frames = []
                 last_prompt = ""
 
@@ -2124,7 +2130,6 @@ async def handle_client_connection_async(conn, addr, args):
                     session.current_task.cancel()
                     session.is_generating = False
                     session.is_auto_generating = False
-                context_manage.clear_global_history()
                 session.history._reset()
                 accumulated_video_frames = []
                 last_prompt = ""
@@ -2259,7 +2264,9 @@ def parse_args():
     parser.add_argument("--max-rounds", type=int, default=60,
                         help="Maximum number of rounds to keep in history")
     parser.add_argument("--num-rounds-keep", type=int, default=15,
-                        help="Number of rounds to keep in history")
+                        help="Number of rounds to keep in sliding window after pruning")
+    parser.add_argument("--max-context-qas", type=int, default=10,
+                        help="Maximum number of QAs to keep in context history")
     parser.add_argument("--debug-context", action="store_true",
                         help="Enable debug: save inference context to JSONL file")
     parser.add_argument("--debug-context-file", type=str, default="context_debug.jsonl",
@@ -2327,6 +2334,7 @@ async def main_async(args):
     print(f"  Enable pruning: {'ENABLED' if args.enable_pruning else 'DISABLED'}")
     print(f"  Num rounds keep: {args.num_rounds_keep}")
     print(f"  Max rounds: {args.max_rounds}")
+    print(f"  Max context QAs: {args.max_context_qas}")
     print(f"  Enable expert parallel: {'ENABLED' if args.enable_expert_parallel else 'DISABLED'}")
     if args.kv_offloading_size is not None:
         print(f"  KV Offloading Size: {args.kv_offloading_size} GB")
@@ -2384,13 +2392,6 @@ async def main_async(args):
 
         # Initialize embedded engine
         await init_async_engine(args)
-
-    # Initialize context
-    context_manage.clear_global_history()
-    context_manage._global_context.history.append({
-        "role": "system",
-        "content": "You are receiving a live video stream where the final frame is the present moment. Respond only when a response is needed based on the user's message or the visual context. Otherwise, output '<|silent|>' to signify silence Respond in Chinese."
-    })
 
     # Run TCP accept loop in the same event loop as the engine (fixes TTFT ~800ms delay
     # caused by engine and connection handler living in different loops).

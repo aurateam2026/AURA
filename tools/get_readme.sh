@@ -1,0 +1,98 @@
+root=~/Projects/streaming_video_understanding
+
+cd $root
+for folder in $(ls -d */)
+do
+    cd $folder
+    echo $folder
+    cat README.md
+    echo ""
+    cd ..
+done
+
+
+
+
+
+# qwen3vl-8b_20260225_01/
+# qwen3vl-8b/full_silent=balance/sft_Gemini_data_v2_basic_obj_ch_4_5_w_sys+basic_obj_en_4_5_w_sys+basic_sub_ch_3_0_w_sys+basic_sub_en_3_0_w_sys+proactive_4_0_keep_45k_w_sys+mixed_4_0_w_sys_1e-5_ep1/
+
+qwen3vl-8b_20260225_02/
+# qwen3vl-8b/full_silent=balance/sft_Gemini_data_v2_1_basic_obj_ch_4_5_w_sys+basic_obj_en_4_5_w_sys+basic_sub_ch_3_0_w_sys+basic_sub_en_3_0_w_sys+proactive_4_0_keep_45k_w_sys+mixed_4_0_w_sys_1e-5_ep1/
+
+# qwen3vl-8b_20260227_01/
+# qwen3vl-8b/full_silent=balance/sft_Gemini_data_v2_1_basic_obj_ch_4_5_w_sys+basic_obj_en_4_5_w_sys+basic_sub_ch_3_0_w_sys+basic_sub_en_3_0_w_sys+proactive_4_0_keep_45k_w_sys+mixed_4_0_w_sys+Streamo_v1_ALL_1qNa_w_sys_1e-5_ep1/
+
+# qwen3vl-8b_20260228_01/
+# qwen3vl-8b/full_silent=balance/sft_Gemini_data_v2_1_basic_obj_ch_4_5_w_sys+basic_obj_en_4_5_w_sys+basic_sub_ch_3_0_w_sys+basic_sub_en_3_0_w_sys+proactive_4_0_keep_45k_w_sys+mixed_4_0_w_sys+Streamo_v1_ALL_1qNa_w_sys+noah_data_500k_SFT_text+text_video_1e-5_ep1/
+
+# qwen3vl-8b_20260228_02/
+# qwen3vl-8b/full_silent=balance/sft_Streamo_v1_ALL_1qNa_w_sys_1e-5_ep3/
+
+# qwen3vl-8b_20260228_03/
+# qwen3vl-8b/full_silent=balance/sft_Streamo_v1_ALL_1qNa_w_sys_1e-5_ep3/
+
+# qwen3vl-8b_20260228_04/
+# qwen3vl-8b/full_silent=balance/sft_Streamo_v1_ALL_1qNa_w_sys_1e-5_ep3/
+
+qwen3vl-8b_20260303_01/
+# qwen3vl-8b/full_silent=balance/sft_Gemini_data_v2_1_basic_obj_ch_4_5_w_sys+basic_obj_en_4_5_w_sys+basic_sub_ch_3_0_w_sys+basic_sub_en_3_0_w_sys+proactive_4_0_keep_45k_w_sys+mixed_4_0_w_sys+terry_1qNa_v1_15p_w_sys_1e-5_ep1/
+
+qwen3vl-8b_20260303_02/
+# qwen3vl-8b/full_silent=balance/sft_Gemini_data_v2_1_basic_obj_ch_4_5_w_sys+basic_obj_en_4_5_w_sys+basic_sub_ch_3_0_w_sys+basic_sub_en_3_0_w_sys+proactive_4_0_keep_45k_w_sys+mixed_4_0_w_sys+terry_1qNa_v1_15p_w_sys_1e-5_ep1_lk/
+
+qwen3vl-8b_20260304_01/
+# qwen3vl-8b/full_silent=balance/sft_Gemini_data_v2_1_basic_obj_ch_4_5_w_sys+basic_obj_en_4_5_w_sys+basic_sub_ch_3_0_w_sys+basic_sub_en_3_0_w_sys+proactive_4_0_keep_45k_w_sys+mixed_4_0_w_sys+terry_1qNa_v1_1_15p_truncated33_w_sys_1e-5_ep1/
+
+qwen3vl-8b_20260304_02/
+# qwen3vl-8b/full_silent=balance/sft_Gemini_data_v2_1_basic_obj_ch_4_5_w_sys+basic_obj_en_4_5_w_sys+basic_sub_ch_3_0_w_sys+basic_sub_en_3_0_w_sys+proactive_4_0_keep_45k_w_sys+mixed_4_0_w_sys+terry_1qNa_v1_2_15p_truncated33_w_sys_1e-5_ep1_new_loss/
+
+qwen3vl-8b_20260310_01/
+# qwen3vl-8b/full_silent=balance/sft_Gemini_data_v2_1_basic_obj_ch_4_5_w_sys+basic_obj_en_4_5_w_sys+basic_sub_ch_3_0_w_sys+basic_sub_en_3_0_w_sys+proactive_4_0_keep_45k_w_sys+mixed_4_0_w_sys+ovobench_v1_1e-5_ep1/
+
+qwen3vl-8b_20260311_01/
+# qwen3vl-8b/full_silent=balance/sft_Gemini_data_v2_1_basic_obj_ch_4_5_w_sys+basic_obj_en_4_5_w_sys+basic_sub_ch_3_0_w_sys+basic_sub_en_3_0_w_sys+proactive_4_0_keep_45k_w_sys+mixed_4_0_w_sys+ovobench_v1_chunkwise_w_sys_1e-5_ep1/
+
+qwen3vl-8b_20260311_02/
+# qwen3vl-8b/full_silent=balance/sft_Gemini_data_v2_1_basic_obj_ch_4_5_w_sys+basic_obj_en_4_5_w_sys+basic_sub_ch_3_0_w_sys+basic_sub_en_3_0_w_sys+proactive_4_0_keep_45k_w_sys+mixed_4_0_w_sys+terry_1qNa_v2_35k_w_sys_1e-5_ep1/
+
+qwen3vl-8b_20260311_03/
+# qwen3vl-8b/full_silent=balance/sft_Gemini_data_v2_1_basic_obj_ch_4_5_w_sys+basic_obj_en_4_5_w_sys+basic_sub_ch_3_0_w_sys+basic_sub_en_3_0_w_sys+proactive_4_0_keep_45k_w_sys+mixed_4_0_w_sys+terry_1qNa_v2_4_5_w_sys_1e-5_ep1/
+
+
+
+
+qwen3vl-8b_20260314_01/
+# qwen3vl-8b/full_silent=balance/sft_Gemini_data_v2_1_basic_obj_ch_4_5_w_sys+basic_obj_en_4_5_w_sys+basic_sub_ch_3_0_w_sys+basic_sub_en_3_0_w_sys+proactive_4_0_keep_45k_w_sys+mixed_4_0_w_sys+ovobench_v1+streamingbench_v2_batch_1_PO_w_sys+omnimmi_v1_AP_MD_SI_4_5_1e-5_ep1/checkpoint-870
+
+
+qwen3vl-8b_20260314_02/
+# checkpoint/cjp_llama_factory_v0122/qwen3vl-8b/full_silent=balance/sft_Gemini_data_v2_1+terry_1qNa_v2_4_5+terry_1qna_mix_4_0+terry_1qna_proactive_ch_4_0+terry_1qna_basic_ch_4_0+72b_real_ch_4_0+72b_recall_ch_4_0+Gemini_2min_ch_4_0+Gemini_2min_en_4_0_ep1/checkpoint-2008
+
+
+
+qwen3vl-8b_20260314_03/
+# qwen3vl-8b/full_silent=balance/sft_Gemini_data_v2_1+terry_1qNa_v2_4_5+terry_1qna_mix_4_0+terry_1qna_proactive_ch_4_5+terry_1qna_basic_ch_4_5+72b_real_ch_4_5+72b_recall_ch_4_5+Gemini_2min_ch_4_0+Gemini_2min_en_4_0_1e-5_ep1/checkpoint-1316
+
+
+qwen3vl-8b_20260314_04/
+# qwen3vl-8b/full_silent=balance/sft_Gemini_data_v2_1_basic_obj_ch_4_5_w_sys+basic_obj_en_4_5_w_sys+basic_sub_ch_3_0_w_sys+basic_sub_en_3_0_w_sys+proactive_4_0_keep_45k_w_sys+mixed_4_0_w_sys+ovobench_v1_100HLD+streamingbench_v3_batch_1_PO+omnimmi_v1_AP_MD_SI_4_5_1e-5_ep1/checkpoint-879
+
+
+qwen3vl-8b_20260315_01/
+# qwen3vl-8b/full_silent=balance/sft_G_data_v2_1+T_1qNa_v2_4_5+T_1qna_mix_4_0+T_1qna_proactive_ch_4_0+T_1qna_basic_ch_4_0+7_real_ch_4_0+7_recall_ch_4_0+G_2min_ch_4_0+G_2min_en_4_0+OVO_v1_100HLD+SB_v3_batch_1_PO+OM_AP_MD_SI_4_5+N_text_video_1e-5_ep1/checkpoint-5733
+
+qwen3vl-8b_20260316_01/
+# qwen3vl-8b/full_silent=balance/sft_G_data_v2_1+T_1qNa_v2_4_5+T_1qna_mix_4_0+T_1qna_proactive_ch_4_0+T_1qna_basic_ch_4_0+7_real_ch_4_0+7_recall_ch_4_0+G_2min_ch_4_0+G_2min_en_4_0+OVO_v1_100HLD+SB_v3_batch_1_PO+OM_v1_AP_MD_SI_4_5+N_video_20p_1e-5_ep1/checkpoint-2685
+
+qwen3vl-8b_20260316_02/
+# qwen3vl-8b/full_silent=balance/sft_G_data_v2_1+T_1qNa_v2_4_5+T_1qna_mix_4_0+T_1qna_proactive_ch_4_0+T_1qna_basic_ch_4_0+7_real_ch_4_0+7_recall_ch_4_0+G_2min_ch_4_0+G_2min_en_4_0+OVO_v1_100HLD+SB_v3_batch_1_PO+OM_v1_AP_MD_SI_4_5+N_video_40p_1e-5_ep1/checkpoint-3263
+
+
+
+qwen3vl-8b_20260316_03/
+# qwen3vl-8b/full_silent=balance/sft_G_data_v2_1+T_1qNa_v2_4_0_35k+T_1qna_mix_4_0+T_1qna_proactive_ch_4_0+T_1qna_basic_ch_4_0+7_real_ch_4_0+7_recall_ch_4_0+G_2min_ch_4_0+G_2min_en_4_0+OVO_v1_100HLD+SB_v3_batch_1_PO+OM_v1_AP_MD_SI_4_5+N_video_20p_1e-5_ep1/checkpoint-2878
+
+qwen3vl-8b_20260317_01/
+# qwen3vl-8b/full_silent=balance/sft_G_data_v2_1+T_1qNa_v2_4_0_35k+T_1qna_mix_4_0+T_1qna_proactive_ch_4_0+T_1qna_basic_ch_4_0+7_real_ch_4_0+7_recall_ch_4_0+G_2min_ch_4_0+G_2min_en_4_0+OVO_v1_100HLD+SB_v3_batch_1_PO+OM_v1_AP_MD_SI_4_5+0316_PA_AP_HLD100+N_video_20p_1e-5_ep1/checkpoint-2884
+

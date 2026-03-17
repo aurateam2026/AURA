@@ -1,10 +1,12 @@
 #!/bin/bash
 
+CASE_NAME=qwen3vl-8b_20260311_03
+
 # Qwen3 Omni 启动示例:
-MODEL_PATH=/home/dyvm6xra/dyvm6xrauser36/Projects/streaming_video_understanding/qwen3vl-8b_20260311_03/
+MODEL_PATH=/home/dyvm6xra/dyvm6xrauser36/Projects/streaming_video_understanding/${CASE_NAME}/
 echo "MODEL_PATH: $MODEL_PATH"
 
-CUDA_VISIBLE_DEVICES=1,2 numactl --cpunodebind=0 --membind=0 python -u Qwen3_VL_online_streaming_v2.py \
+CUDA_VISIBLE_DEVICES=1,2 numactl --cpunodebind=0 --membind=0 python -u Qwen3_VL_online_streaming_v2_ContextManaged.py \
     --listen-port 12345 \
     --model $MODEL_PATH \
     --tensor-parallel-size 1 \
@@ -29,5 +31,6 @@ CUDA_VISIBLE_DEVICES=1,2 numactl --cpunodebind=0 --membind=0 python -u Qwen3_VL_
     --enable-pruning \
     --max-rounds 30 \
     --num-rounds-keep 10 \
+    --max-context-qas 10 \
     --debug-context-file debug_context.jsonl \
     --debug-context 
