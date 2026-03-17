@@ -52,7 +52,9 @@ fastrlock==0.8.3
 ffmpy==1.0.0
 filelock==3.20.3
 flash==1.0.3
-flash-attn @ file:///home/dyvm6xra/dyvm6xrauser36/Projects/vllm-omni/flash_attn-2.8.3+cu12torch2.9cxx11abiTRUE-cp312-cp312-linux_x86_64.whl
+# flash-attn whl 文件体积 243MB 超过 GitHub 限制，需手动下载后放入项目根目录再安装：
+# pip install flash_attn-2.8.3+cu12torch2.9cxx11abiTRUE-cp312-cp312-linux_x86_64.whl
+# flash-attn @ file:///home/dyvm6xra/dyvm6xrauser36/Projects/vllm-omni/flash_attn-2.8.3+cu12torch2.9cxx11abiTRUE-cp312-cp312-linux_x86_64.whl
 flashinfer-python==0.6.1
 flask==3.1.2
 flask-cors==6.0.2
@@ -168,7 +170,7 @@ pyyaml==6.0.3
 pyzmq==27.1.0
 qwen-asr==0.0.6
 qwen-omni-utils==0.0.8
--e file:///home/dyvm6xra/dyvm6xrauser36/Projects/vllm-omni/Qwen3-TTS-streaming
+-e ./Qwen3-TTS-streaming
 ray==2.53.0
 referencing==0.37.0
 regex==2026.1.15
@@ -220,7 +222,7 @@ urllib3==2.6.3
 uvicorn==0.40.0
 uvloop==0.22.1
 vllm==0.15.0
--e file:///home/dyvm6xra/dyvm6xrauser36/Projects/vllm-omni/vllm-omni
+-e ./vllm-omni
 watchfiles==1.1.1
 websockets==15.0.1
 werkzeug==3.1.5

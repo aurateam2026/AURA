@@ -24,3 +24,12 @@ env/
 .DS_Store
 Thumbs.db
 
+# Large binary files (>100MB, exceeds GitHub limit)
+*.whl
+
+# Runtime / debug output
+*.log
+debug_context.jsonl
+real_time_captured_audio/
+tts_results/
+
