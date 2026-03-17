@@ -81,15 +81,16 @@ curl -X POST http://localhost:8001/asr \
 4. 开启 TCP Socket 监听（端口 12345）
 
 ```bash
-bash Qwen3_VL_online_streaming_v2.sh
+bash Qwen3_VL_online_streaming_v2_CM.sh
 ```
 
 启动脚本实际执行：
 
 ```bash
-MODEL_PATH=/home/dyvm6xra/dyvm6xrauser36/Projects/streaming_video_understanding/qwen3vl-8b_20260225_02/
+CASE_NAME=qwen3vl-8b_20260311_03
+MODEL_PATH=/home/dyvm6xra/dyvm6xrauser36/Projects/streaming_video_understanding/${CASE_NAME}/
 
-CUDA_VISIBLE_DEVICES=1,2,3 numactl --cpunodebind=0 --membind=0 python -u Qwen3_VL_online_streaming_v2.py \
+CUDA_VISIBLE_DEVICES=1,2 numactl --cpunodebind=0 --membind=0 python -u Qwen3_VL_online_streaming_v2_ContextManaged.py \
     --listen-port 12345 \
     --model $MODEL_PATH \
     --tensor-parallel-size 1 \
@@ -105,36 +106,42 @@ CUDA_VISIBLE_DEVICES=1,2,3 numactl --cpunodebind=0 --membind=0 python -u Qwen3_V
     --mm-encoder-tp-mode data \
     --max-num-batched-tokens 15360 \
     --enable-tts \
-    --tts-gpu 3 \
+    --tts-gpu 2 \
     --tts-model Qwen/Qwen3-TTS-12Hz-1.7B-Base \
     --tts-language Chinese \
     --tts-ref-audio test_query.mp3 \
     --tts-ref-text "仔细观察当前你看到的画面，并且结合之前你看到的画面，仔细描述你看到了什么" \
     --tts-output-dir tts_results \
     --enable-pruning \
-    --max-rounds 120 \
-    --num-rounds-keep 20
+    --max-rounds 30 \
+    --num-rounds-keep 10 \
+    --max-context-qas 10 \
+    --debug-context-file debug_context.jsonl \
+    --debug-context
 ```
 
 **参数说明：**
 
 | 参数 | 说明 |
 |---|---|
-| `CUDA_VISIBLE_DEVICES=1,2,3` | 主服务可见 GPU 1/2/3（GPU 0 已留给 ASR） |
+| `CUDA_VISIBLE_DEVICES=1,2` | 主服务可见 GPU 1/2（GPU 0 已留给 ASR） |
 | `--listen-port 12345` | TCP Socket 监听端口，Flask 中间层连接此端口 |
-| `--model` | Qwen3 VL 8B 模型路径 |
+| `--model` | Qwen3 VL 8B 模型路径（由 `CASE_NAME` 变量指定） |
 | `--tensor-parallel-size 1` | 张量并行数（当前仅用 1 张卡跑主模型） |
 | `--max-model-len 262144` | 最大上下文长度 256K tokens |
 | `--gpu-memory-utilization 0.9` | vLLM 占用 90% 显存 |
 | `--asr-url` | 指向第一步启动的 ASR 服务地址 |
 | `--kv-offloading-size 10` | KV Cache offload 到 CPU 的大小（GB） |
 | `--enable-tts` | 启用内嵌 TTS |
-| `--tts-gpu 3` | TTS 模型加载到 GPU 3（CUDA_VISIBLE_DEVICES 映射后的索引） |
+| `--tts-gpu 2` | TTS 模型加载到 GPU 索引 2（`CUDA_VISIBLE_DEVICES` 映射后的第 2 个设备，即物理 GPU 2） |
 | `--tts-model` | TTS 模型路径（Base 模型支持 Voice Clone 流式输出） |
 | `--tts-ref-audio` / `--tts-ref-text` | Voice Clone 参考音频和对应文本 |
 | `--enable-pruning` | 启用历史轮次裁剪，防止 context 超长 |
-| `--max-rounds 120` | 触发裁剪的最大轮次数 |
-| `--num-rounds-keep 20` | 裁剪时保留最近的轮次数 |
+| `--max-rounds 30` | 触发裁剪的最大轮次数 |
+| `--num-rounds-keep 10` | 裁剪时保留最近的轮次数 |
+| `--max-context-qas 10` | 上下文中最多保留的问答对数量 |
+| `--debug-context-file` | 将上下文状态写入指定 JSONL 文件，用于调试 |
+| `--debug-context` | 开启上下文调试日志输出 |
 
 **验证启动成功：** 日志依次出现：
 
@@ -186,14 +193,13 @@ python realtime_capture_video_audio_streaming.py
 
 ## GPU 分配参考
 
-| GPU | 用途 | 显存需求（约） |
+| GPU（物理） | 用途 | 显存需求（约） |
 |---|---|---|
 | GPU 0 | ASR 服务（Qwen3-ASR-1.7B + ForcedAligner-0.6B） | ~3 GB |
-| GPU 1 | vLLM 主模型（Qwen3-VL-8B） | ~16 GB |
-| GPU 2 | 对 vLLM 可见但 TP=1 未使用 | — |
-| GPU 3 | TTS 模型（Qwen3-TTS-12Hz-1.7B-Base） | ~4 GB |
+| GPU 1 | vLLM 主模型（Qwen3-VL-8B，TP=1） | ~16 GB |
+| GPU 2 | TTS 模型（Qwen3-TTS-12Hz-1.7B-Base） | ~4 GB |
 
-> GPU 编号基于 `CUDA_VISIBLE_DEVICES` 映射。主服务内部的 `--tts-gpu 3` 对应的是映射后的第 3 个设备（即物理 GPU 3）。
+> GPU 编号基于 `CUDA_VISIBLE_DEVICES=1,2` 映射。主服务内部的 `--tts-gpu 2` 对应映射后的第 2 个设备（即物理 GPU 2）。
 
 ## 启动顺序速查
 
@@ -202,8 +208,8 @@ python realtime_capture_video_audio_streaming.py
     CUDA_VISIBLE_DEVICES=0 python Qwen3_asr_serve.py --port 8001
     等待: "Qwen3 ASR Model loaded successfully"
 
-终端 2 (GPU 1,2,3):  主服务 (vLLM + TTS)
-    bash Qwen3_VL_online_streaming_v2.sh
+终端 2 (GPU 1,2):  主服务 (vLLM + TTS，含上下文管理)
+    bash Qwen3_VL_online_streaming_v2_CM.sh
     等待: "Server listening on port 12345"
 
 终端 3:  Web 前端
@@ -236,15 +242,17 @@ Flask 中间层与主服务之间通过自定义 TCP 二进制协议通信。
 1. **启动顺序**：ASR 服务必须先于主服务启动（或至少在主服务收到音频前就绪），否则语音识别会失败返回空文本
 2. **GPU 显存**：ASR 占 ~3GB，主模型 8B 占 ~16GB，TTS 占 ~4GB，确保各 GPU 有足够显存
 3. **参考音频**：`test_query.mp3` 必须存在于工作目录中，否则 TTS Voice Clone 初始化会失败
-4. **numactl**：启动脚本使用了 NUMA 绑定（`--cpunodebind=0 --membind=0`），需确保服务器安装了 `numactl`
+4. **numactl**：启动脚本使用了 NUMA 绑定（`--cpunodebind=0 --membind=0`），需确保服务器安装了 `numactl`；若运行在容器等受限环境中报 `sched_setaffinity: Invalid argument`，可删除该参数直接运行 Python
 5. **vLLM 版本**：需要 vLLM >= 0.14.0rc2 以支持 V1 引擎的 StreamingInput API
 
 ## 文件说明
 
 | 文件 | 说明 |
 |---|---|
-| `Qwen3_VL_online_streaming_v2.sh` | 主服务启动脚本（入口） |
-| `Qwen3_VL_online_streaming_v2.py` | 主服务实现（vLLM 引擎 + TTS + TCP Socket） |
+| `Qwen3_VL_online_streaming_v2_CM.sh` | 主服务启动脚本（推荐入口，含上下文管理） |
+| `Qwen3_VL_online_streaming_v2_ContextManaged.py` | 主服务实现（vLLM 引擎 + TTS + TCP Socket + 上下文管理） |
+| `Qwen3_VL_online_streaming_v2.sh` | 旧版启动脚本（不含上下文管理） |
+| `Qwen3_VL_online_streaming_v2.py` | 旧版主服务实现 |
 | `Qwen3_asr_serve.py` | ASR 服务（FastAPI + Qwen3-ASR） |
 | `realtime_capture_video_audio_streaming.py` | Web 前端中间层（Flask + TCP 客户端） |
 | `context_manage.py` | 上下文管理工具（历史裁剪、相似度过滤） |
