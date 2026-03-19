@@ -96,3 +96,10 @@ qwen3vl-8b_20260316_03/
 qwen3vl-8b_20260317_01/
 # qwen3vl-8b/full_silent=balance/sft_G_data_v2_1+T_1qNa_v2_4_0_35k+T_1qna_mix_4_0+T_1qna_proactive_ch_4_0+T_1qna_basic_ch_4_0+7_real_ch_4_0+7_recall_ch_4_0+G_2min_ch_4_0+G_2min_en_4_0+OVO_v1_100HLD+SB_v3_batch_1_PO+OM_v1_AP_MD_SI_4_5+0316_PA_AP_HLD100+N_video_20p_1e-5_ep1/checkpoint-2884
 
+
+
+qwen3vl-8b_20260317_02/
+# qwen3vl-8b/full_silent=balance/sft_G_data_v2_1+T_1qNa_v2_4_0_35k_tru20+T_1qna_mix_4_0+T_1qna_proactive_ch_4_0+T_1qna_basic_ch_4_0+7_real_ch_4_0+7_recall_ch_4_0+G_2min_ch_4_0+G_2min_en_4_0+OVO_v1_100HLD+SB_v3_batch_1_PO+OM_v1_AP_MD_SI_4_5+0316_PA_AP_HLD100+N_video_20p_1e-5_ep1/checkpoint-2884
+
+qwen3vl-8b_20260318_01/
+# qwen3vl-8b/full_silent=balance/sft_G_data_v2_1+T_1qNa_v2_1_4_3+T_1qna_mix_4_0+T_1qna_proactive_ch_4_0+T_1qna_basic_ch_4_0+7_real_ch_4_0+7_recall_ch_4_0+G_2min_ch_4_0+G_2min_en_4_0+OVO_v1_100HLD+SB_v3_batch_1_PO+OM_v1_AP_MD_SI_4_5+0316_PA_AP_HLD100+N_video_20p_1e-5_ep1/checkpoint-2881

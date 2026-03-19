@@ -2055,8 +2055,8 @@ async def handle_client_connection_async(conn, addr, args):
                             session.is_auto_generating = (current_prompt == "")
 
                             sampling_params = SamplingParams(
-                                temperature=0.9,
-                                max_tokens=512,
+                                temperature=args.temperature,
+                                max_tokens=args.max_tokens,
                             )
 
                             # Launch background task with video tuple
@@ -2237,6 +2237,12 @@ def parse_args():
     parser.add_argument("--prefix-caching-hash-algo", type=str, default=None,
                         choices=["sha256", "sha256_cbor", "xxhash", "xxhash_cbor"],
                         help="Hash algorithm for prefix caching (vLLM CacheConfig)")
+
+    # Sampling parameters
+    parser.add_argument("--temperature", type=float, default=0.9,
+                        help="Sampling temperature for generation (default: 0.9)")
+    parser.add_argument("--max-tokens", type=int, default=512,
+                        help="Maximum number of tokens to generate (default: 512)")
 
     # Mode selection
     parser.add_argument("--use-http-api", action="store_true",

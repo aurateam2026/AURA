@@ -21,6 +21,8 @@ CUDA_VISIBLE_DEVICES=1,2 numactl --cpunodebind=0 --membind=0 python -u Qwen3_VL_
     --mm-encoder-attn-backend FLASH_ATTN \
     --mm-encoder-tp-mode data \
     --max-num-batched-tokens 15360 \
+    --temperature 0.5 \
+    --max-tokens 128 \
     --enable-tts \
     --tts-gpu 2 \
     --tts-model Qwen/Qwen3-TTS-12Hz-1.7B-Base \

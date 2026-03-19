@@ -31,8 +31,13 @@
 # CASE_NAME=qwen3vl-8b_20260316_01
 
 ## 
-CASE_NAME=qwen3vl-8b_20260317_01
+# CASE_NAME=qwen3vl-8b_20260317_01
 
+## 去掉了20% 1qna里面最后一个问题，理论上对模型一直说话有改善 
+CASE_NAME=qwen3vl-8b_20260317_02
+
+## 去掉了1qna数据中一直说话的部分数据，理论上对模型一直说话有改善
+# CASE_NAME=qwen3vl-8b_20260318_01
 
 # Qwen3 Omni 启动示例:
 MODEL_PATH=/home/dyvm6xra/dyvm6xrauser36/Projects/streaming_video_understanding/${CASE_NAME}/
