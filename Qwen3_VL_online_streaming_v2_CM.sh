@@ -1,12 +1,14 @@
 #!/bin/bash
 
-CASE_NAME=qwen3vl-8b_20260311_03
+CASE_NAME=qwen3vl-8b_20260324_03
 
 # Qwen3 Omni 启动示例:
 MODEL_PATH=/home/dyvm6xra/dyvm6xrauser36/Projects/streaming_video_understanding/${CASE_NAME}/
 echo "MODEL_PATH: $MODEL_PATH"
 
-CUDA_VISIBLE_DEVICES=1,2 numactl --cpunodebind=0 --membind=0 python -u Qwen3_VL_online_streaming_v2_ContextManaged.py \
+# vLLM 主推理 (TTS 已拆分为独立服务 tts_service.py)
+export CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-1}
+python -u Qwen3_VL_online_streaming_v2_ContextManaged.py \
     --listen-port 12345 \
     --model $MODEL_PATH \
     --tensor-parallel-size 1 \
@@ -24,15 +26,11 @@ CUDA_VISIBLE_DEVICES=1,2 numactl --cpunodebind=0 --membind=0 python -u Qwen3_VL_
     --temperature 0.5 \
     --max-tokens 128 \
     --enable-tts \
-    --tts-gpu 2 \
-    --tts-model Qwen/Qwen3-TTS-12Hz-1.7B-Base \
-    --tts-language Chinese \
-    --tts-ref-audio test_query.mp3 \
-    --tts-ref-text "仔细观察当前你看到的画面，并且结合之前你看到的画面，仔细描述你看到了什么" \
+    --tts-service-url http://localhost:8002 \
     --tts-output-dir tts_results \
     --enable-pruning \
-    --max-rounds 30 \
-    --num-rounds-keep 10 \
-    --max-context-qas 10 \
+    --max-rounds 120 \
+    --num-rounds-keep 15 \
+    --max-context-qas 30 \
     --debug-context-file debug_context.jsonl \
-    --debug-context 
+    --debug-context

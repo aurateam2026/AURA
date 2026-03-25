@@ -53,8 +53,7 @@ import sys
 
 from datetime import datetime
 
-# Add Qwen3-TTS-streaming to path
-sys.path.append(os.path.join(os.path.dirname(__file__), "Qwen3-TTS-streaming"))
+# TTS is now a separate service (tts_service.py), no local model import needed
 
 # vLLM V1 imports for streaming input
 from vllm import SamplingParams
@@ -581,16 +580,11 @@ class StreamingSession:
 active_connection = None
 connection_lock = threading.Lock()
 
-# TTS related globals
-tts_omni = None
+# TTS related globals (TTS model is now a remote service)
 tts_enabled = False
 tts_streaming = False
 TTS_OUTPUT_DIR = "tts_results"
-tts_lock = threading.Lock()
-tts_event_loop = None
-voice_clone_prompt_cache = None  # Cache for Base model voice clone prompt
-tts_ref_audio_path = None  # Reference audio path for Base model
-tts_ref_text = None  # Reference text for Base model
+tts_service_url = None  # URL of the standalone TTS service
 
 # TTS pending task management
 pending_tts_task = None
@@ -1060,74 +1054,28 @@ def clear_cancel_flag():
         tts_cancel_flag = False
 
 def init_tts_model(args) -> bool:
-    """Initialize the TTS model using Qwen3TTSModel (Direct integration)."""
-    global tts_omni, tts_enabled, tts_streaming, tts_event_loop, voice_clone_prompt_cache
-    global tts_ref_audio_path, tts_ref_text
+    """Verify the remote TTS service is reachable."""
+    global tts_enabled, tts_streaming, tts_service_url
 
-    # Store ref audio/text settings for Base model
-    tts_ref_audio_path = getattr(args, 'tts_ref_audio', None)
-    tts_ref_text = getattr(args, 'tts_ref_text', None)
+    url = getattr(args, "tts_service_url", None)
+    if not url:
+        print("⚠️ --tts-service-url not specified")
+        tts_enabled = False
+        return False
+
+    tts_service_url = url.rstrip("/")
+    print(f"🔊 Checking TTS service at {tts_service_url} ...")
 
     try:
-        # Import directly from local path
-        try:
-            from qwen_tts import Qwen3TTSModel
-        except ImportError:
-            # Fallback to local import if sys.path update didn't propagate well
-            sys.path.append(os.path.join(os.path.dirname(__file__), "Qwen3-TTS-streaming"))
-            from qwen_tts import Qwen3TTSModel
-
-        import torch
-
-        # Load ref audio once
-        voice_clone_prompt_cache = None
-
-        print(f"🔊 Initializing TTS model: {args.tts_model}")
-
-        # Configure device map to use the specific GPU
-        # Check available devices
-        num_devices = torch.cuda.device_count()
-        print(f"ℹ️  Available CUDA devices: {num_devices}")
-
-        target_gpu_idx = int(args.tts_gpu.split(',')[0]) if ',' in args.tts_gpu else int(args.tts_gpu)
-
-        # If target index is out of bounds (e.g. user passed physical ID 5, but we only have 5 devices 0-4),
-        # try to map it or fallback to the last device.
-        if target_gpu_idx >= num_devices:
-            print(f"⚠️  Target GPU index {target_gpu_idx} is out of bounds (0-{num_devices-1}).")
-            # Heuristic: If vLLM uses TP=4, it likely uses 0,1,2,3. We should use 4.
-            # Let's assume the user wants the last available GPU if the specified one is invalid.
-            fallback_idx = num_devices - 1
-            print(f"🔄 Fallback: Using last available GPU: cuda:{fallback_idx}")
-            target_gpu_idx = fallback_idx
-
-        device = f"cuda:{target_gpu_idx}"
-
-        # Load model directly
-        tts_omni = Qwen3TTSModel.from_pretrained(
-            args.tts_model,
-            device_map=device,
-            dtype=torch.bfloat16,
-            attn_implementation="flash_attention_2",
-        )
-
-        # Enable optimizations
-        print("🚀 Enabling streaming optimizations for TTS...")
-        tts_omni.enable_streaming_optimizations(
-            decode_window_frames=80,
-            use_compile=True,
-            compile_mode="reduce-overhead",
-        )
-
-        tts_streaming = True # Always force streaming with this backend
+        resp = requests.get(f"{tts_service_url}/v1/tts/health", timeout=10)
+        resp.raise_for_status()
+        info = resp.json()
+        print(f"✓ TTS service connected: {info}")
+        tts_streaming = True
         tts_enabled = True
-        print(f"✓ TTS model initialized on {device}")
-
         return True
     except Exception as e:
-        print(f"Error initializing TTS model: {e}")
-        import traceback
-        traceback.print_exc()
+        print(f"⚠️ TTS service unreachable ({tts_service_url}): {e}")
         tts_enabled = False
         return False
 
@@ -1135,101 +1083,39 @@ def _text_to_speech_generator(text: str,
                          language: str = "Chinese",
                          speaker: str = "Vivian",
                          instruct: str = ""):
-    """Generator implementation of text_to_speech using Qwen3TTSModel.
+    """Stream PCM chunks from the remote TTS service.
 
-    For CustomVoice models: Uses non-streaming fast generation (more stable)
-    For Base models: Uses true streaming with voice clone
+    The service returns a binary stream where each chunk is:
+        [sample_rate : 4 bytes big-endian uint32]
+        [pcm_length  : 4 bytes big-endian uint32]
+        [pcm_data    : pcm_length bytes, int16 LE]
     """
-    global tts_omni
+    print(f"🎤 [Remote] Requesting TTS: {text[:40]}...")
 
-    # Check model type
-    model_type = getattr(tts_omni.model, "tts_model_type", "base")
+    try:
+        resp = requests.post(
+            f"{tts_service_url}/v1/tts/stream",
+            json={"text": text, "language": language, "speaker": speaker, "instruct": instruct},
+            stream=True,
+            timeout=(5, 120),
+        )
+        resp.raise_for_status()
 
-    import numpy as np
+        buf = b""
+        for raw_chunk in resp.iter_content(chunk_size=8192):
+            buf += raw_chunk
+            while len(buf) >= 8:
+                sr, pcm_len = struct.unpack(">II", buf[:8])
+                if len(buf) < 8 + pcm_len:
+                    break
+                pcm_data = buf[8 : 8 + pcm_len]
+                buf = buf[8 + pcm_len :]
+                yield pcm_data, sr
 
-    if model_type == "custom_voice":
-        # CustomVoice path - Use non-streaming fast generation
-        # This is actually faster and more stable than trying to use stream_generate_pcm
-        # because CustomVoice doesn't have full streaming support
-        print(f"🎤 [Fast] Converting to speech (CustomVoice - {speaker}): {text[:40]}...")
-
-        try:
-            import time
-            start_time = time.time()
-
-            # Use the high-level generate_custom_voice which is optimized
-            wavs, sr = tts_omni.generate_custom_voice(
-                text=text,
-                speaker=speaker,
-                language=language if language else "Auto",
-                instruct=instruct if instruct else None,
-                # Faster generation params
-                do_sample=True,
-                temperature=0.85,
-                top_k=30,
-            )
-
-            gen_time = time.time() - start_time
-            audio_duration = len(wavs[0]) / sr
-            rtf = gen_time / audio_duration if audio_duration > 0 else 0
-            print(f"🎤 [Fast] Generated {audio_duration:.2f}s audio in {gen_time:.2f}s (RTF: {rtf:.2f})")
-
-            # Yield the entire audio as one chunk (non-streaming)
-            audio_int16 = (wavs[0] * 32767).clip(-32768, 32767).astype(np.int16)
-            yield audio_int16.tobytes(), sr
-
-        except Exception as e:
-            print(f"TTS generation error (CustomVoice): {e}")
-            import traceback
-            traceback.print_exc()
-
-    else:
-        # Base (Voice Clone) path - True streaming with optimizations
-        # Use global ref_audio/ref_text settings (set during init or from args)
-        global voice_clone_prompt_cache, tts_ref_audio_path, tts_ref_text
-
-        # Create prompt if not cached
-        if voice_clone_prompt_cache is None:
-            ref_audio_path = tts_ref_audio_path if tts_ref_audio_path else "kuklina-1.wav"
-            ref_text = tts_ref_text if tts_ref_text else (
-                "这是凯蒂的弟弟，我的同学。你的手怎么了？你为什么不穿衣服？他有很多武术奖项。"
-                "凯蒂告诉过我，对吗，莱奥？你知道你打败了谁吗，莱娅？"
-                "摸摸这些肌肉，我不知道你有一只这么棒的猫。生于月亮之下。"
-                "莱娅总是能挖出一些奇特的东西。是的，只是可惜它占据了她几乎所有的时间。"
-                "我不明白这破烂为什么不能等你和妹妹玩完再等。"
-            )
-
-            if os.path.exists(ref_audio_path):
-                print(f"🎤 Creating voice clone prompt from: {ref_audio_path}")
-                voice_clone_prompt_cache = tts_omni.create_voice_clone_prompt(
-                    ref_audio=ref_audio_path,
-                    ref_text=ref_text,
-                )
-            else:
-                print(f"⚠️ Reference audio not found: {ref_audio_path}")
-                print("⚠️ Base model needs --tts-ref-audio and --tts-ref-text!")
-                voice_clone_prompt_cache = None
-
-        print(f"🎤 [Stream] Converting to speech (VoiceClone): {text[:40]}...")
-
-        try:
-            # True streaming generation with low-latency params
-            for chunk, sr in tts_omni.stream_generate_voice_clone(
-                text=text,
-                language=language if language in ["Chinese", "English", "Russian", "Japanese", "Korean"] else "Chinese",
-                voice_clone_prompt=voice_clone_prompt_cache,
-                emit_every_frames=2,  # Lower = faster first chunk (was 4)
-                decode_window_frames=60,  # Smaller = faster (was 80)
-                overlap_samples=256,  # Smaller overlap for speed
-            ):
-                # Convert to int16 PCM
-                audio_int16 = (chunk * 32767).clip(-32768, 32767).astype(np.int16)
-                yield audio_int16.tobytes(), sr
-
-        except Exception as e:
-            print(f"TTS generation error: {e}")
-            import traceback
-            traceback.print_exc()
+    except Exception as e:
+        print(f"TTS remote call error: {e}")
+        import traceback
+        traceback.print_exc()
 
 def merge_short_sentences(sentences: list, min_chars: int = 15) -> list:
     """Merge short sentences to reduce TTS calls and improve naturalness."""
@@ -1270,15 +1156,19 @@ def tts_worker_loop(args):
     """
     global current_tts_response_id
 
-    # Check model type for optimization strategy
-    model_type = "unknown"
-    if tts_omni is not None:
-        model_type = getattr(tts_omni.model, "tts_model_type", "base")
+    # Query model type from remote TTS service
+    model_type = "base"
+    try:
+        resp = requests.get(f"{tts_service_url}/v1/tts/health", timeout=5)
+        if resp.ok:
+            model_type = resp.json().get("model_type", "base")
+    except Exception:
+        pass
 
     # Determine if we can use chunk streaming (only Base model supports true streaming)
     use_chunk_streaming = (model_type == "base")
 
-    print(f"🔊 TTS Worker started (Model: {model_type}, Chunk Streaming: {use_chunk_streaming})")
+    print(f"🔊 TTS Worker started (Remote service, Model: {model_type}, Chunk Streaming: {use_chunk_streaming})")
 
     import numpy as np
     import soundfile as sf
@@ -1655,9 +1545,10 @@ async def generate_response_with_video(
                         previous_text = current_text
                         print(f"🤖 [Session {session.session_id}] Delta: {delta!r}")
 
-                        # Send first token with query (ASR result)
+                        # Plan 2: query already sent to client right after ASR,
+                        # first token only marks the start of model response.
                         if is_first_token:
-                            send_streaming_token_to_client(delta, request_id, query=prompt, is_start=True)
+                            send_streaming_token_to_client(delta, request_id, is_start=True)
                             is_first_token = False
                         else:
                             send_streaming_token_to_client(delta, request_id)
@@ -1728,10 +1619,14 @@ async def generate_response_with_video(
 
     except asyncio.CancelledError:
         print(f"⏹ [Session {session.session_id}] Generation cancelled (context reset)")
+        if not is_first_token:
+            send_streaming_token_to_client("", request_id, is_final=True)
     except Exception as e:
         print(f"❌ [Session {session.session_id}] Generation error: {e}")
         import traceback
         traceback.print_exc()
+        if not is_first_token:
+            send_streaming_token_to_client("", request_id, is_final=True)
     finally:
         # CRITICAL: Always reset the generating flags
         session.is_generating = False
@@ -1769,10 +1664,10 @@ def send_streaming_token_to_client(token: str, response_id: str, is_final: bool 
                     "is_final": is_final,
                     "type": "streaming_token"
                 }
-                # Include query at start of response
-                if is_start and query:
-                    response_data["query"] = query
+                if is_start:
                     response_data["is_start"] = True
+                if query:
+                    response_data["query"] = query
 
                 # Mark silent responses so client can handle them appropriately
                 if is_silent:
@@ -1784,6 +1679,29 @@ def send_streaming_token_to_client(token: str, response_id: str, is_final: bool 
                 active_connection.sendall(header + payload)
             except Exception as e:
                 print(f"Error sending streaming token: {e}")
+
+
+def send_asr_query_to_client(query: str):
+    """Send ASR-transcribed query text to client immediately (before model inference).
+
+    Protocol: Type 10 (ASR_QUERY_ECHO) - a dedicated message type so that
+    clients won't mistake it for a model streaming response (Type 8).
+    This allows the client to display the user's query as soon as ASR finishes,
+    without waiting for the model to start generating (Plan 2 optimization).
+    """
+    with connection_lock:
+        if active_connection:
+            try:
+                response_data = {
+                    "type": "asr_query",
+                    "query": query,
+                }
+                payload = json.dumps(response_data, ensure_ascii=False).encode('utf-8')
+                header = struct.pack(">BQ", 10, len(payload))
+                active_connection.sendall(header + payload)
+                print(f"📤 [Plan2] Sent ASR query to client immediately: {query[:50]}...")
+            except Exception as e:
+                print(f"Error sending ASR query to client: {e}")
 
 
 def send_audio_to_client(audio_bytes: bytes, response_id: str = None,
@@ -2093,8 +2011,9 @@ async def handle_client_connection_async(conn, addr, args):
                     last_prompt = transcribed_text
                     print(f"📝 Set prompt from ASR: {last_prompt[:50]}...")
 
-                    # NOTE: ASR result (query) is now sent with the first streaming token
-                    # No need to send separately via send_response_to_client()
+                    # Plan 2: ASR query is sent to client immediately,
+                    # model inference result will be sent separately later.
+                    send_asr_query_to_client(transcribed_text)
 
                     # Optimization: Try to trigger immediately if we have ANY video frames
                     if accumulated_video_frames:
@@ -2278,10 +2197,10 @@ def parse_args():
     parser.add_argument("--debug-context-file", type=str, default="context_debug.jsonl",
                         help="JSONL file path for context debug output")
 
-    # TTS configuration
+    # TTS configuration (TTS is now a remote service)
     parser.add_argument("--enable-tts", action="store_true", help="Enable TTS")
-    parser.add_argument("--tts-model", type=str, default="Qwen/Qwen3-TTS-12Hz-1.7B-CustomVoice",
-                        help="TTS model path")
+    parser.add_argument("--tts-service-url", type=str, default="http://localhost:8002",
+                        help="URL of the standalone TTS service")
     parser.add_argument("--tts-speaker", type=str, default="Vivian",
                         help="TTS speaker name")
     parser.add_argument("--tts-language", type=str, default="Chinese", choices=["Chinese", "English"],
@@ -2290,19 +2209,6 @@ def parse_args():
                         help="TTS instruction")
     parser.add_argument("--tts-output-dir", type=str, default="tts_results",
                         help="TTS output directory")
-    parser.add_argument("--tts-stage-configs", type=str, default=None,
-                        help="TTS stage configs path")
-    parser.add_argument("--tts-stage-timeout", type=int, default=300,
-                        help="TTS stage init timeout")
-    parser.add_argument("--tts-gpu", type=str, default="1",
-                        help="TTS GPU ID")
-    parser.add_argument("--tts-streaming", action="store_true",
-                        help="Enable TTS streaming mode")
-    # Base model voice clone settings
-    parser.add_argument("--tts-ref-audio", type=str, default=None,
-                        help="Reference audio file for Base model voice cloning (5-15 seconds)")
-    parser.add_argument("--tts-ref-text", type=str, default=None,
-                        help="Reference text matching the audio content")
 
     return parser.parse_args()
 
@@ -2359,7 +2265,7 @@ async def main_async(args):
     if args.max_num_batched_tokens is not None:
         print(f"  Max num batched tokens: {args.max_num_batched_tokens}")
     if args.enable_tts:
-        print(f"  TTS Enabled: {args.tts_model} (GPU {args.tts_gpu})")
+        print(f"  TTS Enabled: service at {args.tts_service_url}")
     print("=" * 60)
 
     # Initialize TTS if enabled
@@ -2371,31 +2277,6 @@ async def main_async(args):
     # print("⚠ TTS initialization failed, TTS will be disabled")
 
     if not args.use_http_api:
-        # Warning about GPU conflict between TTS and vLLM
-        if args.enable_tts:
-            current_visible = os.environ.get("CUDA_VISIBLE_DEVICES", "")
-            if current_visible:
-                # Parse visible devices
-                visible_list = [x.strip() for x in current_visible.split(",") if x.strip()]
-                tts_gpus = [x.strip() for x in args.tts_gpu.split(",") if x.strip()]
-
-                # Check for potential conflict but DO NOT modify CUDA_VISIBLE_DEVICES
-                # as it hides GPUs from the process entirely.
-                vllm_gpus = [g for g in visible_list if g not in tts_gpus]
-
-                print(f"ℹ️  GPU Configuration Check:")
-                print(f"  CUDA_VISIBLE_DEVICES: {current_visible}")
-                print(f"  TTS Requested GPU(s): {tts_gpus}")
-                print(f"  vLLM Expected GPU(s): {visible_list[:args.tensor_parallel_size]}") # Assuming vLLM takes first N
-
-                if len(set(visible_list[:args.tensor_parallel_size]) & set(tts_gpus)) > 0:
-                    print(f"⚠️  POTENTIAL GPU CONFLICT DETECTED!")
-                    print(f"  vLLM (TP={args.tensor_parallel_size}) likely uses {visible_list[:args.tensor_parallel_size]}")
-                    print(f"  TTS uses {tts_gpus}")
-                    print("  Ensure you have enough VRAM or different devices assigned.")
-                else:
-                    print(f"✅ GPU assignment looks safe (vLLM: {visible_list[:args.tensor_parallel_size]}, TTS: {tts_gpus})")
-
         # Initialize embedded engine
         await init_async_engine(args)
 

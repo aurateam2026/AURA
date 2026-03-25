@@ -38,7 +38,7 @@ app = Flask(__name__)
 CORS(app)
 
 # 服务端配置
-SERVER_HOST = 'hk01dgx050'
+SERVER_HOST = 'hk01dgx030'
 SERVER_PORT = 12345
 
 # 视频发送间隔（秒） - 改为连续发送
@@ -57,6 +57,7 @@ START_CAMERA_TYPE = b'\x06'  # 开启摄像头（清理文件夹）
 ERROR_TYPE = 7  # 服务器错误/拒绝消息
 STREAMING_TOKEN_TYPE = 8  # 流式 token
 TTS_AUDIO_CHUNK_TYPE = 9  # TTS 音频 chunk (Raw PCM int16) - Step 2 新增
+ASR_QUERY_ECHO_TYPE = 10  # ASR query echo (Plan 2: 立即回传用户转写文字)
 
 # 全局socket连接
 socket_lock = threading.Lock()
@@ -191,6 +192,15 @@ def receive_thread_func():
                     streaming_token_queue.put(token_data)
                 except Exception as e:
                     logger.error(f"解析流式 token 失败: {e}")
+            
+            elif msg_type == ASR_QUERY_ECHO_TYPE:
+                # Plan 2: ASR query echo - 立即回传用户转写文字
+                try:
+                    token_data = data.decode('utf-8')
+                    logger.info(f"📤 收到 ASR query echo: {token_data[:50]}...")
+                    streaming_token_queue.put(token_data)
+                except Exception as e:
+                    logger.error(f"解析 ASR query echo 失败: {e}")
             
             elif msg_type == TTS_AUDIO_TYPE:
                 # 收到 TTS 音频数据 (句子级流式协议 - WAV)

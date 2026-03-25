@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#000000" />
+  <title>AURA · Live</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Helvetica Neue", sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .call-root {
+      --ctrl-icon-size: 13vw;
+      --chrome-bg: rgba(24, 24, 28, 0.45);
+      --chrome-border: rgba(255, 255, 255, 0.18);
+      --chrome-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: #000 center / cover no-repeat url("content.png");
+      background-color: #111;
+    }
+
+    .safe-top {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: env(safe-area-inset-top, 0px);
+      pointer-events: none;
+    }
+
+    .live-badge {
+      position: absolute;
+      top: calc(20px + env(safe-area-inset-top, 0px));
+      left: calc(20px + env(safe-area-inset-left, 0px));
+      z-index: 2;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: clamp(6px, 1.5vw, 9px);
+      padding: 8px 18px;
+      border-radius: 9999px;
+      background: var(--chrome-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: var(--chrome-shadow);
+      border: 1px solid var(--chrome-border);
+    }
+
+    .live-dot {
+      flex-shrink: 0;
+      width: clamp(8px, 2vw, 10px);
+      height: clamp(8px, 2vw, 10px);
+      background-color: #ff3b30;
+      border-radius: 50%;
+      box-shadow: 0 0 8px rgba(255, 59, 48, 0.8);
+      animation: pulse 2s infinite ease-in-out;
+    }
+
+    .live-badge-brand {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .live-badge-logo {
+      display: block;
+      width: min(8vw, 54px);
+      height: auto;
+      object-fit: contain;
+      flex-shrink: 0;
+    }
+
+    .live-text {
+      color: #fff;
+      font-size: clamp(14px, 3.8vw, 18px);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.85); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    .controls {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: calc(40px + env(safe-area-inset-bottom, 0px));
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0 20px;
+      gap: clamp(45px, 15vw, 90px);
+      z-index: 2;
+    }
+
+    .ctrl-btn {
+      flex: 0 0 auto;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(4px, 1.2vw, 10px);
+      border: none;
+      background: transparent;
+      color: #fff;
+      cursor: pointer;
+      font-size: clamp(10px, 2.8vw, 14px);
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+    }
+
+    .ctrl-btn:active .ctrl-icon {
+      transform: scale(0.92);
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .ctrl-icon {
+      width: var(--ctrl-icon-size);
+      height: var(--ctrl-icon-size);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--chrome-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: var(--chrome-shadow);
+      border: 1px solid var(--chrome-border);
+      transition: transform 0.15s ease;
+    }
+
+    .ctrl-icon-fa {
+      font-size: calc(var(--ctrl-icon-size) * 0.38);
+      color: #fff;
+      line-height: 1;
+    }
+
+    .vignette {
+      pointer-events: none;
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, transparent 15%, transparent 80%, rgba(0,0,0,0.5) 100%);
+    }
+  </style>
+</head>
+<body>
+  <div class="call-root" role="application" aria-label="视频通话界面">
+    <div class="safe-top" aria-hidden="true"></div>
+    <div class="vignette" aria-hidden="true"></div>
+
+    <div class="live-badge" role="status" aria-label="AURA Live">
+      <span class="live-dot" aria-hidden="true"></span>
+      <div class="live-badge-brand">
+        <img class="live-badge-logo" src="logo.png" alt="AURA" width="440" height="auto" />
+        <span class="live-text">Live</span>
+      </div>
+    </div>
+
+    <nav class="controls" aria-label="通话控制">
+      <button type="button" class="ctrl-btn" data-action="start">
+        <span class="ctrl-icon" aria-hidden="true">
+          <i class="fa-solid fa-camera ctrl-icon-fa" aria-hidden="true"></i>
+        </span>
+        <span>Start</span>
+      </button>
+
+      <button type="button" class="ctrl-btn" data-action="record">
+        <span class="ctrl-icon" aria-hidden="true">
+          <i class="fa-solid fa-microphone ctrl-icon-fa" aria-hidden="true"></i>
+        </span>
+        <span>Record</span>
+      </button>
+
+      <button type="button" class="ctrl-btn" data-action="flip">
+        <span class="ctrl-icon" aria-hidden="true">
+          <i class="fa-solid fa-camera-rotate ctrl-icon-fa" aria-hidden="true"></i>
+        </span>
+        <span>Flip</span>
+      </button>
+    </nav>
+  </div>
+
+  <script>
+    document.querySelectorAll(".ctrl-btn").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var action = btn.getAttribute("data-action");
+        console.log("[demo]", action);
+      });
+    });
+  </script>
+</body>
+</html>
