@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CASE_NAME=qwen3vl-8b_20260324_03
+CASE_NAME=qwen3vl-8b_20260319_03
 
 # Qwen3 Omni 启动示例:
 MODEL_PATH=/home/dyvm6xra/dyvm6xrauser36/Projects/streaming_video_understanding/${CASE_NAME}/
@@ -8,10 +8,13 @@ echo "MODEL_PATH: $MODEL_PATH"
 
 # vLLM 主推理 (TTS 已拆分为独立服务 tts_service.py)
 export CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-1}
+TP=${TP_SIZE:-1}
+echo "CUDA_VISIBLE_DEVICES=$CUDA_VISIBLE_DEVICES, tensor-parallel-size=$TP"
+
 python -u Qwen3_VL_online_streaming_v2_ContextManaged.py \
     --listen-port 12345 \
     --model $MODEL_PATH \
-    --tensor-parallel-size 1 \
+    --tensor-parallel-size $TP \
     --max-model-len 262144 \
     --max-seq-len 262144 \
     --gpu-memory-utilization 0.9 \
