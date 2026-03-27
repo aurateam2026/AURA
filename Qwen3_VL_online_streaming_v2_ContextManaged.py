@@ -42,6 +42,7 @@ import struct
 import threading
 import time
 from dataclasses import dataclass
+from difflib import SequenceMatcher
 from typing import Optional
 
 import cv2
@@ -506,6 +507,31 @@ class SessionHistory:
             print(f"⚠️ Sliding window rounds ({self._sw_round_count()}) "
                   f"> max_rounds ({self.max_rounds}), pruning...")
             self._prune_history()
+
+    def is_duplicate_response(self, text: str, threshold: float = 0.85) -> bool:
+        """Check if text is similar to any recent non-silent assistant response in sliding window."""
+        if not text or not text.strip():
+            return False
+        count = 0
+        max_ratio = 0.0
+        max_ratio_text = ""
+        for msg in reversed(self._sliding_window):
+            if count >= 10:
+                break
+            if msg["role"] == "assistant" and not self._is_silent_response(msg["content"]):
+                ratio = SequenceMatcher(None, text, msg["content"]).ratio()
+                if ratio > max_ratio:
+                    max_ratio = ratio
+                    max_ratio_text = msg["content"]
+                if ratio >= threshold:
+                    print(f"🔍 [DEDUP] HIT  ratio={ratio:.3f} >= {threshold} | "
+                          f"new='{text[:40]}...' | old='{msg['content'][:40]}...'")
+                    return True
+                count += 1
+        print(f"🔍 [DEDUP] PASS max_ratio={max_ratio:.3f} < {threshold} | "
+              f"new='{text[:40]}...' | closest='{max_ratio_text[:40]}...' | "
+              f"compared={count} recent msgs")
+        return False
 
     def add_assistant_message(self, text: str):
         """Add assistant response."""
@@ -1484,18 +1510,11 @@ async def generate_response_with_video(
 
         full_response = ""
         previous_text = ""
-        is_silent_response = False  # Flag to detect <|silent|> response
-        is_first_token = True  # Flag to send query with first token
+        is_silent_response = False
+        ttft = 0
 
-        # Streaming TTS: sentence buffer and counter
         tts_enabled_for_this_response = args and args.enable_tts and tts_enabled
-        sentence_buffer = ""
-        sentence_idx = 0
 
-        # Only clear TTS queue for user-initiated responses (with a real prompt).
-        # Background auto-generations (empty prompt) should NOT clear the queue,
-        # otherwise pending sentences from the previous response get dropped
-        # before the TTS worker can process them.
         if tts_enabled_for_this_response and prompt:
             clear_tts_sentence_queue(new_response_id=request_id)
 
@@ -1505,86 +1524,37 @@ async def generate_response_with_video(
         token_count = 0
         print(f"[TTFT_DEBUG] stream generate_start request_id={request_id} t={generation_start_time:.6f}")
 
-        # Generate with video
+        # ===== Buffered generation: collect full response before sending =====
         async for response in async_engine.generate(
             prompt=vllm_inputs,
             sampling_params=sampling_params,
             request_id=request_id,
         ):
-            # Record time to first token
             if first_token_time is None:
                 first_token_time = time.time()
                 ttft = first_token_time - generation_start_time
                 print(f"[TTFT_DEBUG] stream first_token request_id={request_id} t={first_token_time:.6f} ttft_ms={ttft*1000:.1f}")
 
             token_count += 1
-            print(f"🔍 [DEBUG-VIDEO] Got response, outputs count: {len(response.outputs) if response.outputs else 0}")
             if response.outputs:
                 output = response.outputs[0]
-                # 查看 token IDs（解码前的数字 ID 列表）
-                print(f"🔢 [VIDEO] Token IDs: {output.token_ids}")
-                print(f"🔢 [VIDEO] Token IDs length: {len(output.token_ids)}")
 
-                # Check for silent/empty response: only look at the FIRST token.
-                # In vLLM streaming, token_ids is cumulative and ordered,
-                # so token_ids[0] is always the model's first generated token.
-                # If the first token is <|silent|> or <|im_end|>, the model
-                # chose not to respond — treat as silent and don't send to user.
                 if len(output.token_ids) > 0 and output.token_ids[0] in (SILENT_TOKEN_ID, IM_END_TOKEN_ID):
                     is_silent_response = True
                     first_tid = output.token_ids[0]
                     tag = "SILENT" if first_tid == SILENT_TOKEN_ID else "IM_END"
                     print(f"🔇 [Session {session.session_id}] {tag} as first token → silent response "
                           f"(first_token_id={first_tid}, token_ids={list(output.token_ids[:5])}...)")
-                    break  # Stop generation early
+                    break
 
                 if hasattr(output, 'text') and output.text:
                     current_text = output.text
                     if len(current_text) > len(previous_text):
                         delta = current_text[len(previous_text):]
                         previous_text = current_text
-                        print(f"🤖 [Session {session.session_id}] Delta: {delta!r}")
-
-                        # Plan 2: query already sent to client right after ASR,
-                        # first token only marks the start of model response.
-                        if is_first_token:
-                            send_streaming_token_to_client(delta, request_id, is_start=True)
-                            is_first_token = False
-                        else:
-                            send_streaming_token_to_client(delta, request_id)
                         full_response += delta
 
-                        # ========== Streaming TTS: Sentence boundary detection ==========
-                        if tts_enabled_for_this_response:
-                            sentence_buffer += delta
-
-                            # Check if delta contains sentence terminator
-                            for terminator in SENTENCE_TERMINATORS_SET:
-                                if terminator in delta:
-                                    # Find the last terminator position
-                                    last_term_pos = -1
-                                    for t in SENTENCE_TERMINATORS_SET:
-                                        pos = sentence_buffer.rfind(t)
-                                        if pos > last_term_pos:
-                                            last_term_pos = pos
-
-                                    if last_term_pos >= 0:
-                                        # Extract complete sentence(s) up to and including the terminator
-                                        complete_part = sentence_buffer[:last_term_pos + 1]
-                                        remaining_part = sentence_buffer[last_term_pos + 1:]
-
-                                        # Enqueue the complete sentence for TTS
-                                        if complete_part.strip():
-                                            enqueue_tts_sentence(complete_part, request_id, sentence_idx, args)
-                                            sentence_idx += 1
-
-                                        # Keep the remaining part for next sentence
-                                        sentence_buffer = remaining_part
-                                    break  # Only need to check once per delta
-                        # ========== End Streaming TTS ==========
-
-        # Finished
-        # print timing information
+        # ===== Generation finished — decide: silent / dedup-silent / send =====
         generation_end_time = time.time()
         total_time = generation_end_time - generation_start_time
 
@@ -1594,39 +1564,44 @@ async def generate_response_with_video(
         print(f"⏱️ [TIMING] Total generation time: {total_time*1000:.1f}ms")
         print(f"⏱️ [TIMING] Tokens generated: {token_count}")
 
-        if is_silent_response:
-            # Silent mode: add to context AND send silent marker to client
-            print(f"🔇 [Session {session.session_id}] Silent mode - adding to history and notifying client")
-            session.history.add_assistant_message(SILENT_TEXT)
-            # Send silent marker to client with is_final=True so client knows response is complete
-            # Use is_silent=True flag to tell client this is a silent response (not empty string)
-            send_streaming_token_to_client(SILENT_TEXT, request_id, is_final=True, is_silent=True)
-            # Don't trigger TTS for silent responses
-        else:
-            # Normal mode: send final token marker (response already streamed)
-            send_streaming_token_to_client("", request_id, is_final=True)
-            # NOTE: Removed send_response_to_client() - response already sent via streaming tokens
+        dedup_threshold = getattr(args, "dedup_threshold", 0.0)
 
-            # Update History with Assistant Response
+        print(f"📋 [DECISION] request_id={request_id} | is_silent={is_silent_response} | "
+              f"full_response({len(full_response)} chars)='{full_response[:80]}' | "
+              f"dedup_threshold={dedup_threshold}")
+
+        if is_silent_response:
+            print(f"🔇 [DECISION] → MODEL_SILENT (first token was silent/im_end)")
+            session.history.add_assistant_message(SILENT_TEXT)
+            send_streaming_token_to_client(SILENT_TEXT, request_id, is_final=True, is_silent=True)
+
+        elif dedup_threshold > 0 and session.history.is_duplicate_response(full_response, dedup_threshold):
+            print(f"🔇 [DECISION] → DEDUP_SILENT (suppressed, not sent to frontend/TTS)")
+            session.history.add_assistant_message(SILENT_TEXT)
+            send_streaming_token_to_client(SILENT_TEXT, request_id, is_final=True, is_silent=True)
+
+        else:
+            print(f"✅ [DECISION] → SEND_NORMAL (sending to frontend + TTS)")
+            send_streaming_token_to_client(full_response, request_id, is_start=True)
+            send_streaming_token_to_client("", request_id, is_final=True)
             session.history.add_assistant_message(full_response)
 
-            # ========== Streaming TTS: Handle remaining sentence buffer ==========
-            if tts_enabled_for_this_response and sentence_buffer.strip():
-                # Enqueue the final incomplete sentence
-                enqueue_tts_sentence(sentence_buffer, request_id, sentence_idx, args)
-                print(f"🎤 [Queue] Final sentence enqueued, total: {sentence_idx + 1} sentences")
-            # ========== End Streaming TTS ==========
+            if tts_enabled_for_this_response and full_response.strip():
+                sentences = split_text_to_sentences(full_response)
+                sentences = merge_short_sentences(sentences)
+                for idx, sentence in enumerate(sentences):
+                    if sentence.strip():
+                        enqueue_tts_sentence(sentence, request_id, idx, args)
+                print(f"🎤 [Queue] Enqueued {len(sentences)} sentences for TTS")
 
     except asyncio.CancelledError:
         print(f"⏹ [Session {session.session_id}] Generation cancelled (context reset)")
-        if not is_first_token:
-            send_streaming_token_to_client("", request_id, is_final=True)
+        send_streaming_token_to_client("", request_id, is_final=True)
     except Exception as e:
         print(f"❌ [Session {session.session_id}] Generation error: {e}")
         import traceback
         traceback.print_exc()
-        if not is_first_token:
-            send_streaming_token_to_client("", request_id, is_final=True)
+        send_streaming_token_to_client("", request_id, is_final=True)
     finally:
         # CRITICAL: Always reset the generating flags
         session.is_generating = False
@@ -2192,6 +2167,8 @@ def parse_args():
                         help="Number of rounds to keep in sliding window after pruning")
     parser.add_argument("--max-context-qas", type=int, default=10,
                         help="Maximum number of QAs to keep in context history")
+    parser.add_argument("--dedup-threshold", type=float, default=0.85,
+                        help="Similarity threshold (0-1) for suppressing duplicate responses")
     parser.add_argument("--debug-context", action="store_true",
                         help="Enable debug: save inference context to JSONL file")
     parser.add_argument("--debug-context-file", type=str, default="context_debug.jsonl",

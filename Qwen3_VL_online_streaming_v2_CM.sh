@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CASE_NAME=qwen3vl-8b_20260319_03
+CASE_NAME=qwen3vl-8b_20260322_02
 
 # Qwen3 Omni 启动示例:
 MODEL_PATH=/home/dyvm6xra/dyvm6xrauser36/Projects/streaming_video_understanding/${CASE_NAME}/
@@ -31,6 +31,7 @@ python -u Qwen3_VL_online_streaming_v2_ContextManaged.py \
     --enable-tts \
     --tts-service-url http://localhost:8002 \
     --tts-output-dir tts_results \
+    --dedup-threshold 0.90 \
     --enable-pruning \
     --max-rounds 120 \
     --num-rounds-keep 15 \
