@@ -31,10 +31,12 @@ python -u Qwen3_VL_online_streaming_v2_ContextManaged.py \
     --enable-tts \
     --tts-service-url http://localhost:8002 \
     --tts-output-dir tts_results \
-    --dedup-threshold 0.90 \
+    --cross-turn-penalty 0.5 \
+    --cross-turn-lookback 10 \
+    --cross-turn-ngram-sizes \
     --enable-pruning \
-    --max-rounds 120 \
-    --num-rounds-keep 15 \
-    --max-context-qas 30 \
+    --max-rounds 45 \
+    --num-rounds-keep 30 \
+    --max-context-qas 10 \
     --debug-context-file debug_context.jsonl \
     --debug-context

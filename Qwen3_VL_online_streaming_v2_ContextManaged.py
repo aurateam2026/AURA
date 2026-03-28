@@ -41,8 +41,8 @@ import socket
 import struct
 import threading
 import time
+from collections import Counter
 from dataclasses import dataclass
-from difflib import SequenceMatcher
 from typing import Optional
 
 import cv2
@@ -508,33 +508,8 @@ class SessionHistory:
                   f"> max_rounds ({self.max_rounds}), pruning...")
             self._prune_history()
 
-    def is_duplicate_response(self, text: str, threshold: float = 0.85) -> bool:
-        """Check if text is similar to any recent non-silent assistant response in sliding window."""
-        if not text or not text.strip():
-            return False
-        count = 0
-        max_ratio = 0.0
-        max_ratio_text = ""
-        for msg in reversed(self._sliding_window):
-            if count >= 10:
-                break
-            if msg["role"] == "assistant" and not self._is_silent_response(msg["content"]):
-                ratio = SequenceMatcher(None, text, msg["content"]).ratio()
-                if ratio > max_ratio:
-                    max_ratio = ratio
-                    max_ratio_text = msg["content"]
-                if ratio >= threshold:
-                    print(f"🔍 [DEDUP] HIT  ratio={ratio:.3f} >= {threshold} | "
-                          f"new='{text[:40]}...' | old='{msg['content'][:40]}...'")
-                    return True
-                count += 1
-        print(f"🔍 [DEDUP] PASS max_ratio={max_ratio:.3f} < {threshold} | "
-              f"new='{text[:40]}...' | closest='{max_ratio_text[:40]}...' | "
-              f"compared={count} recent msgs")
-        return False
-
     def add_assistant_message(self, text: str):
-        """Add assistant response."""
+        """Add assistant response to history."""
         msg = {"role": "assistant", "content": text}
         self._sliding_window.append(msg)
         self.history.append(msg)
@@ -587,6 +562,206 @@ class SessionHistory:
             "multi_modal_data": multi_modal_data
         }
 
+
+# ============================================================================
+# Cross-Turn Repetition Penalty (adapted from streaming_client.py)
+# ============================================================================
+
+_PENALTY_PUNCT = frozenset(
+    ".,!?;:，。！？；：、'\"()[]{}""''…—–\n\t\r /-_@#$%^&*+=<>~`|\\（）【】《》"
+)
+
+
+class CrossTurnPenalty:
+    """Cross-turn repetition penalty for embedded vLLM engine.
+
+    Two complementary mechanisms:
+    1. logit_bias  — soft penalty on content tokens from recent responses
+    2. bad_words   — hard n-gram blocking via logits processor
+
+    All penalty data is pre-computed before generation to minimize per-token
+    overhead.  The logits processor itself only does tensor indexing (logit_bias)
+    and a few dict lookups (bad_words) per step.
+    """
+
+    def __init__(
+        self,
+        tokenizer,
+        window: int = 2,
+        logit_penalty: float = 2.0,
+        ngram_sizes: list[int] | None = None,
+        max_bad_ngrams: int = 200,
+        max_bias_tokens: int = 500,
+    ):
+        self.tokenizer = tokenizer
+        self.window = window
+        self.logit_penalty = logit_penalty
+        self.ngram_sizes = ngram_sizes if ngram_sizes is not None else [3, 4, 5]
+        self.max_bad_ngrams = max_bad_ngrams
+        self.max_bias_tokens = max_bias_tokens
+        self._history: list[str | None] = []   # None = silent turn, str = spoken turn
+        self._special_ids = set(self.tokenizer.all_special_ids)
+        self._penalizable_cache: dict[int, bool] = {}
+
+    def _is_penalizable(self, token_id: int) -> bool:
+        cached = self._penalizable_cache.get(token_id)
+        if cached is not None:
+            return cached
+        if token_id in self._special_ids:
+            self._penalizable_cache[token_id] = False
+            return False
+        decoded = self.tokenizer.decode([token_id]).strip()
+        if not decoded or all(c in _PENALTY_PUNCT for c in decoded) or decoded.isdigit():
+            self._penalizable_cache[token_id] = False
+            return False
+        self._penalizable_cache[token_id] = True
+        return True
+
+    def _spoken_history(self) -> list[str]:
+        """Return only spoken (non-silent) entries from _history."""
+        return [text for text in self._history if text is not None]
+
+    def _build_logit_bias(self) -> dict[int, float]:
+        spoken = self._spoken_history()
+        if len(spoken) < 2:
+            return {}
+        n = len(spoken)
+
+        # Phase 1: find tokens that appear in 2+ distinct spoken responses
+        token_presence: dict[int, int] = {}
+        for text in spoken:
+            ids = self.tokenizer.encode(text, add_special_tokens=False)
+            for tid in set(ids):
+                token_presence[tid] = token_presence.get(tid, 0) + 1
+        cross_turn_tids = {tid for tid, cnt in token_presence.items() if cnt >= 2}
+
+        if not cross_turn_tids:
+            return {}
+
+        # Phase 2: compute penalty only for cross-turn tokens
+        bias: dict[int, float] = {}
+        for idx, text in enumerate(spoken):
+            recency = (idx + 1) / n
+            ids = self.tokenizer.encode(text, add_special_tokens=False)
+            freq = Counter(ids)
+            for tid, cnt in freq.items():
+                if tid not in cross_turn_tids:
+                    continue
+                if not self._is_penalizable(tid):
+                    continue
+                p = self.logit_penalty * min(cnt, 3) * recency
+                bias[tid] = bias.get(tid, 0.0) + p
+
+        penalized_details = ", ".join(
+            f"'{self.tokenizer.decode([tid]).strip()}'({-val:.1f})"
+            for tid, val in sorted(bias.items(), key=lambda kv: kv[1], reverse=True)[:20]
+        )
+        total_turns = len(self._history)
+        print(f"🔧 [CrossTurnPenalty] window: {total_turns} actual turns "
+              f"({len(spoken)} spoken, {total_turns - len(spoken)} silent)")
+        print(f"🔧 [CrossTurnPenalty] cross-turn tokens: {len(cross_turn_tids)} "
+              f"(penalizable: {len(bias)}) out of {len(token_presence)} total unique tokens")
+        print(f"🔧 [CrossTurnPenalty] penalized: [{penalized_details}]")
+
+        if len(bias) > self.max_bias_tokens:
+            items = sorted(bias.items(), key=lambda kv: kv[1], reverse=True)
+            bias = dict(items[: self.max_bias_tokens])
+        return {k: min(v, 100.0) for k, v in bias.items()}
+
+    def _build_bad_ngram_map(self) -> dict[tuple, set]:
+        """prefix (n-1 token IDs) → set of blocked completing token IDs."""
+        spoken = self._spoken_history()
+        if not spoken:
+            return {}
+        prefix_map: dict[tuple, set] = {}
+        seen: set[tuple] = set()
+        count = 0
+        for text in reversed(spoken):
+            ids = self.tokenizer.encode(text, add_special_tokens=False)
+            for ng_size in self.ngram_sizes:
+                if len(ids) < ng_size:
+                    continue
+                for i in range(len(ids) - ng_size + 1):
+                    ngram = tuple(ids[i : i + ng_size])
+                    if ngram in seen:
+                        continue
+                    phrase = self.tokenizer.decode(list(ngram)).strip()
+                    if not phrase or all(c in _PENALTY_PUNCT for c in phrase):
+                        continue
+                    seen.add(ngram)
+                    prefix = ngram[:-1]
+                    if prefix not in prefix_map:
+                        prefix_map[prefix] = set()
+                    prefix_map[prefix].add(ngram[-1])
+                    count += 1
+                    if count >= self.max_bad_ngrams:
+                        return prefix_map
+        return prefix_map
+
+    def build_sampling_kwargs(self) -> dict:
+        """Return kwargs for SamplingParams: logit_bias and bad_words.
+
+        Uses SamplingParams-native logit_bias (dict[int, float]) to softly
+        penalise repeated content tokens, and bad_words (list[str]) to hard-
+        block previously seen n-grams.  This replaces the old logits_processors
+        approach which is no longer supported by vLLM V1.
+        """
+        raw_bias = self._build_logit_bias()
+        bad_ngram_map = self._build_bad_ngram_map()
+
+        if not raw_bias and not bad_ngram_map:
+            return {}
+
+        kwargs: dict = {}
+
+        if raw_bias:
+            kwargs["logit_bias"] = {tid: -val for tid, val in raw_bias.items()}
+
+        if bad_ngram_map:
+            bad_words: list[str] = []
+            seen: set[tuple] = set()
+            for prefix, blocked_set in bad_ngram_map.items():
+                for last_tok in blocked_set:
+                    ngram = prefix + (last_tok,)
+                    if ngram in seen:
+                        continue
+                    seen.add(ngram)
+                    phrase = self.tokenizer.decode(list(ngram))
+                    if phrase.strip():
+                        bad_words.append(phrase)
+            if bad_words:
+                kwargs["bad_words"] = bad_words
+
+        bias_count = len(raw_bias)
+        bw_count = len(kwargs.get("bad_words", []))
+        spoken_count = len(self._spoken_history())
+        total_turns = len(self._history)
+        print(
+            f"🔧 [CrossTurnPenalty] logit_bias: {bias_count} tokens | "
+            f"bad_words: {bw_count} phrases | "
+            f"window: {total_turns} turns ({spoken_count} spoken, "
+            f"{total_turns - spoken_count} silent)"
+        )
+
+        return kwargs
+
+    def record(self, response_text: str | None = None):
+        """Call after every assistant turn (both spoken and silent).
+
+        Args:
+            response_text: The response text for spoken turns, or None for silent turns.
+        """
+        if response_text and response_text.strip():
+            self._history.append(response_text)
+        else:
+            self._history.append(None)
+        if len(self._history) > self.window:
+            self._history.pop(0)
+
+    def reset(self):
+        self._history.clear()
+
+
 @dataclass
 class StreamingSession:
     """A streaming session for client."""
@@ -594,9 +769,10 @@ class StreamingSession:
     history: SessionHistory
     input_queue: asyncio.Queue
     output_queue: asyncio.Queue
-    is_generating: bool = False  # Flag to prevent overlapping generation tasks
-    is_auto_generating: bool = False  # True if generating without user prompt (background)
-    current_task: Optional[asyncio.Task] = None  # Reference to the current generation task
+    is_generating: bool = False
+    is_auto_generating: bool = False
+    current_task: Optional[asyncio.Task] = None
+    cross_turn_penalty: Optional[CrossTurnPenalty] = None
 
 # ============================================================================
 # Global State
@@ -696,6 +872,7 @@ TTS_OUTPUT_DIR = "tts_results"
 
 # Engine instance
 async_engine: Optional[AsyncLLM] = None
+model_tokenizer = None
 
 # Response ID counter
 response_id_counter = 0
@@ -1417,9 +1594,13 @@ async def init_async_engine(args) -> AsyncLLM:
     async_engine = AsyncLLM.from_engine_args(engine_args)
     print(f"✅ {model_label} AsyncLLM engine initialized successfully")
 
+    # Store tokenizer globally for CrossTurnPenalty
+    global model_tokenizer
+    model_tokenizer = async_engine.get_tokenizer()
+
     # ========== DEBUG: 保存词表到日志文件 ==========
     try:
-        tokenizer = async_engine.get_tokenizer()
+        tokenizer = model_tokenizer
         vocab = tokenizer.get_vocab()  # Dict[str, int]: token_str -> token_id
 
         vocab_log_path = "vocab_debug.log"
@@ -1489,6 +1670,8 @@ async def generate_response_with_video(
         video_metadata["duration"] = 2 / video_metadata.get("fps", 2.0)
         video_tuple = (duplicated_array, video_metadata)
 
+    request_id = ""
+    streaming_started = False
     try:
         # Add current turn to history with video tuple
         session.history.add_user_message(prompt, video_tuple=video_tuple)
@@ -1524,7 +1707,15 @@ async def generate_response_with_video(
         token_count = 0
         print(f"[TTFT_DEBUG] stream generate_start request_id={request_id} t={generation_start_time:.6f}")
 
-        # ===== Buffered generation: collect full response before sending =====
+        # Incremental sentence buffer for streaming TTS
+        _tts_sentence_buf = ""
+        _tts_sentence_idx = 0
+        _SENT_ENDS = frozenset("。！？；.!?;\n")
+        _COMMA_ENDS = frozenset("，,")
+        _TTS_MIN_CHARS = 10
+        streaming_started = False
+
+        # ===== Streaming generation: send tokens to frontend as they arrive =====
         async for response in async_engine.generate(
             prompt=vllm_inputs,
             sampling_params=sampling_params,
@@ -1554,7 +1745,34 @@ async def generate_response_with_video(
                         previous_text = current_text
                         full_response += delta
 
-        # ===== Generation finished — decide: silent / dedup-silent / send =====
+                        # --- Stream delta to frontend ---
+                        if not streaming_started:
+                            send_streaming_token_to_client(delta, request_id, is_start=True)
+                            streaming_started = True
+                        else:
+                            send_streaming_token_to_client(delta, request_id)
+
+                        # --- Incremental TTS sentence detection ---
+                        if tts_enabled_for_this_response:
+                            _tts_sentence_buf += delta
+                            while _tts_sentence_buf:
+                                split_pos = -1
+                                for i, ch in enumerate(_tts_sentence_buf):
+                                    if ch in _SENT_ENDS:
+                                        split_pos = i + 1
+                                        break
+                                    if ch in _COMMA_ENDS and i + 1 >= _TTS_MIN_CHARS:
+                                        split_pos = i + 1
+                                        break
+                                if split_pos < 0:
+                                    break
+                                sentence = _tts_sentence_buf[:split_pos]
+                                _tts_sentence_buf = _tts_sentence_buf[split_pos:]
+                                if sentence.strip():
+                                    enqueue_tts_sentence(sentence, request_id, _tts_sentence_idx, args)
+                                    _tts_sentence_idx += 1
+
+        # ===== Generation finished — decide: silent / send =====
         generation_end_time = time.time()
         total_time = generation_end_time - generation_start_time
 
@@ -1564,44 +1782,41 @@ async def generate_response_with_video(
         print(f"⏱️ [TIMING] Total generation time: {total_time*1000:.1f}ms")
         print(f"⏱️ [TIMING] Tokens generated: {token_count}")
 
-        dedup_threshold = getattr(args, "dedup_threshold", 0.0)
-
         print(f"📋 [DECISION] request_id={request_id} | is_silent={is_silent_response} | "
-              f"full_response({len(full_response)} chars)='{full_response[:80]}' | "
-              f"dedup_threshold={dedup_threshold}")
+              f"full_response({len(full_response)} chars)='{full_response[:80]}'")
 
         if is_silent_response:
             print(f"🔇 [DECISION] → MODEL_SILENT (first token was silent/im_end)")
             session.history.add_assistant_message(SILENT_TEXT)
             send_streaming_token_to_client(SILENT_TEXT, request_id, is_final=True, is_silent=True)
-
-        elif dedup_threshold > 0 and session.history.is_duplicate_response(full_response, dedup_threshold):
-            print(f"🔇 [DECISION] → DEDUP_SILENT (suppressed, not sent to frontend/TTS)")
-            session.history.add_assistant_message(SILENT_TEXT)
-            send_streaming_token_to_client(SILENT_TEXT, request_id, is_final=True, is_silent=True)
+            if session.cross_turn_penalty is not None:
+                session.cross_turn_penalty.record(None)
 
         else:
-            print(f"✅ [DECISION] → SEND_NORMAL (sending to frontend + TTS)")
-            send_streaming_token_to_client(full_response, request_id, is_start=True)
+            # Send final marker to frontend (content already streamed)
             send_streaming_token_to_client("", request_id, is_final=True)
             session.history.add_assistant_message(full_response)
+            if session.cross_turn_penalty is not None:
+                session.cross_turn_penalty.record(full_response)
 
-            if tts_enabled_for_this_response and full_response.strip():
-                sentences = split_text_to_sentences(full_response)
-                sentences = merge_short_sentences(sentences)
-                for idx, sentence in enumerate(sentences):
-                    if sentence.strip():
-                        enqueue_tts_sentence(sentence, request_id, idx, args)
-                print(f"🎤 [Queue] Enqueued {len(sentences)} sentences for TTS")
+            # Flush remaining TTS sentence buffer
+            if tts_enabled_for_this_response and _tts_sentence_buf.strip():
+                enqueue_tts_sentence(_tts_sentence_buf, request_id, _tts_sentence_idx, args)
+                _tts_sentence_idx += 1
+
+            if tts_enabled_for_this_response:
+                print(f"🎤 [Queue] Streamed {_tts_sentence_idx} sentences to TTS")
 
     except asyncio.CancelledError:
         print(f"⏹ [Session {session.session_id}] Generation cancelled (context reset)")
-        send_streaming_token_to_client("", request_id, is_final=True)
+        if streaming_started and request_id:
+            send_streaming_token_to_client("", request_id, is_final=True)
     except Exception as e:
         print(f"❌ [Session {session.session_id}] Generation error: {e}")
         import traceback
         traceback.print_exc()
-        send_streaming_token_to_client("", request_id, is_final=True)
+        if request_id:
+            send_streaming_token_to_client("", request_id, is_final=True)
     finally:
         # CRITICAL: Always reset the generating flags
         session.is_generating = False
@@ -1778,6 +1993,19 @@ async def handle_client_connection_async(conn, addr, args):
     # Create a streaming session for this client
     session_id = f"client-{addr[0]}-{addr[1]}-{int(time.time())}"
 
+    # Build cross-turn penalty manager (if enabled)
+    penalty_mgr = None
+    if getattr(args, "cross_turn_penalty", 0) > 0 and model_tokenizer is not None:
+        penalty_mgr = CrossTurnPenalty(
+            tokenizer=model_tokenizer,
+            window=getattr(args, "cross_turn_lookback", 2),
+            logit_penalty=args.cross_turn_penalty,
+            ngram_sizes=getattr(args, "cross_turn_ngram_sizes", [3, 4, 5]),
+        )
+        print(f"🔧 [Session {session_id}] CrossTurnPenalty enabled: "
+              f"penalty={args.cross_turn_penalty}, window={args.cross_turn_lookback}, "
+              f"ngram_sizes={args.cross_turn_ngram_sizes}")
+
     # Session state with History
     session = StreamingSession(
         session_id=session_id,
@@ -1790,7 +2018,8 @@ async def handle_client_connection_async(conn, addr, args):
         ),
         input_queue=asyncio.Queue(),
         output_queue=asyncio.Queue(),
-        is_generating=False
+        is_generating=False,
+        cross_turn_penalty=penalty_mgr,
     )
 
     async with session_lock:
@@ -1947,9 +2176,14 @@ async def handle_client_connection_async(conn, addr, args):
                             # Track if this is an auto-generation (no user prompt)
                             session.is_auto_generating = (current_prompt == "")
 
+                            penalty_kwargs = {}
+                            if session.cross_turn_penalty is not None:
+                                penalty_kwargs = session.cross_turn_penalty.build_sampling_kwargs()
+
                             sampling_params = SamplingParams(
                                 temperature=args.temperature,
                                 max_tokens=args.max_tokens,
+                                **penalty_kwargs,
                             )
 
                             # Launch background task with video tuple
@@ -2013,6 +2247,8 @@ async def handle_client_connection_async(conn, addr, args):
                     session.is_generating = False
                     session.is_auto_generating = False
                 session.history._reset()
+                if session.cross_turn_penalty is not None:
+                    session.cross_turn_penalty.reset()
                 accumulated_video_frames = []
                 last_prompt = ""
 
@@ -2025,6 +2261,8 @@ async def handle_client_connection_async(conn, addr, args):
                     session.is_generating = False
                     session.is_auto_generating = False
                 session.history._reset()
+                if session.cross_turn_penalty is not None:
+                    session.cross_turn_penalty.reset()
                 accumulated_video_frames = []
                 last_prompt = ""
 
@@ -2167,8 +2405,16 @@ def parse_args():
                         help="Number of rounds to keep in sliding window after pruning")
     parser.add_argument("--max-context-qas", type=int, default=10,
                         help="Maximum number of QAs to keep in context history")
-    parser.add_argument("--dedup-threshold", type=float, default=0.85,
-                        help="Similarity threshold (0-1) for suppressing duplicate responses")
+    parser.add_argument("--dedup-threshold", type=float, default=0.0,
+                        help="(deprecated, no longer used)")
+    parser.add_argument("--cross-turn-penalty", type=float, default=0.0,
+                        help="Cross-turn repetition penalty strength "
+                             "(0=disabled, 2.0~3.0 recommended). "
+                             "Combines soft logit_bias + hard n-gram blocking.")
+    parser.add_argument("--cross-turn-lookback", type=int, default=2,
+                        help="Number of recent assistant responses to penalize (window size)")
+    parser.add_argument("--cross-turn-ngram-sizes", type=int, nargs="*", default=[3, 4, 5],
+                        help="N-gram sizes for bad_words hard blocking (default: 3 4 5, pass empty to disable)")
     parser.add_argument("--debug-context", action="store_true",
                         help="Enable debug: save inference context to JSONL file")
     parser.add_argument("--debug-context-file", type=str, default="context_debug.jsonl",
