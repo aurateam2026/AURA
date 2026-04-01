@@ -10,9 +10,9 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$SCRIPT_DIR"
 
 # ── GPU 分配（按需修改）──
-GPU_ASR=${GPU_ASR:-1}            # ASR 使用此 GPU
-GPU_TTS=${GPU_TTS:-2}            # TTS 使用此 GPU（与 ASR 相同则共卡）
-GPU_INFERENCE=${GPU_INFERENCE:-3} # vLLM 主推理，多卡用逗号分隔（如 3,4）
+GPU_ASR=${GPU_ASR:-0}            # ASR 使用此 GPU
+GPU_TTS=${GPU_TTS:-0}            # TTS 使用此 GPU（与 ASR 相同则共卡）
+GPU_INFERENCE=${GPU_INFERENCE:-1} # vLLM 主推理，多卡用逗号分隔（如 3,4）
 
 # ── 自动计算 Tensor Parallel 大小 ──
 IFS=',' read -ra _GPU_LIST <<< "$GPU_INFERENCE"

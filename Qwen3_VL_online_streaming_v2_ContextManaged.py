@@ -1706,6 +1706,7 @@ async def generate_response_with_video(
         first_token_time = None
         token_count = 0
         print(f"[TTFT_DEBUG] stream generate_start request_id={request_id} t={generation_start_time:.6f}")
+        print(f"⏱️ [TIMING] prefill_submit_time={generation_start_time:.6f} (engine.generate called, prefill starts)")
 
         # Incremental sentence buffer for streaming TTS
         _tts_sentence_buf = ""
@@ -1781,6 +1782,11 @@ async def generate_response_with_video(
         print(f"⏱️ [TIMING] TTFT avg. by {video_array.shape[0]} frames: {(ttft*1000/video_array.shape[0]):.1f}ms")
         print(f"⏱️ [TIMING] Total generation time: {total_time*1000:.1f}ms")
         print(f"⏱️ [TIMING] Tokens generated: {token_count}")
+        if token_count > 1 and first_token_time is not None:
+            decode_only_ms = (generation_end_time - first_token_time) * 1000
+            avg_decode_per_token = decode_only_ms / (token_count - 1)
+            print(f"⏱️ [TIMING] Decode phase: {decode_only_ms:.1f}ms for {token_count-1} tokens, "
+                  f"avg={avg_decode_per_token:.1f}ms/token ({1000/avg_decode_per_token:.1f} tokens/s)")
 
         print(f"📋 [DECISION] request_id={request_id} | is_silent={is_silent_response} | "
               f"full_response({len(full_response)} chars)='{full_response[:80]}'")
@@ -2206,6 +2212,7 @@ async def handle_client_connection_async(conn, addr, args):
                 print(f"🎤 Saved audio to {audio_path}")
 
                 # Call ASR service to transcribe audio
+                _asr_start = time.time()
                 if args.asr_sync:
                     # Synchronous version
                     loop = asyncio.get_event_loop()
@@ -2215,6 +2222,8 @@ async def handle_client_connection_async(conn, addr, args):
                 else:
                     # Asynchronous version (default)
                     transcribed_text = await transcribe_audio_async(audio_path, args.asr_url)
+                _asr_end = time.time()
+                print(f"⏱️ [TIMING] ASR latency: {(_asr_end - _asr_start)*1000:.1f}ms")
 
                 if transcribed_text:
                     last_prompt = transcribed_text
