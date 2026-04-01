@@ -1,260 +1,334 @@
-# Qwen3 实时流式视频理解系统
+<div align="center">
 
-基于 Qwen3-VL 模型的实时视频流理解系统，支持视频输入、语音识别（ASR）、大模型推理、语音合成（TTS）全链路流式处理。
+<img src="mascot2.png" width="200" alt="AURA Mascot">
 
-## 系统架构
+# AURA
 
-```
-┌──────────────┐  HTTP :5003   ┌─────────────────────┐  TCP :12345   ┌──────────────────────────────┐
-│  浏览器客户端  │ ◄──────────► │  Flask 中间层          │ ◄──────────► │  主服务 (vLLM + TTS)          │
-│  (Web UI)    │              │  (capture_streaming)  │              │  (Qwen3_VL_online_streaming) │
-└──────────────┘              └─────────────────────┘              └──────────────┬───────────────┘
-                                                                                  │ HTTP :8001
-                                                                                  ▼
-                                                                   ┌──────────────────────────┐
-                                                                   │  ASR 服务                  │
-                                                                   │  (Qwen3_asr_serve.py)     │
-                                                                   └──────────────────────────┘
-```
+### Always-On Understanding and Real-Time Assistance via Video Streams
 
-**数据流：**
+<img src="aura_cha.jpg" width="600" alt="AURA">
 
-1. 浏览器采集视频/音频 → Flask 中间层 → 通过 TCP Socket 发送给主服务
-2. 主服务收到音频后 → 调用 ASR HTTP 接口转文字
-3. 主服务收到视频 + 文字后 → vLLM 推理生成回复
-4. 回复文本 → 内嵌 TTS 模块生成语音 → 流式返回给浏览器播放
+**A real-time multimodal streaming system powered by AURA-8B, supporting continuous video understanding with speech interaction.**
 
-## 环境依赖
+[中文](#中文说明) | **English**
 
-- Python 3.12
-- vLLM >= 0.14.0rc2（需要 V1 引擎 StreamingInput 支持）
-- PyTorch 2.9+ with CUDA 12.8
-- 4 张 GPU（推荐配置，可根据实际情况调整）
+<a href="https://huggingface.co/"><img src="hf-logo.pdf" height="20" alt="Hugging Face"></a>&nbsp;&nbsp;
+[Model on Hugging Face](https://huggingface.co/) • [Paper](#) • [Demo Video](#)
 
-安装依赖：
+</div>
+
+---
+
+## Highlights
+
+- **Real-Time Streaming**: Continuously processes live video at 2 FPS with sub-second response latency
+- **Full Pipeline**: Integrated ASR → Vision-Language Model → Streaming TTS, all running locally
+- **Context Management**: Sliding-window history with automatic pruning and prefix KV cache reuse for bounded latency
+- **Cross-Turn Anti-Repetition**: `logit_bias` soft penalty + optional `bad_words` hard blocking to prevent repetitive responses
+- **Voice Clone TTS**: Sentence-level streaming synthesis with custom voice cloning support
+- **One-Click Launch**: Single script (`start_all.sh`) to start all services with automatic GPU allocation
+
+## Requirements
+
+| Category | Requirement |
+|----------|-------------|
+| Python | 3.12 |
+| PyTorch | 2.10+ with CUDA 12.8 |
+| vLLM | >= 0.17.1 (V1 engine with Automatic Prefix Caching) |
+| GPU | 2+ (minimum: 1× for ASR+TTS, 1× for AURA-8B inference) |
+| System | `ffmpeg`, `numactl` |
+| OS | Linux (tested on Ubuntu 22.04) |
+
+## Installation
+
+### Option A: Use Pre-built Environment (Recommended)
+
+The repository ships with a ready-to-use `.venv/` that contains all 230 pre-installed packages (Python 3.12, PyTorch 2.10, vLLM 0.17.1, flash-attn 2.8.3, etc.). Just activate it:
 
 ```bash
-pip install -r requirements.txt
+git clone <repo-url> && cd streaming_demo_modified
+source .venv/bin/activate
+
+# Verify
+python --version   # Python 3.12.12
+python -c "import vllm; print(vllm.__version__)"   # 0.17.1
+python -c "import torch; print(torch.__version__)"  # 2.10.0
 ```
 
-## 启动流程
+### Option B: Create Environment from Scratch
 
-系统由 3 个进程组成，需要按顺序在 3 个终端中启动。
+If the pre-built `.venv/` is unavailable or incompatible with your platform:
 
-### 第一步：启动 ASR 服务（终端 1）
+```bash
+git clone <repo-url> && cd streaming_demo_modified
 
-ASR 服务基于 `Qwen3-ASR-1.7B` 模型，通过 FastAPI 提供 HTTP 接口，监听端口 `8001`。
+# 1. Create and activate venv
+python3.12 -m venv .venv
+source .venv/bin/activate
+
+# 2. Install system dependencies
+sudo apt install -y ffmpeg numactl
+
+# 3. Install all Python packages (228 packages, pinned versions)
+pip install -r requirements.txt
+
+# 4. Install flash-attn (requires manual .whl matching your CUDA/PyTorch/arch)
+#    Download the correct wheel from https://github.com/Dao-AILab/flash-attention/releases
+#    Example for CUDA 12 + PyTorch 2.10 + x86_64:
+pip install flash_attn-2.8.3+cu12torch2.10cxx11abiTRUE-cp312-cp312-linux_x86_64.whl
+```
+
+> **Note:** `flash-attn` is **not** included in `requirements.txt` because it requires a platform-specific `.whl` file. You must download the correct wheel that matches your CUDA version, PyTorch version, and CPU architecture, then install manually.
+
+> **Note:** The `Qwen3-TTS-streaming/` subdirectory is a local library loaded at runtime via `sys.path` — it does **not** need separate `pip install`. The `vllm-omni/` directory is for reference only; the system uses the pip-installed `vllm==0.17.1`.
+
+### Verify Installation
+
+```bash
+source .venv/bin/activate
+python -c "
+import torch, vllm, flask, qwen_omni_utils
+print(f'PyTorch:  {torch.__version__}')
+print(f'CUDA:     {torch.version.cuda}')
+print(f'vLLM:     {vllm.__version__}')
+print(f'GPUs:     {torch.cuda.device_count()}')
+"
+```
+
+Expected output:
+```
+PyTorch:  2.10.0
+CUDA:     12.8
+vLLM:     0.17.1
+GPUs:     2  (or more)
+```
+
+## Quick Start
+
+### 1. Download Models (下载模型)
+
+Download the following models from [Hugging Face](https://huggingface.co/):
+
+| Model | Purpose | Size |
+|-------|---------|------|
+| AURA-8B | Main vision-language model | ~16 GB |
+| [Qwen3-ASR-1.7B](https://huggingface.co/) | Automatic Speech Recognition | ~3 GB |
+| [Qwen3-TTS-12Hz-1.7B-Base](https://huggingface.co/) | Text-to-Speech synthesis | ~4 GB |
+
+### 2. One-Click Launch (Recommended)
+
+```bash
+# Default: GPU 0 for ASR+TTS, GPU 1 for AURA inference
+bash start_all.sh
+```
+
+The script automatically:
+- Cleans up any leftover processes on ports 8001, 8002, 12345
+- Starts ASR → TTS → vLLM inference server in order
+- Waits for each service to be healthy before proceeding
+- Logs to `logs/asr.log`, `logs/tts.log`, `logs/vllm.log`
+- `Ctrl+C` cleanly shuts down all services
+
+**Custom GPU allocation:**
+
+```bash
+GPU_ASR=0 GPU_TTS=0 GPU_INFERENCE=1 bash start_all.sh
+
+# Multi-GPU inference (tensor parallel)
+GPU_ASR=0 GPU_TTS=0 GPU_INFERENCE=2,3 bash start_all.sh
+```
+
+### 3. Launch Web Frontend
+
+In a separate terminal:
+
+```bash
+source .venv/bin/activate
+python realtime_capture_video_audio_streaming.py
+```
+
+Open browser at `http://localhost:5003`.
+
+| Mode | Command |
+|------|---------|
+| HTTP (default) | `python realtime_capture_video_audio_streaming.py` |
+| HTTPS | `python realtime_capture_video_audio_streaming.py --https` |
+| Cloudflare Tunnel | `python realtime_capture_video_audio_streaming.py --tunnel` |
+
+### 4. Use the Demo
+
+1. Click **"开启摄像头"** to start video capture
+2. Hold the **microphone button** to record speech, release to send
+3. Watch streaming text responses appear in real-time
+4. Hear TTS audio playback automatically
+
+## Manual Service Launch
+
+If you prefer to start services individually:
+
+<details>
+<summary><b>Step 1: ASR Service (Port 8001)</b></summary>
 
 ```bash
 CUDA_VISIBLE_DEVICES=0 python Qwen3_asr_serve.py \
-    --host 0.0.0.0 \
-    --port 8001 \
+    --host 0.0.0.0 --port 8001 \
     --model Qwen/Qwen3-ASR-1.7B \
     --forced-aligner Qwen/Qwen3-ForcedAligner-0.6B \
-    --gpu-memory-utilization 0.8 \
-    --device cuda:0
+    --gpu-memory-utilization 0.3
 ```
 
-**参数说明：**
+Verify: `curl -X POST http://localhost:8001/asr -F "file=@test_query.mp3" -F "run_vllm=false"`
 
-| 参数 | 说明 |
-|---|---|
-| `CUDA_VISIBLE_DEVICES=0` | 分配 GPU 0 给 ASR |
-| `--port 8001` | HTTP 端口，主服务通过 `--asr-url http://localhost:8001/asr` 调用 |
-| `--no-forced-aligner` | 可选，禁用时间戳对齐（节省显存） |
+</details>
 
-**验证启动成功：** 日志出现 `Qwen3 ASR Model ... loaded successfully`，可用以下命令测试：
+<details>
+<summary><b>Step 2: TTS Service (Port 8002)</b></summary>
 
 ```bash
-curl -X POST http://localhost:8001/asr \
-  -F "file=@test_audio.mp3" \
-  -F "run_vllm=false"
+CUDA_VISIBLE_DEVICES=0 bash tts_service.sh
 ```
 
-### 第二步：启动主服务 — vLLM 引擎 + TTS（终端 2）
+Verify: `curl http://localhost:8002/v1/tts/health`
 
-核心服务，通过入口脚本启动，内部会依次：
+</details>
 
-1. 初始化 TTS 模型（加载到指定 GPU）
-2. 启动 TTS worker 线程
-3. 初始化 vLLM AsyncLLM 引擎（加载主模型）
-4. 开启 TCP Socket 监听（端口 12345）
+<details>
+<summary><b>Step 3: Main Inference Server (Port 12345)</b></summary>
 
 ```bash
-bash Qwen3_VL_online_streaming_v2_CM.sh
+CUDA_VISIBLE_DEVICES=1 bash Qwen3_VL_online_streaming_v2_CM.sh
 ```
 
-启动脚本实际执行：
+Wait for: `🌐 Server listening on port 12345`
 
-```bash
-CASE_NAME=qwen3vl-8b_20260311_03
-MODEL_PATH=/home/dyvm6xra/dyvm6xrauser36/Projects/streaming_video_understanding/${CASE_NAME}/
+</details>
 
-CUDA_VISIBLE_DEVICES=1,2 numactl --cpunodebind=0 --membind=0 python -u Qwen3_VL_online_streaming_v2_ContextManaged.py \
-    --listen-port 12345 \
-    --model $MODEL_PATH \
-    --tensor-parallel-size 1 \
-    --max-model-len 262144 \
-    --max-seq-len 262144 \
-    --gpu-memory-utilization 0.9 \
-    --asr-url http://localhost:8001/asr \
-    --kv-offloading-size 10 \
-    --disable-hybrid-kv-cache-manager \
-    --block-size 16 \
-    --prefix-caching-hash-algo xxhash \
-    --mm-encoder-attn-backend FLASH_ATTN \
-    --mm-encoder-tp-mode data \
-    --max-num-batched-tokens 15360 \
-    --enable-tts \
-    --tts-gpu 2 \
-    --tts-model Qwen/Qwen3-TTS-12Hz-1.7B-Base \
-    --tts-language Chinese \
-    --tts-ref-audio test_query.mp3 \
-    --tts-ref-text "仔细观察当前你看到的画面，并且结合之前你看到的画面，仔细描述你看到了什么" \
-    --tts-output-dir tts_results \
-    --enable-pruning \
-    --max-rounds 30 \
-    --num-rounds-keep 10 \
-    --max-context-qas 10 \
-    --debug-context-file debug_context.jsonl \
-    --debug-context
-```
-
-**参数说明：**
-
-| 参数 | 说明 |
-|---|---|
-| `CUDA_VISIBLE_DEVICES=1,2` | 主服务可见 GPU 1/2（GPU 0 已留给 ASR） |
-| `--listen-port 12345` | TCP Socket 监听端口，Flask 中间层连接此端口 |
-| `--model` | Qwen3 VL 8B 模型路径（由 `CASE_NAME` 变量指定） |
-| `--tensor-parallel-size 1` | 张量并行数（当前仅用 1 张卡跑主模型） |
-| `--max-model-len 262144` | 最大上下文长度 256K tokens |
-| `--gpu-memory-utilization 0.9` | vLLM 占用 90% 显存 |
-| `--asr-url` | 指向第一步启动的 ASR 服务地址 |
-| `--kv-offloading-size 10` | KV Cache offload 到 CPU 的大小（GB） |
-| `--enable-tts` | 启用内嵌 TTS |
-| `--tts-gpu 2` | TTS 模型加载到 GPU 索引 2（`CUDA_VISIBLE_DEVICES` 映射后的第 2 个设备，即物理 GPU 2） |
-| `--tts-model` | TTS 模型路径（Base 模型支持 Voice Clone 流式输出） |
-| `--tts-ref-audio` / `--tts-ref-text` | Voice Clone 参考音频和对应文本 |
-| `--enable-pruning` | 启用历史轮次裁剪，防止 context 超长 |
-| `--max-rounds 30` | 触发裁剪的最大轮次数 |
-| `--num-rounds-keep 10` | 裁剪时保留最近的轮次数 |
-| `--max-context-qas 10` | 上下文中最多保留的问答对数量 |
-| `--debug-context-file` | 将上下文状态写入指定 JSONL 文件，用于调试 |
-| `--debug-context` | 开启上下文调试日志输出 |
-
-**验证启动成功：** 日志依次出现：
-
-1. `✓ TTS model initialized on cuda:X` — TTS 就绪
-2. `✅ Qwen3 VL AsyncLLM engine initialized successfully` — vLLM 引擎就绪
-3. `🌐 Server listening on port 12345` — TCP 监听就绪
-
-### 第三步：启动 Web 前端中间层（终端 3）
-
-Flask 应用作为浏览器和主服务之间的桥梁，监听端口 `5003`。
+<details>
+<summary><b>Step 4: Web Frontend (Port 5003)</b></summary>
 
 ```bash
 python realtime_capture_video_audio_streaming.py
 ```
 
-> **注意：** 启动前需确认 `realtime_capture_video_audio_streaming.py` 中的 `SERVER_HOST` 和 `SERVER_PORT` 与主服务一致。当前默认值：
->
-> ```python
-> SERVER_HOST = 'hk01dgx050'
-> SERVER_PORT = 12345
-> ```
->
-> 如果主服务在本机运行，需要将 `SERVER_HOST` 改为 `localhost`。
+Open: `http://localhost:5003`
 
-**可选启动方式：**
+</details>
 
-| 模式 | 命令 |
-|---|---|
-| HTTP（默认） | `python realtime_capture_video_audio_streaming.py` |
-| HTTPS（需要 cert.pem / key.pem） | `python realtime_capture_video_audio_streaming.py --https` |
-| Cloudflare Tunnel（公网访问） | `python realtime_capture_video_audio_streaming.py --tunnel` |
+## GPU Allocation Reference
 
-**验证启动成功：**
+| GPU | Service | VRAM |
+|-----|---------|------|
+| GPU 0 | ASR (Qwen3-ASR-1.7B) + TTS (Qwen3-TTS-1.7B) | ~7 GB |
+| GPU 1 | AURA-8B inference (vLLM, TP=1) | ~16 GB |
 
-- 日志出现 `✓ 已连接到服务端 ...:12345`
-- 浏览器访问 `http://localhost:5003` 看到实时视频音频捕获界面
+## Key Configuration
 
-如果主服务未启动，会提示 `⚠ 服务端 ... 不可用`，Flask 会每 5 秒自动重试连接。
+Main inference parameters in `Qwen3_VL_online_streaming_v2_CM.sh`:
 
-### 浏览器访问
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `--max-model-len` | 262144 | Maximum context length (256K tokens) |
+| `--temperature` | 0.5 | Sampling temperature |
+| `--max-tokens` | 128 | Max tokens per response |
+| `--cross-turn-penalty` | 1 | Cross-turn repetition penalty strength |
+| `--cross-turn-lookback` | 10 | Number of recent turns to penalize |
+| `--enable-pruning` | — | Enable sliding-window context pruning |
+| `--max-rounds` | 45 | Trigger pruning when rounds exceed this |
+| `--num-rounds-keep` | 30 | Rounds to keep after pruning |
+| `--kv-offloading-size` | 10 | KV cache CPU offload size (GB) |
 
-打开浏览器访问 `http://localhost:5003`（或对应的 HTTPS / Tunnel 地址）。
-
-页面功能：
-- 点击「开启摄像头」获取会话并开始视频采集
-- 按住麦克风按钮录制语音，松开后自动发送
-- 实时显示流式生成的文本回复
-- 自动播放 TTS 语音回复
-
-## GPU 分配参考
-
-| GPU（物理） | 用途 | 显存需求（约） |
-|---|---|---|
-| GPU 0 | ASR 服务（Qwen3-ASR-1.7B + ForcedAligner-0.6B） | ~3 GB |
-| GPU 1 | vLLM 主模型（Qwen3-VL-8B，TP=1） | ~16 GB |
-| GPU 2 | TTS 模型（Qwen3-TTS-12Hz-1.7B-Base） | ~4 GB |
-
-> GPU 编号基于 `CUDA_VISIBLE_DEVICES=1,2` 映射。主服务内部的 `--tts-gpu 2` 对应映射后的第 2 个设备（即物理 GPU 2）。
-
-## 启动顺序速查
+## Project Structure
 
 ```
-终端 1 (GPU 0):  ASR 服务
-    CUDA_VISIBLE_DEVICES=0 python Qwen3_asr_serve.py --port 8001
-    等待: "Qwen3 ASR Model loaded successfully"
-
-终端 2 (GPU 1,2):  主服务 (vLLM + TTS，含上下文管理)
-    bash Qwen3_VL_online_streaming_v2_CM.sh
-    等待: "Server listening on port 12345"
-
-终端 3:  Web 前端
-    python realtime_capture_video_audio_streaming.py
-    等待: "已连接到服务端"
-
-浏览器:  访问 http://localhost:5003
+├── start_all.sh                              # One-click launch script
+├── Qwen3_VL_online_streaming_v2_CM.sh        # Main inference launch script
+├── Qwen3_VL_online_streaming_v2_ContextManaged.py  # Core: vLLM engine + context management + TCP server
+├── Qwen3_asr_serve.py                        # ASR service (FastAPI + Qwen3-ASR)
+├── tts_service.py / tts_service.sh           # TTS service (streaming synthesis)
+├── realtime_capture_video_audio_streaming.py  # Web frontend middleware (Flask)
+├── templates/index_streaming.html            # Browser UI template
+├── benchmark_latency.py                      # Latency benchmark tool
+├── context_manage.py                         # Context management utilities
+├── requirements.txt                          # Python dependencies
+├── .venv/                                    # Pre-built virtual environment
+├── Qwen3-TTS-streaming/                      # TTS model inference library
+└── vllm-omni/                                # vLLM omni-modal fork
 ```
 
-## 通信协议
+## Troubleshooting
 
-Flask 中间层与主服务之间通过自定义 TCP 二进制协议通信。
+| Issue | Solution |
+|-------|----------|
+| `sched_setaffinity: Invalid argument` | Remove `numactl` from launch script |
+| ASR returns empty text | Ensure ASR service is running on port 8001 before main server |
+| TTS voice clone fails | Verify reference audio file exists in working directory |
+| OOM on main GPU | Reduce `--gpu-memory-utilization` or `--max-model-len` |
+| vLLM version error | Requires vLLM >= 0.17.1 with V1 engine support |
 
-消息格式：`[Type: 1 byte] [Length: 8 bytes big-endian] [Payload: variable]`
+---
 
-| Type | 方向 | 含义 |
-|---|---|---|
-| 1 | Client → Server | 视频帧（WebM） |
-| 2 | Client → Server | 音频录制（MP3） |
-| 3 | Server → Client | 完整文本响应 |
-| 4 | Client → Server | 清空上下文 |
-| 5 | Server → Client | TTS 音频（完整 WAV，句子级） |
-| 6 | Client → Server | 开启摄像头（重置状态） |
-| 7 | Server → Client | 错误消息 |
-| 8 | Server → Client | 流式 Token（JSON） |
-| 9 | Server → Client | TTS 音频 Chunk（PCM int16 流式） |
+<a name="中文说明"></a>
 
-## 注意事项
+## 中文说明
 
-1. **启动顺序**：ASR 服务必须先于主服务启动（或至少在主服务收到音频前就绪），否则语音识别会失败返回空文本
-2. **GPU 显存**：ASR 占 ~3GB，主模型 8B 占 ~16GB，TTS 占 ~4GB，确保各 GPU 有足够显存
-3. **参考音频**：`test_query.mp3` 必须存在于工作目录中，否则 TTS Voice Clone 初始化会失败
-4. **numactl**：启动脚本使用了 NUMA 绑定（`--cpunodebind=0 --membind=0`），需确保服务器安装了 `numactl`；若运行在容器等受限环境中报 `sched_setaffinity: Invalid argument`，可删除该参数直接运行 Python
-5. **vLLM 版本**：需要 vLLM >= 0.14.0rc2 以支持 V1 引擎的 StreamingInput API
+AURA（Always-On Understanding and Real-Time Assistance via Video Streams）是一个基于 AURA-8B 视觉语言模型的实时流式视频理解系统，支持视频输入、语音识别（ASR）、大模型推理、语音合成（TTS）全链路流式处理。
 
-## 文件说明
+### 环境安装
 
-| 文件 | 说明 |
-|---|---|
-| `Qwen3_VL_online_streaming_v2_CM.sh` | 主服务启动脚本（推荐入口，含上下文管理） |
-| `Qwen3_VL_online_streaming_v2_ContextManaged.py` | 主服务实现（vLLM 引擎 + TTS + TCP Socket + 上下文管理） |
-| `Qwen3_VL_online_streaming_v2.sh` | 旧版启动脚本（不含上下文管理） |
-| `Qwen3_VL_online_streaming_v2.py` | 旧版主服务实现 |
-| `Qwen3_asr_serve.py` | ASR 服务（FastAPI + Qwen3-ASR） |
-| `realtime_capture_video_audio_streaming.py` | Web 前端中间层（Flask + TCP 客户端） |
-| `context_manage.py` | 上下文管理工具（历史裁剪、相似度过滤） |
-| `templates/index_streaming.html` | 前端页面模板 |
-| `Qwen3-TTS-streaming/` | TTS 模型推理库（本地包） |
+**方式一：使用预构建环境（推荐）**
+
+仓库自带 `.venv/` 目录，包含全部 230 个已安装 Python 包（Python 3.12、PyTorch 2.10、vLLM 0.17.1、flash-attn 2.8.3 等），直接激活即可：
+
+```bash
+source .venv/bin/activate
+```
+
+**方式二：从零创建环境**
+
+```bash
+# 创建 Python 3.12 虚拟环境
+python3.12 -m venv .venv && source .venv/bin/activate
+
+# 安装系统依赖
+sudo apt install -y ffmpeg numactl
+
+# 安装 Python 依赖（228 个包，锁定版本）
+pip install -r requirements.txt
+
+# 手动安装 flash-attn（需下载与 CUDA/PyTorch/架构匹配的 .whl）
+pip install flash_attn-2.8.3+cu12torch2.10cxx11abiTRUE-cp312-cp312-linux_x86_64.whl
+```
+
+> `Qwen3-TTS-streaming/` 是运行时通过 `sys.path` 加载的本地库，无需单独安装。
+
+### 快速启动
+
+```bash
+# 1. 激活环境
+source .venv/bin/activate
+
+# 2. 一键启动所有服务（ASR → TTS → 推理引擎）
+bash start_all.sh
+
+# 3. 在另一个终端启动 Web 前端
+source .venv/bin/activate
+python realtime_capture_video_audio_streaming.py
+
+# 4. 浏览器访问
+# http://localhost:5003
+```
+
+详细配置和参数说明请参考上方英文文档。
+
+## License
+
+This project is released under the [Apache-2.0 License](LICENSE).
+
+## Citation
+
+```bibtex
+@article{aura2026,
+  title={AURA: Always-On Understanding and Real-Time Assistance via Video Streams},
+  year={2026}
+}
+```

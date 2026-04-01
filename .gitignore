@@ -29,7 +29,15 @@ Thumbs.db
 
 # Runtime / debug output
 *.log
+logs/
 debug_context.jsonl
 real_time_captured_audio/
 tts_results/
+
+# TLS certificates (sensitive)
+cert.pem
+key.pem
+
+# Large test videos (generated)
+test_video_5min.mp4
 
