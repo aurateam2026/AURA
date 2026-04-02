@@ -55,8 +55,18 @@ test_video.mp4
 test_video_5min.mp4
 test_1s.webm
 
-# Unreferenced audio file
+# Unreferenced / comment-only audio files
 shanxi.mp3
+shuhan2.mp3
+shuhan3.mp3
+zhengtai.mp3
+test_query.mp3
+
+# Design doc (only referenced in code comments, not loaded at runtime)
+context.md
+
+# Standalone benchmark tool (not called by start_all.sh)
+benchmark_latency.py
 
 # vLLM omni fork (for reference only; system uses pip-installed vllm)
 vllm-omni/
