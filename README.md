@@ -1,7 +1,5 @@
 <div align="center">
 
-<img src="mascot2.png" width="200" alt="AURA Mascot">
-
 # AURA
 
 ### Always-On Understanding and Real-Time Assistance via Video Streams
@@ -10,7 +8,6 @@
 
 **A real-time multimodal streaming system powered by AURA-8B, supporting continuous video understanding with speech interaction.**
 
-<a href="https://huggingface.co/"><img src="hf-logo.pdf" height="20" alt="Hugging Face"></a>&nbsp;&nbsp;
 [Model on Hugging Face](https://huggingface.co/) • [Paper](#) • [Demo Video](#)
 
 </div>
@@ -22,8 +19,6 @@
 - **Real-Time Streaming**: Continuously processes live video at 2 FPS with sub-second response latency
 - **Full Pipeline**: Integrated ASR, Vision-Language Model, and Streaming TTS, all running locally
 - **Context Management**: Sliding-window history with automatic pruning and prefix KV cache reuse for bounded latency
-- **Cross-Turn Anti-Repetition**: `logit_bias` soft penalty and optional `bad_words` hard blocking to prevent repetitive responses
-- **Voice Clone TTS**: Sentence-level streaming synthesis with custom voice cloning support
 - **One-Click Launch**: Single script (`start_all.sh`) to start all services with automatic GPU allocation
 
 ## Requirements
@@ -36,6 +31,7 @@
 | GPU | 2+ (minimum: 1 for ASR+TTS, 1 for AURA-8B inference) |
 | System | `ffmpeg`, `numactl` |
 | OS | Linux (tested on Ubuntu 22.04) |
+| Browser | Google Chrome (desktop or mobile) |
 
 ## Installation
 
@@ -155,15 +151,17 @@ python realtime_capture_video_audio_streaming.py
 
 ### 4. Access from a Browser
 
+> **Required:** You must use **Google Chrome** to access the demo. Chrome is the only browser that fully supports the camera, microphone, MediaRecorder, and Web Audio APIs used by AURA. **Safari and Firefox are not supported** and may fail silently.
+
 **Local access (desktop):**
 
-Open `http://localhost:5003` in your browser.
+Open `http://localhost:5003` in **Chrome**.
 
 **Remote access from a phone:**
 
-To use AURA from a phone browser (e.g., Safari on iPhone or Chrome on Android), the phone must be able to reach the frontend server. There are several ways:
+Open the demo in **Chrome for Android** or **Chrome for iOS**. The phone must be able to reach the frontend server. There are several ways:
 
-1. **Same LAN**: If the phone and the server are on the same network, open `http://<server-ip>:5003` on the phone. Note that most browsers **require HTTPS** to access the camera and microphone from a non-localhost address.
+1. **Same LAN**: If the phone and the server are on the same network, open `http://<server-ip>:5003` in Chrome on your phone. Note that Chrome **requires HTTPS** to access the camera and microphone from a non-localhost address.
 
 2. **HTTPS mode** (recommended for LAN access from phone):
    ```bash
@@ -173,15 +171,15 @@ To use AURA from a phone browser (e.g., Safari on iPhone or Chrome on Android), 
    # Start the frontend with HTTPS
    python realtime_capture_video_audio_streaming.py --https
    ```
-   Then open `https://<server-ip>:5003` on your phone. You will need to accept the self-signed certificate warning in the browser.
+   Then open `https://<server-ip>:5003` in Chrome on your phone. You will need to accept the self-signed certificate warning.
 
 3. **Cloudflare Tunnel** (recommended for public/cross-network access):
    ```bash
    python realtime_capture_video_audio_streaming.py --tunnel
    ```
-   This creates a public HTTPS URL that you can open on any device without network restrictions.
+   This creates a public HTTPS URL that you can open in Chrome on any device without network restrictions.
 
-### 5. Using the Demo
+### 5. Using the Demo (Chrome only)
 
 The interface has three buttons at the bottom of the screen:
 
@@ -193,15 +191,16 @@ The interface has three buttons at the bottom of the screen:
 
 **Typical workflow:**
 
-1. Tap **Start** to activate the camera. Grant camera permission when prompted.
-2. Point the camera at something you want AURA to understand.
-3. **Press and hold** the **Record** button while asking your question out loud. Release when done.
-4. Watch the streaming text response appear on screen in real-time.
-5. The TTS audio response will play automatically through your speaker.
-6. Tap **Flip** to switch cameras if needed.
-7. Tap **Start** again to stop the video stream.
+1. Open the URL in **Google Chrome** (desktop or mobile).
+2. Tap **Start** to activate the camera. Grant camera permission when prompted by Chrome.
+3. Point the camera at something you want AURA to understand.
+4. **Press and hold** the **Record** button while asking your question out loud. Release when done speaking. Grant microphone permission when prompted.
+5. Watch the streaming text response appear on screen in real-time.
+6. The TTS audio response will play automatically through your speaker.
+7. Tap **Flip** to switch cameras if needed (front/rear).
+8. Tap **Start** again to stop the video stream.
 
-> **Tip:** On mobile devices, make sure to grant both camera and microphone permissions when prompted by the browser.
+> **Tip:** On mobile devices, make sure to grant both camera and microphone permissions when Chrome prompts you. If permissions were previously denied, reset them in Chrome Settings > Site Settings.
 
 ## Manual Service Launch
 
