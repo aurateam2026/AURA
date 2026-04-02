@@ -32,12 +32,34 @@ Thumbs.db
 logs/
 debug_context.jsonl
 real_time_captured_audio/
+real_time_captured_video/
 tts_results/
 
 # TLS certificates (sensitive)
 cert.pem
 key.pem
 
-# Large test videos (generated)
-test_video_5min.mp4
+# ── Unused files (not part of start_all.sh runtime chain) ──
 
+# Superseded old versions (replaced by *_CM.sh / *_ContextManaged.py)
+Qwen3_VL_online_streaming_v2.py
+Qwen3_VL_online_streaming_v2.sh
+
+# Standalone test/utility scripts (not called by start_all.sh)
+test_context_management.py
+test_prune_history.py
+trim_non_video_rounds.py
+
+# Test media files
+test_video.mp4
+test_video_5min.mp4
+test_1s.webm
+
+# Unreferenced audio file
+shanxi.mp3
+
+# vLLM omni fork (for reference only; system uses pip-installed vllm)
+vllm-omni/
+
+# Development tools directory (not used in runtime)
+tools/
