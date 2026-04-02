@@ -39,30 +39,40 @@
 
 ## Installation
 
+We use [**uv**](https://docs.astral.sh/uv/) for fast, reproducible environment management.
+
+### 1. Install uv
+
+If you do not have `uv` installed yet:
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+### 2. Set Up the Environment
+
 ```bash
 git clone https://github.com/aurateam2026/AURA.git && cd AURA
 
-# 1. Create and activate a Python 3.12 virtual environment
-python3.12 -m venv .venv
-source .venv/bin/activate
-
-# 2. Install system dependencies
+# Install system dependencies
 sudo apt install -y ffmpeg numactl
 
-# 3. Install all Python packages (228 packages, pinned versions)
-pip install -r requirements.txt
+# Create a Python 3.12 virtual environment and install all packages
+uv venv --python 3.12
+source .venv/bin/activate
+uv pip install -r requirements.txt
 
-# 4. Install flash-attn (requires a platform-specific .whl matching your CUDA/PyTorch/arch)
-#    Download the correct wheel from https://github.com/Dao-AILab/flash-attention/releases
-#    Example for CUDA 12 + PyTorch 2.10 + x86_64:
-pip install flash_attn-2.8.3+cu12torch2.10cxx11abiTRUE-cp312-cp312-linux_x86_64.whl
+# Install flash-attn (requires a platform-specific .whl matching your CUDA/PyTorch/arch)
+# Download the correct wheel from https://github.com/Dao-AILab/flash-attention/releases
+# Example for CUDA 12 + PyTorch 2.10 + x86_64:
+uv pip install flash_attn-2.8.3+cu12torch2.10cxx11abiTRUE-cp312-cp312-linux_x86_64.whl
 ```
 
 > **Note:** `flash-attn` is **not** included in `requirements.txt` because it requires a platform-specific `.whl` file. You must download the correct wheel that matches your CUDA version, PyTorch version, and CPU architecture, then install it manually.
 
-> **Note:** The `Qwen3-TTS-streaming/` subdirectory is a local library loaded at runtime via `sys.path`. It does **not** need a separate `pip install`.
+> **Note:** The `Qwen3-TTS-streaming/` subdirectory is a local library loaded at runtime via `sys.path`. It does **not** need a separate install.
 
-### Verify Installation
+### 3. Verify Installation
 
 ```bash
 source .venv/bin/activate
