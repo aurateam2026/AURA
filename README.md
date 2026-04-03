@@ -1,14 +1,12 @@
 <div align="center">
 
-# AURA
+### AURA: Always-On Understanding and Real-Time Assistance via Video Streams
 
-### Always-On Understanding and Real-Time Assistance via Video Streams
-
-<img src="aura_cha.jpg" width="600" alt="AURA">
+<img src="pics/aura_cha.jpg" width="600" alt="AURA">
 
 **A real-time multimodal streaming system powered by AURA-8B, supporting continuous video understanding with speech interaction.**
 
-[Model on Hugging Face](https://huggingface.co/) • [Paper](#) • [Demo Video](#)
+[Model on Hugging Face](https://huggingface.co/) • [Paper](#) • [Demo Videos](#demo-videos)
 
 </div>
 
@@ -20,6 +18,16 @@
 - **Full Pipeline**: Integrated ASR, Vision-Language Model, and Streaming TTS, all running locally
 - **Context Management**: Sliding-window history with automatic pruning and prefix KV cache reuse for bounded latency
 - **One-Click Launch**: Single script (`start_all.sh`) to start all services with automatic GPU allocation
+
+## Demo Videos
+
+| Demo | Video |
+|------|-------|
+| Demo 1 | [aura_demo1.mp4](demos/aura_demo1.mp4) |
+| Demo 2 | [aura_demo2.mp4](demos/aura_demo2.mp4) |
+| Demo 3 | [aura_demo3.mp4](demos/aura_demo3.mp4) |
+
+> Click a link above to download and watch the demo video. All demos are located in the [`demos/`](demos/) folder.
 
 ## Requirements
 
