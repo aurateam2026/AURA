@@ -1,1 +1,2 @@
 demos/*.mp4 filter=lfs diff=lfs merge=lfs -text
+flash_attn-2.8.3+cu12torch2.9cxx11abiTRUE-cp312-cp312-linux_aarch64.whl filter=lfs diff=lfs merge=lfs -text

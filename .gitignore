@@ -26,6 +26,7 @@ Thumbs.db
 
 # Large binary files (>100MB, exceeds GitHub limit)
 *.whl
+!flash_attn-2.8.3+cu12torch2.9cxx11abiTRUE-cp312-cp312-linux_aarch64.whl
 
 # Runtime / debug output
 *.log
