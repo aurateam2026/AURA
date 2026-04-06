@@ -105,9 +105,9 @@ Download the following models from [Hugging Face](https://huggingface.co/):
 
 | Model | Purpose | Size |
 |-------|---------|------|
-| AURA-8B | Main vision-language model | ~16 GB |
-| [Qwen3-ASR-1.7B](https://huggingface.co/) | Automatic Speech Recognition | ~3 GB |
-| [Qwen3-TTS-12Hz-1.7B-Base](https://huggingface.co/) | Text-to-Speech synthesis | ~4 GB |
+| [AURA-8B](https://huggingface.co/aurateam/AURA/tree/main) | Main vision-language model | ~16 GB |
+| [Qwen3-ASR-1.7B](https://huggingface.co/Qwen/Qwen3-ASR-1.7B/tree/main) | Automatic Speech Recognition | ~3 GB |
+| [Qwen3-TTS-12Hz-1.7B-Base](https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-Base/tree/main) | Text-to-Speech synthesis | ~4 GB |
 
 ### 2. One-Click Launch
 
