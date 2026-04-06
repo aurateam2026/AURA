@@ -6,7 +6,7 @@
 
 **A real-time multimodal streaming system powered by AURA-8B, supporting continuous video understanding with speech interaction.**
 
-[Model on Hugging Face](https://huggingface.co/) • [Paper](#) • [Demo Videos](#demo-videos)
+[Home Page](https://aurateam2026.github.io/) • [Model on Hugging Face](https://huggingface.co/) • [Paper](#)
 
 </div>
 
@@ -19,7 +19,7 @@
 - **Context Management**: Sliding-window history with automatic pruning and prefix KV cache reuse for bounded latency
 - **One-Click Launch**: Single script (`start_all.sh`) to start all services with automatic GPU allocation
 
-## Demo Videos
+## Part of Demo Videos
 
 | Demo | Video |
 |------|-------|
@@ -27,7 +27,7 @@
 | Demo 2 | [aura_demo2.mp4](demos/aura_demo2.mp4) |
 | Demo 3 | [aura_demo3.mp4](demos/aura_demo3.mp4) |
 
-> Click a link above to download and watch the demo video. All demos are located in the [`demos/`](demos/) folder.
+> Click a link above to download and watch the demo video. All demos are located in the [`demos/`](demos/) folder. For more demo videos, please visit our [Home Page](https://aurateam2026.github.io/).
 
 ## Requirements
 
