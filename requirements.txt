@@ -172,7 +172,7 @@ pytz==2026.1.post1
 PyYAML==6.0.3
 pyzmq==27.1.0
 quack-kernels==0.3.6
-qwen-asr==0.0.6
+qwen-asr @ git+https://github.com/yangbo0926/Qwen3-ASR.git
 qwen-omni-utils==0.0.9
 ray==2.54.1
 referencing==0.37.0
