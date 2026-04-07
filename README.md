@@ -147,7 +147,7 @@ GPU_ASR=0 GPU_TTS=0 GPU_INFERENCE=2,3 bash start_all.sh
 The web frontend connects to the backend inference server via a TCP socket. By default, the backend hostname is configured in `realtime_capture_video_audio_streaming.py`:
 
 ```python
-SERVER_HOST = 'hk01dgx030'   # Change this to match your setup
+SERVER_HOST = 'localhost'   # Change this to match your setup
 SERVER_PORT = 12345
 ```
 
