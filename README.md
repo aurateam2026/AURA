@@ -1,16 +1,15 @@
 <div align="center">
 
-### AURA: Always-On Understanding and Real-Time Assistance via Video Streams
+<h1><img src="pics/aura_cha.png" height="33" alt="AURA" style="vertical-align:middle">: Always-On Understanding and Real-Time Assistance via Video Streams</h1>
 
-<img src="pics/aura_cha.jpg" width="600" alt="AURA">
-
-**A real-time multimodal streaming system powered by AURA-8B, supporting continuous video understanding with speech interaction.**
-
-[Home Page](https://aurateam2026.github.io/) • [Model on Hugging Face](https://huggingface.co/) • [Paper](#)
+<a href="https://aurateam2026.github.io/" target="_blank"><img alt="Home Page" src="https://img.shields.io/badge/Project-Page-0A66C2?logo=googlechrome&logoColor=white" height="22px"></a>
+<a href="https://huggingface.co/aurateam/AURA/" target="_blank"><img src="https://img.shields.io/badge/Model-Hugging_Face-FFD21E?logo=huggingface&logoColor=black" height="22px"></a>
+<a href="https://arxiv.org/pdf/2604.X" target="_blank"><img src="https://img.shields.io/badge/Technical_Report-arXiv-EC1C24?logo=arxiv&logoColor=white" height="22px"></a>
 
 </div>
 
----
+<p>A real-time multimodal streaming system powered by AURA-8B, supporting continuous video understanding with speech interaction.</p>
+
 
 ## Highlights
 
@@ -19,13 +18,20 @@
 - **Context Management**: Sliding-window history with automatic pruning and prefix KV cache reuse for bounded latency
 - **One-Click Launch**: Single script (`start_all.sh`) to start all services with automatic GPU allocation
 
-## Part of Demo Videos
+## Demo Videos
 
 | Demo | Video |
 |------|-------|
-| Demo 1 | [aura_demo1.mp4](demos/aura_demo1.mp4) |
-| Demo 2 | [aura_demo2.mp4](demos/aura_demo2.mp4) |
-| Demo 3 | [aura_demo3.mp4](demos/aura_demo3.mp4) |
+| *The pens on the desk* | [The pens on the desk.mp4](demos/The_pens_on_the_desk.mp4) |
+| *Watch the kettle for me* | [Watch the kettle for me.mp4](demos/Watch_the_kettle_for_me.mp4) |
+| *史迪仔放在哪？* | [史迪仔放在哪？.mp4](demos/%E5%8F%B2%E8%BF%AA%E4%BB%94%E6%94%BE%E5%9C%A8%E5%93%AA%EF%BC%9F.mp4) |
+| *小馋猫偷吃冻干* | [小馋猫偷吃冻干.mp4](demos/%E5%B0%8F%E9%A6%8B%E7%8C%AB%E5%81%B7%E5%90%83%E5%86%BB%E5%B9%B2.mp4) |
+| *工作时不准摸鱼* | [工作时不准摸鱼.mp4](demos/%E5%B7%A5%E4%BD%9C%E6%97%B6%E4%B8%8D%E5%87%86%E6%91%B8%E9%B1%BC.mp4) |
+| *帮我找找鼠标* | [帮我找找鼠标.mp4](demos/%E5%B8%AE%E6%88%91%E6%89%BE%E6%89%BE%E9%BC%A0%E6%A0%87.mp4) |
+| *帮我盯着烧水壶* | [帮我盯着烧水壶.mp4](demos/%E5%B8%AE%E6%88%91%E7%9B%AF%E7%9D%80%E7%83%A7%E6%B0%B4%E5%A3%B6.mp4) |
+| *我刚才关灯了吗* | [我刚才关灯了吗.mp4](demos/%E6%88%91%E5%88%9A%E6%89%8D%E5%85%B3%E7%81%AF%E4%BA%86%E5%90%97.mp4) |
+| *桌面上的笔* | [桌面上的笔.mp4](demos/%E6%A1%8C%E9%9D%A2%E4%B8%8A%E7%9A%84%E7%AC%94.mp4) |
+| *绿灯才能过马路哦* | [绿灯才能过马路哦.mp4](demos/%E7%BB%BF%E7%81%AF%E6%89%8D%E8%83%BD%E8%BF%87%E9%A9%AC%E8%B7%AF%E5%93%A6.mp4) |
 
 > Click a link above to download and watch the demo video. All demos are located in the [`demos/`](demos/) folder. For more demo videos, please visit our [Home Page](https://aurateam2026.github.io/).
 
