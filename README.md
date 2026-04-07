@@ -4,9 +4,9 @@
 
 <h1>AURA: Always-On Understanding and Real-Time Assistance via Video Streams</h1>
 
-<a href="https://aurateam2026.github.io/" target="_blank"><img alt="Home Page" src="https://img.shields.io/badge/Project-Page-0A66C2?logo=googlechrome&logoColor=white" height="22px"></a>
+<a href="https://aurateam2026.github.io/" target="_blank"><img alt="Home Page" src="https://img.shields.io/badge/Home-Page-0A66C2?logo=googlechrome&logoColor=white" height="22px"></a>
 <a href="https://huggingface.co/aurateam/AURA/" target="_blank"><img src="https://img.shields.io/badge/Model-Hugging_Face-FFD21E?logo=huggingface&logoColor=black" height="22px"></a>
-<a href="https://arxiv.org/pdf/2604.X" target="_blank"><img src="https://img.shields.io/badge/Technical_Report-arXiv-EC1C24?logo=arxiv&logoColor=white" height="22px"></a>
+<a href="https://arxiv.org/abs/2604.04184" target="_blank"><img src="https://img.shields.io/badge/Technical_Report-arXiv-EC1C24?logo=arxiv&logoColor=white" height="22px"></a>
 
 </div>
 
@@ -329,6 +329,8 @@ This project is released under the [Apache-2.0 License](LICENSE).
 ```bibtex
 @article{aura2026,
   title={AURA: Always-On Understanding and Real-Time Assistance via Video Streams},
+  author={Lu, Xudong and Bo, Yang and Chen, Jinpeng and Li, Shuhan and Guo, Xintong and Guan, Huankang and Liu, Fang and Xu, Dunyuan and Sun, Peiwen and Sun, Heyang and Liu, Rui and Li, Hongsheng},
+  journal={arXiv preprint arXiv:2604.04184},
   year={2026}
 }
 ```
