@@ -82,6 +82,8 @@ uv pip install flash_attn-2.8.3+cu12torch2.10cxx11abiTRUE-cp312-cp312-linux_x86_
 
 > **Note:** `flash-attn` is **not** included in `requirements.txt` because it requires a platform-specific `.whl` file. You must download the correct wheel that matches your CUDA version, PyTorch version, and CPU architecture, then install it manually.
 
+> **Note:** `qwen-asr` is installed from a [patched fork](https://github.com/yangbo0926/Qwen3-ASR) instead of PyPI. The upstream `qwen-asr==0.0.6` targets vLLM 0.14.0, while AURA requires vLLM 0.17.1+. Our fork applies a [minimal patch](https://github.com/yangbo0926/Qwen3-ASR/commit/37422f4) (1 file, ~10 lines) to fix three deprecated API calls. Once the upstream package releases a vLLM 0.17+ compatible version, we will switch back to PyPI.
+
 > **Note:** The `Qwen3-TTS-streaming/` subdirectory is a local library loaded at runtime via `sys.path`. It does **not** need a separate install.
 
 ### 3. Verify Installation
