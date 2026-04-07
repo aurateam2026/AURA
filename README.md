@@ -1,6 +1,9 @@
 <div align="center">
 
-<h1><img src="pics/aura_cha.png" height="33" alt="AURA" style="vertical-align:middle">: Always-On Understanding and Real-Time Assistance via Video Streams</h1>
+<table border="0" cellspacing="0" cellpadding="8"><tr>
+<td valign="middle" width="100"><img src="pics/mascot2.png" width="80" height="80" alt="mascot" style="min-width:80px;min-height:80px"></td>
+<td valign="middle"><h1>AURA: Always-On Understanding and Real-Time Assistance via Video Streams</h1></td>
+</tr></table>
 
 <a href="https://aurateam2026.github.io/" target="_blank"><img alt="Home Page" src="https://img.shields.io/badge/Project-Page-0A66C2?logo=googlechrome&logoColor=white" height="22px"></a>
 <a href="https://huggingface.co/aurateam/AURA/" target="_blank"><img src="https://img.shields.io/badge/Model-Hugging_Face-FFD21E?logo=huggingface&logoColor=black" height="22px"></a>
