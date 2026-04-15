@@ -1,0 +1,1 @@
+python score.py --model AURA --mode offline
