@@ -1,0 +1,9 @@
+cd ../src/data
+python move_video.py --src "../../data/real" --dest "./videos"
+python move_video.py --src "../../data/omni" --dest "./videos"
+python move_video.py --src "../../data/sqa" --dest "./videos"
+python move_video.py --src "../../data/proactive" --dest "./videos"
+# python modify_video_path.py --src "./questions_real.json"
+# python modify_video_path.py --src "./questions_omni.json"
+# python modify_video_path.py --src "./questions_sqa.json"
+# python modify_video_path.py --src "./questions_proactive.json"
