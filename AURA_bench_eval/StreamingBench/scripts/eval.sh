@@ -1,6 +1,6 @@
 cd ../src
 
-HOSTNAME="hk01dgx030"
+HOSTNAME="localhost"
 PORT="8028"
 
 # Change the model name to the model you want to evaluate

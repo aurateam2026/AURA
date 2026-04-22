@@ -19,6 +19,7 @@ Usage:
 """
 
 import argparse
+import ffmpeg
 import json
 import math
 import os
@@ -102,19 +103,21 @@ def ensure_clip(video_path: str, start_time: int, end_time: int) -> str:
     clip_path = os.path.join(output_dir, f"{video_name}_{start_time}_{end_time}.mp4")
 
     if not os.path.exists(clip_path):
-        subprocess.run(
-            [
-                "ffmpeg", "-y",
-                "-ss", str(int(start_time)),
-                "-i", video_path,
-                "-t", str(int(end_time) - int(start_time)),
-                "-c:v", "libx264",
-                "-c:a", "aac",
-                clip_path,
-            ],
-            capture_output=True,
-            check=True,
-        )
+        try:
+            (
+                ffmpeg
+                .input(video_path, ss=int(start_time))
+                .output(
+                    clip_path,
+                    t=(int(end_time) - int(start_time)),
+                    vcodec="libx264",
+                    acodec="aac",
+                )
+                .overwrite_output()
+                .run(capture_stdout=True, capture_stderr=True)
+            )
+        except ffmpeg.Error as e:
+            raise RuntimeError(e.stderr.decode("utf-8")) from e
     return clip_path
 
 

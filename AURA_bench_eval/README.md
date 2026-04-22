@@ -12,6 +12,7 @@ source .venv/bin/activate
 uv pip install torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0
 uv pip install vllm==0.11.0 --torch-backend=auto
 uv pip install transformers==4.57.1
+uv pip install ffmpeg-python==0.2.0
 ```
 
 ## Required Transformers Patch
@@ -114,7 +115,7 @@ python presplit_videos.py \
   --chunked_1s_dir ../src/data/chunked_1s_videos \
   --context_time -1 \
   --max_segments 30 \
-  --workers 16
+  --workers 32
 ```
 
 You can increase `--workers` according to your CPU resources.

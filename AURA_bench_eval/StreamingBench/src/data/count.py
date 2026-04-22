@@ -83,11 +83,11 @@ def count(args):
             counts["accuracy"] = counts["correct"] / counts["total"] if counts["total"] > 0 else 0
 
     # Save results as a JSON file
-    with open(f'{model}_stats.json', 'w') as json_file:
+    with open(f'{model}_{task}_stats.json', 'w') as json_file:
         json.dump(stats, json_file, indent=4)
 
     # Save results as a CSV file
-    with open(f'{model}_stats.csv', 'w', newline='') as csv_file:
+    with open(f'{model}_{task}_stats.csv', 'w', newline='') as csv_file:
         if task == "proactive":
             fieldnames = ["task_type", "total", "time_correct", "time_accuracy", "answer_correct", "answer_accuracy"]
         else:
