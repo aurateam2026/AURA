@@ -17,9 +17,11 @@ uv pip install ffmpeg-python==0.2.0
 
 ## Required Transformers Patch
 
-After installation, edit two lines in `.venv/lib/python3.11/site-packages/transformers/models/qwen3_vl/video_processing_qwen3_vl.py` to make processing behave correctly for AURA's default 1-second video chunks.
+After installation, edit two lines in `.venv/lib/python3.11/site-packages/transformers/models/qwen3_vl/video_processing_qwen3_vl.py` for AURA's default 1-second video chunks.
 
-### 1. Line 44
+### 1. In `smart_resize`
+
+If you install the same version as above (`transformers==4.57.1`), this change is at line 44.
 
 Change:
 
@@ -33,7 +35,9 @@ to:
 num_frames = temporal_factor
 ```
 
-### 2. Line 100
+### 2. In `Qwen3VLVideoProcessor`
+
+If you install the same version as above (`transformers==4.57.1`), this change is at line 100.
 
 Change:
 
@@ -55,6 +59,8 @@ After the environment is ready and the patch above is applied, run:
 bash deploy_aura_vllm.sh
 ```
 
+This command starts a `vllm` server for AURA and should be kept running in a separate terminal while you run the benchmark scripts below. You can modify `CUDA_VISIBLE_DEVICES` and `PORT` in `deploy_aura_vllm.sh` according to your setup.
+
 ## OVO-Bench Evaluation
 
 ### 1. Prepare Data
@@ -72,7 +78,7 @@ python presplit_videos.py \
   --chunked_dir data/chunked_videos \
   --chunked_1s_dir data/chunked_1s_videos \
   --max_segments 30 \
-  --workers 16 \
+  --workers 32 \
   --task EPM ASI HLD STU OJR ATR ACR OCR FPD REC SSR CRR
 ```
 
@@ -80,7 +86,7 @@ You can increase `--workers` according to your CPU resources.
 
 ### 3. Run Inference
 
-After pre-splitting, run inference script:
+After pre-splitting, edit `scripts/inference/AURA.sh` to set `HOSTNAME` and `PORT` according to the IP address and port of your deployed AURA service (the default assumes a local deployment at `localhost:8028`), then run:
 
 ```bash
 bash scripts/inference/AURA.sh
@@ -98,7 +104,9 @@ bash scripts/score/AURA.sh
 
 ### 1. Prepare Data
 
-Download the StreamingBench dataset from [mjuicem/StreamingBench](https://huggingface.co/datasets/mjuicem/StreamingBench), then run the preprocessing script to move videos and update paths in the annotation JSONs:
+Download the StreamingBench dataset from [mjuicem/StreamingBench](https://huggingface.co/datasets/mjuicem/StreamingBench), extract the files, and place them under `StreamingBench/data` (for the exact dataset layout, see the official StreamingBench instructions: [THUNLP-MT/StreamingBench](https://github.com/THUNLP-MT/StreamingBench/tree/main)).
+
+Then enter `StreamingBench/scripts` and run the preprocessing script to move videos and update paths in the annotation JSONs:
 
 ```bash
 cd StreamingBench/scripts
@@ -107,7 +115,7 @@ bash preprocess.sh
 
 ### 2. Recommended: Pre-split 1-second Videos in Advance
 
-AURA inference splits each video clip into 1-second segments. Pre-splitting with high parallelism avoids slow on-the-fly `ffmpeg` calls. The script reads annotation JSONs, creates intermediate clips (`tmp_60`) from the original videos, then splits those clips into 1-second segments:
+AURA inference splits each video clip into 1-second segments. Pre-splitting with high parallelism avoids slow on-the-fly `ffmpeg` calls. The script reads annotation JSONs, creates intermediate clips (`tmp_60`) from the original videos, then splits those clips into 1-second segments. Run the following command from `StreamingBench/scripts`:
 
 ```bash
 python presplit_videos.py \
@@ -122,17 +130,17 @@ You can increase `--workers` according to your CPU resources.
 
 ### 3. Run Inference
 
-Edit `scripts/eval.sh` to set `HOSTNAME` and `PORT` to point to your deployed AURA service, then run:
+Still in `StreamingBench/scripts`, edit `eval.sh` to set `HOSTNAME` and `PORT` according to the IP address and port of your deployed AURA service (the default assumes a local deployment at `localhost:8028`), then run:
 
 ```bash
 bash eval.sh
 ```
 
-This will evaluate AURA on four tasks: real-time visual understanding, omni-source understanding, sequential question answering, and proactive output.
+This will evaluate AURA on four tasks: real-time visual understanding, omni-source understanding, sequential question answering, and proactive output. The task grouping here follows the StreamingBench codebase used for evaluation. In our technical report, we follow the original task grouping in the StreamingBench paper; the underlying sub-tasks are the same, but their assignment to high-level task categories differs slightly. Please refer to the StreamingBench paper or our technical report for the exact mapping.
 
 ### 4. Run Scoring
 
-After inference finishes, run the scoring script to compute accuracy statistics:
+After inference finishes, still in `StreamingBench/scripts`, run the scoring script to compute accuracy statistics:
 
 ```bash
 bash stats.sh

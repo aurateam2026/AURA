@@ -13,14 +13,17 @@
 <p>A real-time multimodal streaming system powered by <a href="https://huggingface.co/aurateam/AURA/">our AURA model</a>, supporting continuous video understanding with speech interaction.</p>
 
 
-## Highlights
+## Demo Deployment and Usage
+
+### Highlights
 
 - **Real-Time Streaming**: Continuously processes live video at 2 FPS with sub-second response latency
 - **Full Pipeline**: Integrated ASR, Vision-Language Model, and Streaming TTS, all running locally
 - **Context Management**: Sliding-window history with automatic pruning and prefix KV cache reuse for bounded latency
 - **One-Click Launch**: Single script (`start_all.sh`) to start all services with automatic GPU allocation
 
-## Demo Videos
+
+### Demo Videos
 
 | Demo | Video |
 |------|-------|
@@ -37,7 +40,7 @@
 
 > Click a link above to download and watch the demo video. All demos are located in the [`demos/`](demos/) folder. For more demo videos, please visit our [Home Page](https://aurateam2026.github.io/).
 
-## Requirements
+### Requirements
 
 | Category | Requirement |
 |----------|-------------|
@@ -49,11 +52,11 @@
 | OS | Linux (tested on Ubuntu 22.04) |
 | Browser | Google Chrome (desktop or mobile) |
 
-## Installation
+### Installation
 
 We use [**uv**](https://docs.astral.sh/uv/) for fast, reproducible environment management.
 
-### 1. Install uv
+#### 1. Install uv
 
 If you do not have `uv` installed yet:
 
@@ -61,7 +64,7 @@ If you do not have `uv` installed yet:
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-### 2. Set Up the Environment
+#### 2. Set Up the Environment
 
 ```bash
 git clone https://github.com/aurateam2026/AURA.git && cd AURA
@@ -86,7 +89,7 @@ uv pip install flash_attn-2.8.3+cu12torch2.10cxx11abiTRUE-cp312-cp312-linux_x86_
 
 > **Note:** The `Qwen3-TTS-streaming/` subdirectory is a local library loaded at runtime via `sys.path`. It does **not** need a separate install.
 
-### 3. Verify Installation
+#### 3. Verify Installation
 
 ```bash
 source .venv/bin/activate
@@ -107,9 +110,9 @@ vLLM:     0.17.1
 GPUs:     2  (or more)
 ```
 
-## Quick Start
+### Quick Start
 
-### 1. Download Models
+#### 1. Download Models
 
 Download the following models from [Hugging Face](https://huggingface.co/):
 
@@ -119,7 +122,7 @@ Download the following models from [Hugging Face](https://huggingface.co/):
 | [Qwen3-ASR-1.7B](https://huggingface.co/Qwen/Qwen3-ASR-1.7B/tree/main) | Automatic Speech Recognition | ~3 GB |
 | [Qwen3-TTS-12Hz-1.7B-Base](https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-Base/tree/main) | Text-to-Speech synthesis | ~4 GB |
 
-### 2. One-Click Launch
+#### 2. One-Click Launch
 
 ```bash
 # Default: GPU 0 for ASR+TTS, GPU 1 for AURA inference
@@ -142,7 +145,7 @@ GPU_ASR=0 GPU_TTS=0 GPU_INFERENCE=1 bash start_all.sh
 GPU_ASR=0 GPU_TTS=0 GPU_INFERENCE=2,3 bash start_all.sh
 ```
 
-### 3. Launch Web Frontend
+#### 3. Launch Web Frontend
 
 The web frontend connects to the backend inference server via a TCP socket. By default, the backend hostname is configured in `realtime_capture_video_audio_streaming.py`:
 
@@ -167,7 +170,7 @@ python realtime_capture_video_audio_streaming.py
 | HTTPS | `python realtime_capture_video_audio_streaming.py --https` |
 | Cloudflare Tunnel | `python realtime_capture_video_audio_streaming.py --tunnel` |
 
-### 4. Access from a Browser
+#### 4. Access from a Browser
 
 > **Required:** You must use **Google Chrome** to access the demo. Chrome is the only browser that fully supports the camera, microphone, MediaRecorder, and Web Audio APIs used by AURA. **Safari and Firefox are not supported** and may fail silently.
 
@@ -197,7 +200,7 @@ Open the demo in **Chrome for Android** or **Chrome for iOS**. The phone must be
    ```
    This creates a public HTTPS URL that you can open in Chrome on any device without network restrictions.
 
-### 5. Using the Demo (Chrome only)
+#### 5. Using the Demo (Chrome only)
 
 The interface has three buttons at the bottom of the screen:
 
@@ -220,7 +223,7 @@ The interface has three buttons at the bottom of the screen:
 
 > **Tip:** On mobile devices, make sure to grant both camera and microphone permissions when Chrome prompts you. If permissions were previously denied, reset them in Chrome Settings > Site Settings.
 
-## Manual Service Launch
+### Manual Service Launch
 
 If you prefer to start services individually:
 
@@ -270,14 +273,14 @@ Open: `http://localhost:5003`
 
 </details>
 
-## GPU Allocation Reference
+### GPU Allocation Reference
 
 | GPU | Service | VRAM |
 |-----|---------|------|
 | GPU 0 | ASR (Qwen3-ASR-1.7B) + TTS (Qwen3-TTS-1.7B) | ~7 GB |
 | GPU 1 | AURA-8B inference (vLLM, TP=1) | ~16 GB |
 
-## Key Configuration
+### Key Configuration
 
 Main inference parameters in `Qwen3_VL_online_streaming_v2_CM.sh`:
 
@@ -293,7 +296,7 @@ Main inference parameters in `Qwen3_VL_online_streaming_v2_CM.sh`:
 | `--num-rounds-keep` | 30 | Rounds to keep after pruning |
 | `--kv-offloading-size` | 10 | KV cache CPU offload size (GB) |
 
-## Project Structure
+### Project Structure
 
 ```
 ├── start_all.sh                              # One-click launch script
@@ -310,7 +313,7 @@ Main inference parameters in `Qwen3_VL_online_streaming_v2_CM.sh`:
 └── Qwen3-TTS-streaming/                      # TTS model inference library
 ```
 
-## Troubleshooting
+### Troubleshooting
 
 | Issue | Solution |
 |-------|----------|
@@ -322,11 +325,17 @@ Main inference parameters in `Qwen3_VL_online_streaming_v2_CM.sh`:
 | Phone cannot access camera/mic | Use HTTPS mode or Cloudflare Tunnel (browsers require HTTPS for media on non-localhost) |
 | `SERVER_HOST` connection refused | Verify `SERVER_HOST` in `realtime_capture_video_audio_streaming.py` matches your backend host |
 
-## License
+## Benchmark Evaluation
+
+We provide benchmark evaluation code for AURA in [`AURA_bench_eval/`](AURA_bench_eval/), including evaluation pipelines for `OVO-Bench` and `StreamingBench`. For environment setup, dataset preparation, deployment, and evaluation commands, please refer to [`AURA_bench_eval/README.md`](AURA_bench_eval/README.md).
+
+## Other
+
+### License
 
 This project is released under the [Apache-2.0 License](LICENSE).
 
-## Citation
+### Citation
 
 ```bibtex
 @article{aura2026,
