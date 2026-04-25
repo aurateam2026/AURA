@@ -1,3 +1,5 @@
+# Starts a long-running local vLLM server for AURA.
+# Default config: GPU 0, port 8028.
 CUDA_VISIBLE_DEVICES=0
 DATA_PARALLEL_SIZE="$(awk -F',' '{print NF}' <<< "$CUDA_VISIBLE_DEVICES")"
 PORT="8028"

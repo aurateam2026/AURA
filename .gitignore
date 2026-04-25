@@ -81,6 +81,8 @@ AURA_bench_eval/OVO-Bench/data/chunked_1s_videos/
 AURA_bench_eval/StreamingBench/data
 AURA_bench_eval/StreamingBench/src/data/videos/
 AURA_bench_eval/StreamingBench/src/data/chunked_1s_videos/
+AURA_bench_eval/qwen3_online_res/
+AURA_bench_eval/qwen3_online_res_2/
 
 *AURA*.csv
 *AURA*.json

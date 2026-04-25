@@ -1,4 +1,4 @@
-HOSTNAME="hk01dgx030"
+HOSTNAME="localhost"
 PORT="8028"
 
 python inference.py \

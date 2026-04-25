@@ -617,7 +617,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_21_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_21_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -637,7 +637,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_21_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_21_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -657,7 +657,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_21_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_21_Scene_Understanding.mp4"
     },
     {
         "time": "[0:03:00 - 0:04:00]",
@@ -679,7 +679,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_21_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_21_Scene_Understanding.mp4"
     },
     {
         "time": "[0:04:00 - 0:05:10]",
@@ -699,7 +699,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_21_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_21_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -719,7 +719,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_34_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_34_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -739,7 +739,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_34_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_34_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -759,7 +759,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_34_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_34_Scene_Understanding.mp4"
     },
     {
         "time": "[0:03:00 - 0:04:00]",
@@ -779,7 +779,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_34_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_34_Scene_Understanding.mp4"
     },
     {
         "time": "[0:03:00 - 0:04:00]",
@@ -799,7 +799,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_34_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_34_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -1619,7 +1619,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_28_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_28_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -1639,7 +1639,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_28_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_28_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -1659,7 +1659,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_28_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_28_Scene_Understanding.mp4"
     },
     {
         "time": "[0:03:00 - 0:04:00]",
@@ -1679,7 +1679,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_28_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_28_Scene_Understanding.mp4"
     },
     {
         "time": "[0:03:00 - 0:04:00]",
@@ -1699,7 +1699,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_28_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_28_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -2119,7 +2119,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_31_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_31_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -2139,7 +2139,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_31_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_31_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -2159,7 +2159,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_31_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_31_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -2179,7 +2179,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_31_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_31_Scene_Understanding.mp4"
     },
     {
         "time": "[0:03:00 - 0:04:00]",
@@ -2199,7 +2199,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_31_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_31_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -2919,7 +2919,7 @@
             }
         ],
         "video_categories": "minecraft",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_44_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_44_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -2939,7 +2939,7 @@
             }
         ],
         "video_categories": "minecraft",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_44_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_44_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -2959,7 +2959,7 @@
             }
         ],
         "video_categories": "minecraft",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_44_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_44_Scene_Understanding.mp4"
     },
     {
         "time": "[0:03:00 - 0:04:00]",
@@ -2980,7 +2980,7 @@
             }
         ],
         "video_categories": "minecraft",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_44_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_44_Scene_Understanding.mp4"
     },
     {
         "time": "[0:04:00 - 0:05:00]",
@@ -3000,7 +3000,7 @@
             }
         ],
         "video_categories": "minecraft",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_44_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_44_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -3720,7 +3720,7 @@
             }
         ],
         "video_categories": "travel_vlog",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_40_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_40_Scene_Understanding.mp4"
     },
     {
         "time": "0:01:00 - 0:02:00",
@@ -3740,7 +3740,7 @@
             }
         ],
         "video_categories": "travel_vlog",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_40_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_40_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -3761,7 +3761,7 @@
             }
         ],
         "video_categories": "travel_vlog",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_40_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_40_Scene_Understanding.mp4"
     },
     {
         "time": "[0:04:00 - 0:05:00]",
@@ -3782,7 +3782,7 @@
             }
         ],
         "video_categories": "travel_vlog",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_40_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_40_Scene_Understanding.mp4"
     },
     {
         "time": "[0:05:00 - 0:06:00]",
@@ -3802,7 +3802,7 @@
             }
         ],
         "video_categories": "travel_vlog",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_40_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_40_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -4822,7 +4822,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_9_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_9_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -4842,7 +4842,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_9_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_9_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -4862,7 +4862,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_9_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_9_Scene_Understanding.mp4"
     },
     {
         "time": "[0:03:00 - 0:04:00]",
@@ -4882,7 +4882,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_9_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_9_Scene_Understanding.mp4"
     },
     {
         "time": "[0:03:00 - 0:04:00]",
@@ -4902,7 +4902,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_9_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_9_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -5422,7 +5422,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_49_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_49_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -5442,7 +5442,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_49_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_49_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -5462,7 +5462,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_49_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_49_Scene_Understanding.mp4"
     },
     {
         "time": "[0:05:00 - 0:06:00]",
@@ -5482,7 +5482,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_49_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_49_Scene_Understanding.mp4"
     },
     {
         "time": "[0:07:00 - 0:08:00]",
@@ -5502,7 +5502,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_49_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_49_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -6318,7 +6318,7 @@
             }
         ],
         "video_categories": "travel_vlog",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_41_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_41_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -6339,7 +6339,7 @@
             }
         ],
         "video_categories": "travel_vlog",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_41_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_41_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -6359,7 +6359,7 @@
             }
         ],
         "video_categories": "travel_vlog",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_41_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_41_Scene_Understanding.mp4"
     },
     {
         "time": "[0:03:00 - 0:04:00]",
@@ -6379,7 +6379,7 @@
             }
         ],
         "video_categories": "travel_vlog",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_41_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_41_Scene_Understanding.mp4"
     },
     {
         "time": "[0:06:00 - 0:07:00]",
@@ -6399,7 +6399,7 @@
             }
         ],
         "video_categories": "travel_vlog",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_41_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_41_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -7821,7 +7821,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_6_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_6_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -7841,7 +7841,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_6_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_6_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -7861,7 +7861,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_6_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_6_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -7881,7 +7881,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_6_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_6_Scene_Understanding.mp4"
     },
     {
         "time": "[0:03:00 - 0:04:00]",
@@ -7904,7 +7904,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_6_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_6_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -8224,7 +8224,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_38_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_38_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -8244,7 +8244,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_38_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_38_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -8264,7 +8264,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_38_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_38_Scene_Understanding.mp4"
     },
     {
         "time": "[0:03:00 - 0:04:00]",
@@ -8284,7 +8284,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_38_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_38_Scene_Understanding.mp4"
     },
     {
         "time": "[0:04:00 - 0:05:00]",
@@ -8304,7 +8304,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_38_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_38_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -8724,7 +8724,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_12_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_12_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -8744,7 +8744,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_12_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_12_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -8764,7 +8764,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_12_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_12_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -8784,7 +8784,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_12_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_12_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -8804,7 +8804,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_12_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_12_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -8824,7 +8824,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_11_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_11_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -8844,7 +8844,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_11_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_11_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -8864,7 +8864,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_11_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_11_Scene_Understanding.mp4"
     },
     {
         "time": "[0:03:00 - 0:04:00]",
@@ -8884,7 +8884,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_11_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_11_Scene_Understanding.mp4"
     },
     {
         "time": "[0:03:00 - 0:04:00]",
@@ -8904,7 +8904,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_11_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_11_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -10519,7 +10519,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_50_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_50_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -10539,7 +10539,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_50_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_50_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -10559,7 +10559,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_50_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_50_Scene_Understanding.mp4"
     },
     {
         "time": "[0:03:00 - 0:04:00]",
@@ -10579,7 +10579,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_50_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_50_Scene_Understanding.mp4"
     },
     {
         "time": "[0:04:00 - 0:05:00]",
@@ -10599,7 +10599,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_50_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_50_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -11219,7 +11219,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_10_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_10_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -11239,7 +11239,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_10_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_10_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -11259,7 +11259,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_10_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_10_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -11279,7 +11279,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_10_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_10_Scene_Understanding.mp4"
     },
     {
         "time": "[0:03:00 - 0:04:00]",
@@ -11299,7 +11299,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_10_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_10_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -12114,7 +12114,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_15_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_15_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -12134,7 +12134,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_15_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_15_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -12154,7 +12154,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_15_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_15_Scene_Understanding.mp4"
     },
     {
         "time": "[0:03:00 - 0:04:00]",
@@ -12174,7 +12174,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_15_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_15_Scene_Understanding.mp4"
     },
     {
         "time": "[0:04:00 - 0:05:00]",
@@ -12194,7 +12194,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_15_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_15_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00-0:01:00]",
@@ -12914,7 +12914,7 @@
             }
         ],
         "video_categories": "minecraft",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_46_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_46_Scene_Understanding.mp4"
     },
     {
         "time": "[0:03:00 - 0:04:00]",
@@ -12935,7 +12935,7 @@
             }
         ],
         "video_categories": "minecraft",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_46_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_46_Scene_Understanding.mp4"
     },
     {
         "time": "[0:06:00 - 0:07:00]",
@@ -12955,7 +12955,7 @@
             }
         ],
         "video_categories": "minecraft",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_46_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_46_Scene_Understanding.mp4"
     },
     {
         "time": "[0:06:00 - 0:07:00]",
@@ -12975,7 +12975,7 @@
             }
         ],
         "video_categories": "minecraft",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_46_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_46_Scene_Understanding.mp4"
     },
     {
         "time": "[0:07:00 - 0:08:00]",
@@ -12995,7 +12995,7 @@
             }
         ],
         "video_categories": "minecraft",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_46_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_46_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -13115,7 +13115,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_39_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_39_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -13136,7 +13136,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_39_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_39_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -13156,7 +13156,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_39_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_39_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -13176,7 +13176,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_39_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_39_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -13196,7 +13196,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_39_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_39_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -13217,7 +13217,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_7_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_7_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -13237,7 +13237,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_7_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_7_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -13257,7 +13257,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_7_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_7_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -13277,7 +13277,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_7_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_7_Scene_Understanding.mp4"
     },
     {
         "time": "[0:03:00 - 0:04:00]",
@@ -13297,7 +13297,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_7_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_7_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -13417,7 +13417,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_30_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_30_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -13437,7 +13437,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_30_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_30_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -13457,7 +13457,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_30_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_30_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -13477,7 +13477,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_30_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_30_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -13497,7 +13497,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_30_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_30_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -13917,7 +13917,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_48_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_48_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -13937,7 +13937,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_48_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_48_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -13957,7 +13957,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_48_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_48_Scene_Understanding.mp4"
     },
     {
         "time": "[0:03:00 - 0:04:00]",
@@ -13977,7 +13977,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_48_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_48_Scene_Understanding.mp4"
     },
     {
         "time": "[0:07:00 - 0:08:00]",
@@ -13997,7 +13997,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_48_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_48_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -14219,7 +14219,7 @@
             }
         ],
         "video_categories": "travel_vlog",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_42_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_42_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -14239,7 +14239,7 @@
             }
         ],
         "video_categories": "travel_vlog",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_42_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_42_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -14259,7 +14259,7 @@
             }
         ],
         "video_categories": "travel_vlog",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_42_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_42_Scene_Understanding.mp4"
     },
     {
         "time": "[0:03:00 - 0:04:00]",
@@ -14279,7 +14279,7 @@
             }
         ],
         "video_categories": "travel_vlog",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_42_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_42_Scene_Understanding.mp4"
     },
     {
         "time": "[0:04:00 - 0:05:00]",
@@ -14299,7 +14299,7 @@
             }
         ],
         "video_categories": "travel_vlog",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_42_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_42_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -14519,7 +14519,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_25_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_25_Scene_Understanding.mp4"
     },
     {
         "time": "[0:03:00 - 0:04:00]",
@@ -14539,7 +14539,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_25_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_25_Scene_Understanding.mp4"
     },
     {
         "time": "[0:04:00 - 0:05:00]",
@@ -14559,7 +14559,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_25_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_25_Scene_Understanding.mp4"
     },
     {
         "time": "[0:05:00 - 0:06:00]",
@@ -14579,7 +14579,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_25_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_25_Scene_Understanding.mp4"
     },
     {
         "time": "[0:06:00 - 0:07:00]",
@@ -14599,7 +14599,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_25_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_25_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -15619,7 +15619,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_16_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_16_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -15639,7 +15639,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_16_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_16_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -15659,7 +15659,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_16_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_16_Scene_Understanding.mp4"
     },
     {
         "time": "[0:05:00 - 0:06:00]",
@@ -15679,7 +15679,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_16_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_16_Scene_Understanding.mp4"
     },
     {
         "time": "[0:05:00 - 0:06:00]",
@@ -15699,7 +15699,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_16_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_16_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -15719,7 +15719,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_37_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_37_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -15739,7 +15739,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_37_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_37_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -15759,7 +15759,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_37_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_37_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -15779,7 +15779,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_37_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_37_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -15799,7 +15799,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_37_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_37_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -15819,7 +15819,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_26_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_26_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -15839,7 +15839,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_26_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_26_Scene_Understanding.mp4"
     },
     {
         "time": "[0:04:00 - 0:05:00]",
@@ -15859,7 +15859,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_26_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_26_Scene_Understanding.mp4"
     },
     {
         "time": "[0:05:00 - 0:06:00]",
@@ -15879,7 +15879,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_26_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_26_Scene_Understanding.mp4"
     },
     {
         "time": "[0:07:00 - 0:08:00]",
@@ -15899,7 +15899,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_26_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_26_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -16319,7 +16319,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_4_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_4_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -16339,7 +16339,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_4_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_4_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -16359,7 +16359,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_4_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_4_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -16379,7 +16379,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_4_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_4_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -16399,7 +16399,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_4_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_4_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -16719,7 +16719,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_23_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_23_Scene_Understanding.mp4"
     },
     {
         "time": "[0:03:00 - 0:04:00]",
@@ -16739,7 +16739,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_23_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_23_Scene_Understanding.mp4"
     },
     {
         "time": "[0:04:00 - 0:05:00]",
@@ -16759,7 +16759,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_23_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_23_Scene_Understanding.mp4"
     },
     {
         "time": "[0:05:00 - 0:06:00]",
@@ -16779,7 +16779,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_23_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_23_Scene_Understanding.mp4"
     },
     {
         "time": "[0:06:00 - 0:07:00]",
@@ -16799,7 +16799,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_23_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_23_Scene_Understanding.mp4"
     },
     {
         "time": "[0:03:00 - 0:04:00]",
@@ -17119,7 +17119,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_5_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_5_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -17139,7 +17139,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_5_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_5_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -17159,7 +17159,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_5_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_5_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -17179,7 +17179,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_5_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_5_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -17199,7 +17199,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_5_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_5_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -17419,7 +17419,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_1_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_1_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -17439,7 +17439,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_1_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_1_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -17459,7 +17459,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_1_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_1_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -17479,7 +17479,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_1_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_1_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -17499,7 +17499,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_1_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_1_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00-0:01:00]",
@@ -18119,7 +18119,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_29_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_29_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -18139,7 +18139,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_29_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_29_Scene_Understanding.mp4"
     },
     {
         "time": "[0:03:00 - 0:04:00]",
@@ -18159,7 +18159,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_29_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_29_Scene_Understanding.mp4"
     },
     {
         "time": "[0:05:00 - 0:06:00]",
@@ -18179,7 +18179,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_29_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_29_Scene_Understanding.mp4"
     },
     {
         "time": "[0:05:00 - 0:06:00]",
@@ -18199,7 +18199,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_29_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_29_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -19114,7 +19114,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_2_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_2_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -19134,7 +19134,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_2_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_2_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -19154,7 +19154,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_2_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_2_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -19174,7 +19174,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_2_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_2_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -19194,7 +19194,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_2_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_2_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -19214,7 +19214,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_24_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_24_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -19234,7 +19234,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_24_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_24_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -19254,7 +19254,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_24_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_24_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -19274,7 +19274,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_24_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_24_Scene_Understanding.mp4"
     },
     {
         "time": "[0:03:00 - 0:04:00]",
@@ -19294,7 +19294,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_24_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_24_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -19614,7 +19614,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_8_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_8_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -19634,7 +19634,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_8_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_8_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -19654,7 +19654,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_8_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_8_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -19674,7 +19674,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_8_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_8_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -19694,7 +19694,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_8_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_8_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00-0:02:00]",
@@ -19814,7 +19814,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_13_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_13_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -19834,7 +19834,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_13_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_13_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -19854,7 +19854,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_13_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_13_Scene_Understanding.mp4"
     },
     {
         "time": "[0:04:00 - 0:05:00]",
@@ -19874,7 +19874,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_13_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_13_Scene_Understanding.mp4"
     },
     {
         "time": "[0:05:00 - 0:06:00]",
@@ -19894,7 +19894,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_13_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_13_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -20814,7 +20814,7 @@
             }
         ],
         "video_categories": "minecraft",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_45_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_45_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -20834,7 +20834,7 @@
             }
         ],
         "video_categories": "minecraft",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_45_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_45_Scene_Understanding.mp4"
     },
     {
         "time": "[0:03:00 - 0:04:00]",
@@ -20854,7 +20854,7 @@
             }
         ],
         "video_categories": "minecraft",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_45_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_45_Scene_Understanding.mp4"
     },
     {
         "time": "[0:04:00 - 0:05:00]",
@@ -20874,7 +20874,7 @@
             }
         ],
         "video_categories": "minecraft",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_45_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_45_Scene_Understanding.mp4"
     },
     {
         "time": "[0:05:00 - 0:06:00]",
@@ -20894,7 +20894,7 @@
             }
         ],
         "video_categories": "minecraft",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_45_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_45_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -20914,7 +20914,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_3_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_3_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -20934,7 +20934,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_3_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_3_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -20954,7 +20954,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_3_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_3_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -20974,7 +20974,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_3_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_3_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -20994,7 +20994,7 @@
             }
         ],
         "video_categories": "natural_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_3_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_3_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -21414,7 +21414,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_32_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_32_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -21434,7 +21434,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_32_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_32_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -21454,7 +21454,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_32_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_32_Scene_Understanding.mp4"
     },
     {
         "time": "[0:03:00 - 0:04:00]",
@@ -21474,7 +21474,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_32_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_32_Scene_Understanding.mp4"
     },
     {
         "time": "[0:04:00 - 0:05:00]",
@@ -21494,7 +21494,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_32_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_32_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -21714,7 +21714,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_36_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_36_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -21734,7 +21734,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_36_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_36_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -21754,7 +21754,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_36_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_36_Scene_Understanding.mp4"
     },
     {
         "time": "[0:03:00 - 0:04:00]",
@@ -21774,7 +21774,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_36_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_36_Scene_Understanding.mp4"
     },
     {
         "time": "[0:04:00 - 0:05:00]",
@@ -21794,7 +21794,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_36_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_36_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -21814,7 +21814,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_33_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_33_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -21834,7 +21834,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_33_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_33_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -21854,7 +21854,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_33_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_33_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -21874,7 +21874,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_33_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_33_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -21894,7 +21894,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_33_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_33_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00-0:01:00]",
@@ -22414,7 +22414,7 @@
             }
         ],
         "video_categories": "minecraft",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_47_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_47_Scene_Understanding.mp4"
     },
     {
         "time": "[0:03:00 - 0:04:00]",
@@ -22434,7 +22434,7 @@
             }
         ],
         "video_categories": "minecraft",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_47_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_47_Scene_Understanding.mp4"
     },
     {
         "time": "[0:05:00 - 0:06:00]",
@@ -22454,7 +22454,7 @@
             }
         ],
         "video_categories": "minecraft",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_47_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_47_Scene_Understanding.mp4"
     },
     {
         "time": "[0:06:00 - 0:07:00]",
@@ -22474,7 +22474,7 @@
             }
         ],
         "video_categories": "minecraft",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_47_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_47_Scene_Understanding.mp4"
     },
     {
         "time": "[0:06:00 - 0:07:00]",
@@ -22494,7 +22494,7 @@
             }
         ],
         "video_categories": "minecraft",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_47_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_47_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -23014,7 +23014,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_14_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_14_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -23035,7 +23035,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_14_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_14_Scene_Understanding.mp4"
     },
     {
         "time": "[0:03:00 - 0:04:00]",
@@ -23055,7 +23055,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_14_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_14_Scene_Understanding.mp4"
     },
     {
         "time": "[0:04:00 - 0:05:00]",
@@ -23075,7 +23075,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_14_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_14_Scene_Understanding.mp4"
     },
     {
         "time": "[0:04:00 - 0:05:00]",
@@ -23095,7 +23095,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_14_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_14_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -23815,7 +23815,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_22_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_22_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -23835,7 +23835,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_22_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_22_Scene_Understanding.mp4"
     },
     {
         "time": "[0:03:00 - 0:04:00]",
@@ -23855,7 +23855,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_22_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_22_Scene_Understanding.mp4"
     },
     {
         "time": "[0:04:00 - 0:05:00]",
@@ -23875,7 +23875,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_22_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_22_Scene_Understanding.mp4"
     },
     {
         "time": "[0:04:00 - 0:05:00]",
@@ -23895,7 +23895,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_22_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_22_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -24115,7 +24115,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_35_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_35_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -24135,7 +24135,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_35_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_35_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -24155,7 +24155,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_35_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_35_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -24175,7 +24175,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_35_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_35_Scene_Understanding.mp4"
     },
     {
         "time": "[0:03:00 - 0:04:00]",
@@ -24195,7 +24195,7 @@
             }
         ],
         "video_categories": "basketball",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_35_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_35_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -24415,7 +24415,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_20_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_20_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -24435,7 +24435,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_20_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_20_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -24455,7 +24455,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_20_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_20_Scene_Understanding.mp4"
     },
     {
         "time": "[0:05:00 - 0:06:00]",
@@ -24475,7 +24475,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_20_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_20_Scene_Understanding.mp4"
     },
     {
         "time": "[0:06:00 - 0:07:00]",
@@ -24495,7 +24495,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_20_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_20_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -26115,7 +26115,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_18_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_18_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -26135,7 +26135,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_18_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_18_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -26155,7 +26155,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_18_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_18_Scene_Understanding.mp4"
     },
     {
         "time": "[0:03:00 - 0:04:00]",
@@ -26175,7 +26175,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_18_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_18_Scene_Understanding.mp4"
     },
     {
         "time": "[0:05:00 - 0:06:00]",
@@ -26195,7 +26195,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_18_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_18_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -27215,7 +27215,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_19_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_19_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -27235,7 +27235,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_19_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_19_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -27255,7 +27255,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_19_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_19_Scene_Understanding.mp4"
     },
     {
         "time": "[0:03:00 - 0:04:00]",
@@ -27275,7 +27275,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_19_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_19_Scene_Understanding.mp4"
     },
     {
         "time": "[0:05:00 - 0:06:00]",
@@ -27295,7 +27295,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_19_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_19_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -27515,7 +27515,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_27_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_27_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -27535,7 +27535,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_27_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_27_Scene_Understanding.mp4"
     },
     {
         "time": "[0:03:00 - 0:04:00]",
@@ -27555,7 +27555,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_27_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_27_Scene_Understanding.mp4"
     },
     {
         "time": "[0:04:00 - 0:05:00]",
@@ -27575,7 +27575,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_27_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_27_Scene_Understanding.mp4"
     },
     {
         "time": "[0:04:00 - 0:05:00]",
@@ -27595,7 +27595,7 @@
             }
         ],
         "video_categories": "football",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_27_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_27_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -29115,7 +29115,7 @@
             }
         ],
         "video_categories": "travel_vlog",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_43_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_43_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -29135,7 +29135,7 @@
             }
         ],
         "video_categories": "travel_vlog",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_43_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_43_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -29155,7 +29155,7 @@
             }
         ],
         "video_categories": "travel_vlog",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_43_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_43_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -29175,7 +29175,7 @@
             }
         ],
         "video_categories": "travel_vlog",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_43_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_43_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -29195,7 +29195,7 @@
             }
         ],
         "video_categories": "travel_vlog",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_43_Scene_Understanding_26-50.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_43_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",
@@ -29215,7 +29215,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_17_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_17_Scene_Understanding.mp4"
     },
     {
         "time": "[0:01:00 - 0:02:00]",
@@ -29235,7 +29235,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_17_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_17_Scene_Understanding.mp4"
     },
     {
         "time": "[0:02:00 - 0:03:00]",
@@ -29255,7 +29255,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_17_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_17_Scene_Understanding.mp4"
     },
     {
         "time": "[0:03:00 - 0:04:00]",
@@ -29275,7 +29275,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_17_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_17_Scene_Understanding.mp4"
     },
     {
         "time": "[0:04:00 - 0:05:00]",
@@ -29295,7 +29295,7 @@
             }
         ],
         "video_categories": "adventure_documentary",
-        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_17_Scene_Understanding_1-25.mp4"
+        "video_path": "/home/dyvm6xra/dyvm6xrauser36/cjp/StreamingVideoUnderstanding/AURA/AURA_bench_eval/StreamingBench/src/data/videos/sample_17_Scene_Understanding.mp4"
     },
     {
         "time": "[0:00:00 - 0:01:00]",

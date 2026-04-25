@@ -145,3 +145,48 @@ After inference finishes, still in `StreamingBench/scripts`, run the scoring scr
 ```bash
 bash stats.sh
 ```
+
+## OmniMMI Evaluation
+
+### 1. Prepare Data
+
+Download the OmniMMI dataset and place it so that videos are located at `<DATA_DIR>/videos/`. The benchmark annotation JSONs (`action_prediction.json`, `speaker_identification.json`, `multiturn_dependency_reasoning.json`, `dynamic_state_grounding.json`, `proactive_alerting.json`) should be in the `<DATA_DIR>/` root.
+
+### 2. Recommended: Pre-split 1-second Videos in Advance
+
+AURA inference splits each video into 1-second segments on the fly via `ffmpeg`. For large-scale runs, pre-splitting with high parallelism is much faster:
+
+```bash
+cd OmniMMI
+python gen_video_clip.py <DATA_DIR>/videos \
+  --chunk_dir <DATA_DIR>/data/chunkwise_videos \
+  --workers 64
+```
+
+You can increase `--workers` according to your CPU resources. The pre-split clips are cached and reused automatically during inference.
+
+### 3. Run Inference
+
+Edit `OmniMMI/baselines/run_qwen3vl.sh` to set the following variables according to your setup:
+
+- `CKPT_PATH`: the model name served by vLLM (default: `aurateam/AURA`)
+- `video_dir` / `questions_file`: paths to your OmniMMI data directory
+
+Then run:
+
+```bash
+cd OmniMMI/baselines
+bash run_qwen3vl.sh [OUTPUT_DIR]
+```
+
+This runs inference on all five OmniMMI tasks: Action Prediction (ap), Speaker Identification (si), Multiturn Dependency Reasoning (md), Dynamic State Grounding (sg), and Proactive Alerting (pa). If `OUTPUT_DIR` is omitted, results are saved to `OmniMMI/results-qwen3vl-8b-online/`.
+
+### 4. Run Scoring
+
+After inference finishes, run the evaluation script:
+
+```bash
+bash eval_all_qwen3vl.sh [OUTPUT_DIR]
+```
+
+This evaluates all tasks in parallel using GPT-4o as the judge (for ap, si, md, sg) or computes accuracy directly (for pa). Make sure `API_BASE` and `API_KEY` environment variables are set (or defined in a `.env` file) for the GPT-4o scoring API.
