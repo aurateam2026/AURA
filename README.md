@@ -327,7 +327,7 @@ Main inference parameters in `Qwen3_VL_online_streaming_v2_CM.sh`:
 
 ## Benchmark Evaluation
 
-We provide benchmark evaluation code for AURA in [`AURA_bench_eval/`](AURA_bench_eval/), including evaluation pipelines for `OVO-Bench` and `StreamingBench`. For environment setup, dataset preparation, deployment, and evaluation commands, please refer to [`AURA_bench_eval/README.md`](AURA_bench_eval/README.md).
+We provide benchmark evaluation code for AURA in [`AURA_bench_eval/`](AURA_bench_eval/), including evaluation pipelines for `OVO-Bench`, `StreamingBench`, and `OmniMMI`. For environment setup, dataset preparation, deployment, and evaluation commands, please refer to [`AURA_bench_eval/README.md`](AURA_bench_eval/README.md).
 
 ## Other
 
