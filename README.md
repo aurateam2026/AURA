@@ -38,7 +38,7 @@
 | *桌面上的笔* | [桌面上的笔.mp4](https://1drv.ms/v/c/7be8ecfc440137f7/IQCNAwcGx6iQT5qIOXBy_gYOATismEjWA0nHG6djk4-kvkU?e=ZeYJYN) |
 | *绿灯才能过马路哦* | [绿灯才能过马路哦.mp4](https://1drv.ms/v/c/7be8ecfc440137f7/IQAJInfVpuT2ToNqGbJ8iY87AY8SUyORWpN20ws6qYMlI5I) |
 
-> Click a link above to download and watch the demo video. All demos are located in the [`demos/`](demos/) folder. For more demo videos, please visit our [Home Page](https://aurateam2026.github.io/).
+> Click a link above to download and watch the demo video. For more demo videos, please visit our [Home Page](https://aurateam2026.github.io/).
 
 ### Requirements
 
