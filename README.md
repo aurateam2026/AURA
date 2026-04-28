@@ -27,16 +27,16 @@
 
 | Demo | Video |
 |------|-------|
-| *The pens on the desk* | [The pens on the desk.mp4](demos/The_pens_on_the_desk.mp4) |
-| *Watch the kettle for me* | [Watch the kettle for me.mp4](demos/Watch_the_kettle_for_me.mp4) |
-| *史迪仔放在哪？* | [史迪仔放在哪？.mp4](demos/%E5%8F%B2%E8%BF%AA%E4%BB%94%E6%94%BE%E5%9C%A8%E5%93%AA%EF%BC%9F.mp4) |
-| *小馋猫偷吃冻干* | [小馋猫偷吃冻干.mp4](demos/%E5%B0%8F%E9%A6%8B%E7%8C%AB%E5%81%B7%E5%90%83%E5%86%BB%E5%B9%B2.mp4) |
-| *工作时不准摸鱼* | [工作时不准摸鱼.mp4](demos/%E5%B7%A5%E4%BD%9C%E6%97%B6%E4%B8%8D%E5%87%86%E6%91%B8%E9%B1%BC.mp4) |
-| *帮我找找鼠标* | [帮我找找鼠标.mp4](demos/%E5%B8%AE%E6%88%91%E6%89%BE%E6%89%BE%E9%BC%A0%E6%A0%87.mp4) |
-| *帮我盯着烧水壶* | [帮我盯着烧水壶.mp4](demos/%E5%B8%AE%E6%88%91%E7%9B%AF%E7%9D%80%E7%83%A7%E6%B0%B4%E5%A3%B6.mp4) |
-| *我刚才关灯了吗* | [我刚才关灯了吗.mp4](demos/%E6%88%91%E5%88%9A%E6%89%8D%E5%85%B3%E7%81%AF%E4%BA%86%E5%90%97.mp4) |
-| *桌面上的笔* | [桌面上的笔.mp4](demos/%E6%A1%8C%E9%9D%A2%E4%B8%8A%E7%9A%84%E7%AC%94.mp4) |
-| *绿灯才能过马路哦* | [绿灯才能过马路哦.mp4](demos/%E7%BB%BF%E7%81%AF%E6%89%8D%E8%83%BD%E8%BF%87%E9%A9%AC%E8%B7%AF%E5%93%A6.mp4) |
+| *The pens on the desk* | [The pens on the desk.mp4](https://1drv.ms/v/c/7be8ecfc440137f7/IQBNwUIKXpxURIa1XcuP_KTvARn9UXmd7lclOyZsJan39os?e=QTyEIM) |
+| *Watch the kettle for me* | [Watch the kettle for me.mp4](https://1drv.ms/v/c/7be8ecfc440137f7/IQAhAe9bOh_eToP02gnvbOFJAVYCb6MkJTozOamQhJYupwQ?e=tpHejG) |
+| *史迪仔放在哪？* | [史迪仔放在哪？.mp4](https://1drv.ms/v/c/7be8ecfc440137f7/IQCYhlYg5oG1TZnZnVufE7FkATfPMzfAbrpW69HliohXPWk?e=MMnAos) |
+| *小馋猫偷吃冻干* | [小馋猫偷吃冻干.mp4](https://1drv.ms/v/c/7be8ecfc440137f7/IQAkcpo66JgpSLjaIFrIk6InAWgIYIoQuqEVckk_kFqozi0?e=5dnnba) |
+| *工作时不准摸鱼* | [工作时不准摸鱼.mp4](https://1drv.ms/v/c/7be8ecfc440137f7/IQBcGeeawTQ7TIlPM8B1DUtFAT3HA4U_JUuAY-0w4xMI4io?e=mcjk4I) |
+| *帮我找找鼠标* | [帮我找找鼠标.mp4](https://1drv.ms/v/c/7be8ecfc440137f7/IQCbfvFX05k-Top9BLsQL-qAAQbW2vgExyML8hQnn0EI6E8?e=rt19XP) |
+| *帮我盯着烧水壶* | [帮我盯着烧水壶.mp4](https://1drv.ms/v/c/7be8ecfc440137f7/IQCFpfzKJl_DQJG3gbaPnPEfAaNhWj0RThbmuoTh-y6X5M8?e=dU91oM) |
+| *我刚才关灯了吗* | [我刚才关灯了吗.mp4](https://1drv.ms/v/c/7be8ecfc440137f7/IQCjfTRY1KwkRJ0Xzo9J-RlbAYMu9qaNfpPt3N_tzfri-XA?e=0NRQWo) |
+| *桌面上的笔* | [桌面上的笔.mp4](https://1drv.ms/v/c/7be8ecfc440137f7/IQCNAwcGx6iQT5qIOXBy_gYOATismEjWA0nHG6djk4-kvkU?e=ZeYJYN) |
+| *绿灯才能过马路哦* | [绿灯才能过马路哦.mp4](https://1drv.ms/v/c/7be8ecfc440137f7/IQAJInfVpuT2ToNqGbJ8iY87AY8SUyORWpN20ws6qYMlI5I) |
 
 > Click a link above to download and watch the demo video. All demos are located in the [`demos/`](demos/) folder. For more demo videos, please visit our [Home Page](https://aurateam2026.github.io/).
 
