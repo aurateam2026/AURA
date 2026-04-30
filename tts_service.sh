@@ -4,7 +4,7 @@
 
 export CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-0}
 python -u tts_service.py \
-    --port 8002 \
+    --port "${AURA_TTS_PORT:-8002}" \
     --gpu 0 \
     --model Qwen/Qwen3-TTS-12Hz-1.7B-Base \
     --language Chinese \

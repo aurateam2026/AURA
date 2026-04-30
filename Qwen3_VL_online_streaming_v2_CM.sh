@@ -1,9 +1,6 @@
 #!/bin/bash
 
-CASE_NAME=qwen3vl-8b_20260329_01
-
-# Qwen3 Omni 启动示例:
-MODEL_PATH=/home/dyvm6xra/dyvm6xrauser36/Projects/streaming_video_understanding/${CASE_NAME}/
+MODEL_PATH="${AURA_MODEL_PATH:?Please set AURA_MODEL_PATH to your Qwen3-VL/Omni model directory (see .env.example)}"
 echo "MODEL_PATH: $MODEL_PATH"
 
 # vLLM 主推理 (TTS 已拆分为独立服务 tts_service.py)
@@ -12,13 +9,13 @@ TP=${TP_SIZE:-1}
 echo "CUDA_VISIBLE_DEVICES=$CUDA_VISIBLE_DEVICES, tensor-parallel-size=$TP"
 
 python -u Qwen3_VL_online_streaming_v2_ContextManaged.py \
-    --listen-port 12345 \
+    --listen-port "${AURA_INFER_PORT:-12345}" \
     --model $MODEL_PATH \
     --tensor-parallel-size $TP \
     --max-model-len 262144 \
     --max-seq-len 262144 \
     --gpu-memory-utilization 0.9 \
-    --asr-url http://localhost:8001/asr \
+    --asr-url "http://localhost:${AURA_ASR_PORT:-8001}/asr" \
     --kv-offloading-size 10 \
     --disable-hybrid-kv-cache-manager \
     --block-size 16 \
@@ -29,7 +26,7 @@ python -u Qwen3_VL_online_streaming_v2_ContextManaged.py \
     --temperature 0.5 \
     --max-tokens 128 \
     --enable-tts \
-    --tts-service-url http://localhost:8002 \
+    --tts-service-url "http://localhost:${AURA_TTS_PORT:-8002}" \
     --tts-output-dir tts_results \
     --cross-turn-penalty 1 \
     --cross-turn-lookback 10 \

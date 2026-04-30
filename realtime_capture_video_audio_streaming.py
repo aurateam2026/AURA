@@ -20,6 +20,8 @@ Realtime Video Audio Capture Client - Streaming Version
 - Type 8: STREAMING_TOKEN (S->C) - 流式 token (新增)
 """
 
+import argparse
+import os
 import struct
 import socket
 import threading
@@ -37,9 +39,9 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 CORS(app)
 
-# 服务端配置
-SERVER_HOST = 'hk01dgx030'
-SERVER_PORT = 12345
+# 服务端配置 (实际值由 main() 中 argparse + AURA_INFER_HOST/AURA_INFER_PORT 注入)
+SERVER_HOST = None
+SERVER_PORT = None
 
 # 视频发送间隔（秒） - 改为连续发送
 VIDEO_SEND_INTERVAL = 1.0
@@ -717,17 +719,34 @@ def start_camera():
 
 def main():
     """主函数"""
-    import os
-    import sys
-    
-    use_https = '--https' in sys.argv or '-s' in sys.argv
-    use_tunnel = '--tunnel' in sys.argv or '-t' in sys.argv
+    global SERVER_HOST, SERVER_PORT
+
+    parser = argparse.ArgumentParser(
+        description="AURA Flask bridge — accepts video/audio from browser and forwards to inference server")
+    parser.add_argument('--infer-host',
+                        default=os.environ.get('AURA_INFER_HOST', '127.0.0.1'),
+                        help='Inference server host (env: AURA_INFER_HOST, default: 127.0.0.1)')
+    parser.add_argument('--infer-port', type=int,
+                        default=int(os.environ.get('AURA_INFER_PORT', '12345')),
+                        help='Inference server TCP port (env: AURA_INFER_PORT, default: 12345)')
+    parser.add_argument('--port', type=int,
+                        default=int(os.environ.get('AURA_FLASK_PORT', '5003')),
+                        help='Flask listen port (env: AURA_FLASK_PORT, default: 5003)')
+    parser.add_argument('--https', '-s', action='store_true',
+                        help='Serve over HTTPS using cert.pem/key.pem next to this script')
+    parser.add_argument('--tunnel', '-t', action='store_true',
+                        help='Expose via Cloudflare Tunnel (requires pycloudflared)')
+    args = parser.parse_args()
+
+    SERVER_HOST = args.infer_host
+    SERVER_PORT = args.infer_port
+    use_https = args.https
+    use_tunnel = args.tunnel
+    port = args.port
     
     cert_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'cert.pem')
     key_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'key.pem')
     has_certs = os.path.exists(cert_file) and os.path.exists(key_file)
-    
-    port = 5003
     
     print("=" * 50)
     print("🎥 实时视频音频捕获客户端 (Streaming 版本)")

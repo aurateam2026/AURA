@@ -122,7 +122,20 @@ Download the following models from [Hugging Face](https://huggingface.co/):
 | [Qwen3-ASR-1.7B](https://huggingface.co/Qwen/Qwen3-ASR-1.7B/tree/main) | Automatic Speech Recognition | ~3 GB |
 | [Qwen3-TTS-12Hz-1.7B-Base](https://huggingface.co/Qwen/Qwen3-TTS-12Hz-1.7B-Base/tree/main) | Text-to-Speech synthesis | ~4 GB |
 
-#### 2. One-Click Launch
+#### 2. Configure (optional)
+
+All ports and the model path are read from environment variables — see `.env.example` at the repo root. The only required variable is `AURA_MODEL_PATH`:
+
+```bash
+cp .env.example .env
+# Edit .env: set AURA_MODEL_PATH to your downloaded model directory.
+# Then load it into your shell before launching:
+set -a; source .env; set +a
+```
+
+Defaults (when env is unset): Flask `5003`, ASR `8001`, TTS `8002`, inference `12345`, infer host `127.0.0.1`.
+
+#### 3. One-Click Launch
 
 ```bash
 # Default: GPU 0 for ASR+TTS, GPU 1 for AURA inference
@@ -130,7 +143,7 @@ bash start_all.sh
 ```
 
 The script automatically:
-- Cleans up any leftover processes on ports 8001, 8002, 12345
+- Cleans up any leftover processes on the configured ports (defaults: 8001, 8002, 12345)
 - Starts ASR, TTS, and vLLM inference server in order
 - Waits for each service to be healthy before proceeding
 - Logs to `logs/asr.log`, `logs/tts.log`, `logs/vllm.log`
@@ -145,23 +158,22 @@ GPU_ASR=0 GPU_TTS=0 GPU_INFERENCE=1 bash start_all.sh
 GPU_ASR=0 GPU_TTS=0 GPU_INFERENCE=2,3 bash start_all.sh
 ```
 
-#### 3. Launch Web Frontend
+#### 4. Launch Web Frontend
 
-The web frontend connects to the backend inference server via a TCP socket. By default, the backend hostname is configured in `realtime_capture_video_audio_streaming.py`:
-
-```python
-SERVER_HOST = 'localhost'   # Change this to match your setup
-SERVER_PORT = 12345
-```
-
-- **If the frontend and backend run on the same machine**, change `SERVER_HOST` to `'localhost'`.
-- **If they run on different machines**, set `SERVER_HOST` to the hostname or IP address of the machine running the backend services.
-
-Then start the frontend in a separate terminal:
+The web frontend connects to the backend inference server via a TCP socket. The connection is configured via environment variables (see `.env.example`) or CLI flags — defaults are `127.0.0.1:12345`, suitable when frontend and backend run on the same machine.
 
 ```bash
 source .venv/bin/activate
+
+# Same machine (defaults are fine):
 python realtime_capture_video_audio_streaming.py
+
+# Different machine — point at the backend host:
+python realtime_capture_video_audio_streaming.py --infer-host <backend-host> --infer-port 12345
+
+# Or via environment variables:
+AURA_INFER_HOST=<backend-host> AURA_INFER_PORT=12345 \
+    python realtime_capture_video_audio_streaming.py
 ```
 
 | Mode | Command |
@@ -170,7 +182,7 @@ python realtime_capture_video_audio_streaming.py
 | HTTPS | `python realtime_capture_video_audio_streaming.py --https` |
 | Cloudflare Tunnel | `python realtime_capture_video_audio_streaming.py --tunnel` |
 
-#### 4. Access from a Browser
+#### 5. Access from a Browser
 
 > **Required:** You must use **Google Chrome** to access the demo. Chrome is the only browser that fully supports the camera, microphone, MediaRecorder, and Web Audio APIs used by AURA. **Safari and Firefox are not supported** and may fail silently.
 
@@ -200,7 +212,7 @@ Open the demo in **Chrome for Android** or **Chrome for iOS**. The phone must be
    ```
    This creates a public HTTPS URL that you can open in Chrome on any device without network restrictions.
 
-#### 5. Using the Demo (Chrome only)
+#### 6. Using the Demo (Chrome only)
 
 The interface has three buttons at the bottom of the screen:
 
@@ -299,6 +311,7 @@ Main inference parameters in `Qwen3_VL_online_streaming_v2_CM.sh`:
 ### Project Structure
 
 ```
+├── .env.example                              # Configuration template (ports, model path)
 ├── start_all.sh                              # One-click launch script
 ├── Qwen3_VL_online_streaming_v2_CM.sh        # Main inference launch script
 ├── Qwen3_VL_online_streaming_v2_ContextManaged.py  # Core: vLLM engine + context management + TCP server
@@ -323,7 +336,7 @@ Main inference parameters in `Qwen3_VL_online_streaming_v2_CM.sh`:
 | OOM on main GPU | Reduce `--gpu-memory-utilization` or `--max-model-len` |
 | vLLM version error | Requires vLLM >= 0.17.1 with V1 engine support |
 | Phone cannot access camera/mic | Use HTTPS mode or Cloudflare Tunnel (browsers require HTTPS for media on non-localhost) |
-| `SERVER_HOST` connection refused | Verify `SERVER_HOST` in `realtime_capture_video_audio_streaming.py` matches your backend host |
+| Frontend cannot reach backend | Set `AURA_INFER_HOST` (env or `--infer-host` flag) to the backend host; default is `127.0.0.1` |
 
 ## Benchmark Evaluation
 

@@ -7,6 +7,6 @@ GPU_UTIL=${ASR_GPU_UTIL:-0.3}
 
 python -u Qwen3_asr_serve.py \
     --host 0.0.0.0 \
-    --port 8001 \
+    --port "${AURA_ASR_PORT:-8001}" \
     --gpu-memory-utilization $GPU_UTIL \
     --no-forced-aligner

@@ -2335,8 +2335,8 @@ def parse_args():
 
     # Model configuration
     parser.add_argument("--model", type=str,
-                        default="/home/dyvm6xra/dyvm6xrauser36/Projects/streaming_video_understanding/qwen3omni-30b_a3b_20260128_01",
-                        help="Model name or path (Qwen3 Omni)")
+                        default=os.environ.get("AURA_MODEL_PATH"),
+                        help="Model name or path (env: AURA_MODEL_PATH)")
     parser.add_argument("--tensor-parallel-size", type=int, default=1,
                         help="Number of GPUs for tensor parallelism")
     parser.add_argument("--pipeline-parallel-size", type=int, default=1,
@@ -2546,6 +2546,6 @@ def main():
 if __name__ == "__main__":
     main()
 
-# CUDA_VISIBLE_DEVICES=1,2,3,4,5 python Qwen3_VL_online_streaming.py --listen-port 12345 --model /home/dyvm6xra/dyvm6xrauser36/Projects/streaming_video_understanding/qwen3vl-30b_a3b_20260128_01 --tensor-parallel-size 4 --max-model-len 128000 --gpu-memory-utilization 0.85 --asr-url http://localhost:8001/asr --kv-offloading-size 300 --disable-hybrid-kv-cache-manager --mm-encoder-attn-backend FLASH_ATTN --mm-encoder-tp-mode data --enable-tts --tts-gpu 5 --tts-model Qwen/Qwen3-TTS-12Hz-1.7B-Base --tts-language Chinese --tts-ref-audio test_query.mp3 --tts-ref-text "仔细观察当前你看到的画面，并且结合之前你看到的画面，仔细描述你看到了什么" --tts-output-dir tts_results
+# CUDA_VISIBLE_DEVICES=1,2,3,4,5 python Qwen3_VL_online_streaming.py --listen-port 12345 --model $AURA_MODEL_PATH --tensor-parallel-size 4 --max-model-len 128000 --gpu-memory-utilization 0.85 --asr-url http://localhost:8001/asr --kv-offloading-size 300 --disable-hybrid-kv-cache-manager --mm-encoder-attn-backend FLASH_ATTN --mm-encoder-tp-mode data --enable-tts --tts-gpu 5 --tts-model Qwen/Qwen3-TTS-12Hz-1.7B-Base --tts-language Chinese --tts-ref-audio test_query.mp3 --tts-ref-text "仔细观察当前你看到的画面，并且结合之前你看到的画面，仔细描述你看到了什么" --tts-output-dir tts_results
 
-# ssh -L 5003:hk01dgx027:5003 dyvm6xrauser36@10.248.12.12
+# ssh -L 5003:<remote-host>:5003 <user>@<gateway>
