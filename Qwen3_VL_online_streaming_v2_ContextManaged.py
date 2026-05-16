@@ -2275,6 +2275,41 @@ async def handle_client_connection_async(conn, addr, args):
                 accumulated_video_frames = []
                 last_prompt = ""
 
+            elif file_type == 11:  # Text Prompt
+                # Direct text-prompt injection. Equivalent to the post-ASR path
+                # in the Audio (type 2) handler, but without the round-trip
+                # through TTS/ASR. The payload is a UTF-8 string that becomes
+                # `last_prompt` and triggers the same generation priority logic
+                # the audio path uses.
+                try:
+                    prompt_text = file_data.decode("utf-8").strip()
+                except UnicodeDecodeError:
+                    print("⚠ Text prompt payload was not valid UTF-8, ignoring")
+                    continue
+
+                if not prompt_text:
+                    print("⚠ Text prompt payload was empty, ignoring")
+                    continue
+
+                last_prompt = prompt_text
+                print(f"📝 Set prompt from text: {last_prompt[:80]}...")
+
+                # Echo the prompt to the client the same way the ASR path does
+                # so callers see a consistent acknowledgement.
+                send_asr_query_to_client(prompt_text)
+
+                # If a background auto-generation is in flight, interrupt it so
+                # the next round uses the user prompt instead of running silent.
+                if accumulated_video_frames:
+                    print("🚀 Text prompt arrived, attempting immediate trigger...")
+                    if session.is_generating and session.is_auto_generating:
+                        if session.current_task and not session.current_task.done():
+                            print("🛑 Interrupting auto-generation for user prompt (from Text event)!")
+                            session.current_task.cancel()
+
+                # Generation is triggered by the Video frame loop when frames
+                # arrive, mirroring the Audio handler's pattern.
+
     except Exception as e:
         print(f"❌ Connection error: {e}")
         import traceback
